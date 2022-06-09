@@ -7,6 +7,7 @@ import {
     Avatar,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../store/hooks';
 
 interface NavItem {
     label: string;
@@ -14,6 +15,9 @@ interface NavItem {
 }
 
 const MobileNav = () => {
+    const greyColor = useColorModeValue('gray.600', 'gray.200');
+    const { login } = useAppSelector((state) => state.auth);
+
     return (
         <Stack
             bg={useColorModeValue('white', 'gray.800')}
@@ -21,30 +25,33 @@ const MobileNav = () => {
             display={{ md: 'none' }}
         >
             <MobileNavItem label={'Code Studio'} href="/" />
-            <MobileNavItem label={'Podcast'} href="/signup" />
-            <Flex
-                borderRadius="0.3rem"
-                _hover={{
-                    bg: 'main.light.blue.hover',
-                }}
-                gap={'1rem'}
-                p={2}
-                align={'center'}
-            >
-                <Avatar
-                    size={'sm'}
-                    name="User Profile"
-                    src="https://bit.ly/kent-c-dodds"
-                />
-                <Text
-                    fontWeight={600}
-                    color={useColorModeValue('gray.600', 'gray.200')}
+
+            <MobileNavItem label={'Podcast'} href="/" />
+
+            {login && (
+                <Flex
+                    borderRadius="0.3rem"
+                    _hover={{
+                        bg: 'main.light.blue.hover',
+                    }}
+                    gap={'1rem'}
+                    p={2}
+                    align={'center'}
                 >
-                    @username
-                </Text>
-            </Flex>
-            <MobileNavItem label={'Profile Settings'} href="/" />
-            <MobileNavItem label={'Logout'} href="/" />
+                    <Avatar
+                        size={'sm'}
+                        name="User Profile"
+                        src="https://bit.ly/kent-c-dodds"
+                    />
+                    <Text fontWeight={600} color={greyColor}>
+                        @username
+                    </Text>
+                </Flex>
+            )}
+
+            {login && <MobileNavItem label={'Profile Settings'} href="/" />}
+
+            {login && <MobileNavItem label={'Logout'} href="/logout" />}
         </Stack>
     );
 };
@@ -53,26 +60,26 @@ const MobileNavItem = ({ label, href = '#' }: NavItem) => {
     const { onToggle } = useDisclosure();
 
     return (
-        <Stack
-            spacing={4}
-            onClick={onToggle}
-            px={2}
-            borderRadius="0.3rem"
-            _hover={{
-                bg: 'main.light.blue.hover',
-            }}
-        >
-            <Flex py={2} justify={'space-between'} align={'center'}>
-                <Link to={href}>
+        <Link to={href}>
+            <Stack
+                spacing={4}
+                onClick={onToggle}
+                px={2}
+                borderRadius="0.3rem"
+                _hover={{
+                    bg: 'main.light.blue.hover',
+                }}
+            >
+                <Flex py={2} justify={'space-between'} align={'center'}>
                     <Text
                         fontWeight={600}
                         color={useColorModeValue('gray.600', 'gray.200')}
                     >
                         {label}
                     </Text>
-                </Link>
-            </Flex>
-        </Stack>
+                </Flex>
+            </Stack>
+        </Link>
     );
 };
 

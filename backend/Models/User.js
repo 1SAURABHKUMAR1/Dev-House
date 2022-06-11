@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         default: uuid,
         unique: true,
     },
+    activated: {
+        type: Boolean,
+        default: false,
+    },
     // username: {
     //     type: String,
     //     maxlength: [40],

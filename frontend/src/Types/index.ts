@@ -44,3 +44,15 @@ export interface authAction {
     _id: string;
     user_id: string;
 }
+
+export interface refreshTokenAction {
+    user: {
+        createdAt: string;
+        email: string;
+        user_id: string;
+        _id: string;
+        mobile: string;
+        activated: boolean;
+    };
+    success: string;
+}

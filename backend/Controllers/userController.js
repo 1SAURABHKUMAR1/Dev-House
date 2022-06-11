@@ -3,6 +3,7 @@ const CustomError = require('../Utils/CustomError');
 const validator = require('validator');
 const User = require('../Models/User');
 const cookieToken = require('../Utils/CookieToken');
+const verifyRefreshToken = require('../Middleware/verifyRefreshToken');
 
 exports.checkEmail = BigPromise(async (req, res, next) => {
     const { email } = req.body;
@@ -81,6 +82,8 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
 
     if (!refresh) return next(CustomError(res, 'You are not authorized', 401));
 
+    const isValidRefresh = verifyRefreshToken(refresh);
+
     if (!isValidRefresh) {
         return next(CustomError(res, 'Token expired ! Login Again', 401));
     }
@@ -91,12 +94,12 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
         return next(CustomError(res, 'You are not authorized', 401));
     }
 
-    const jwtAccessToken = user.getAccessToken();
+    const jwtAccessToken = await user.getAccessToken();
 
     const AccessOptions = {
-        expires: new Date(
-            Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 1000,
-        ),
+        // expires: new Date(
+        //     Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 1000,
+        // ),
         httpOnly: true,
         secure: true,
         sameSite: 'none',

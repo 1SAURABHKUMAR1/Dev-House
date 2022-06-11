@@ -7,9 +7,9 @@
     if acess token expires send request with refresh token to ask access token
 */
 
-const cookieToken = (user, res) => {
-    const accessJwtToken = user.getAccessToken();
-    const refreshJwtToken = user.getRefreshToken();
+const cookieToken = async (user, res) => {
+    const accessJwtToken = await user.getAccessToken();
+    const refreshJwtToken = await user.getRefreshToken();
 
     const refreshCookieOptions = {
         // expires: new Date(

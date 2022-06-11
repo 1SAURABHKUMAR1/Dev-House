@@ -6,15 +6,17 @@ interface PrivateProp {
 }
 
 const PrivateRoute = ({ element }: PrivateProp): JSX.Element => {
-    const { login } = useAppSelector((state) => state.auth);
+    const { login, activated } = useAppSelector((state) => state.auth);
 
     const location = useLocation();
 
-    if (login) {
-        return <>{element}</>;
-    } else {
+    if (!login) {
         return <Navigate to="/login" state={{ from: location }} />;
+    } else if (login && !activated) {
+        return <>{element}</>;
     }
+
+    return <>{element}</>;
 };
 
 export default PrivateRoute;

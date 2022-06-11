@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authAction, authSliceIntialState, emailAction } from '../../Types';
+import {
+    authAction,
+    authSliceIntialState,
+    emailAction,
+    refreshTokenAction,
+} from '../../Types';
 
 const initialState: authSliceIntialState = {
     login: false,
@@ -41,17 +46,24 @@ const authSlice = createSlice({
 
         refreshToken: (
             state: authSliceIntialState,
-            action: PayloadAction<any>,
+            action: PayloadAction<refreshTokenAction>,
         ) => {
-            // state.authType = ''
+            if (action.payload.user.mobile) {
+                state.authType = 'MOBILE';
+                state.mobile = action.payload.user.mobile;
+            } else if (action.payload.user.email) {
+                state.authType = 'EMAIL';
+                state.email = action.payload.user.email;
+            }
+
             state.login = true;
             state.userId = action.payload.user.user_id;
-            state.username = action.payload.user.username;
-            state.name = action.payload.user.name;
-            state.email = action.payload.user.email;
-            state.photo = action.payload.user.profile_photo.secure_url;
             state.id = action.payload.user._id;
             state.activated = action.payload.user.activated;
+
+            // state.photo = action.payload.user.profile_photo.secure_url;
+            // // state.name = action.payload.user.name;
+            // state.username = action.payload.user.username;
         },
     },
     extraReducers: (builders) => {
@@ -60,4 +72,8 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
-export const { setEmail, setAuth } = authSlice.actions;
+export const {
+    setEmail,
+    setAuth,
+    refreshToken: setRefreshToken,
+} = authSlice.actions;

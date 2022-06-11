@@ -119,7 +119,7 @@ const Header = () => {
                     )}
 
                     {!login && (
-                        <Link to="/signup">
+                        <Link to="/authenticate">
                             <Button
                                 display="inline-flex"
                                 fontSize="sm"

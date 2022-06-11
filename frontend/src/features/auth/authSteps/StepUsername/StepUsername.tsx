@@ -7,7 +7,7 @@ const StepUsername = ({ onClick }: AuthStepProps) => {
         <>
             <Card icon="username" title="Pick a username" key={'namecard'}>
                 <Input
-                    placeholder="Your fullname"
+                    placeholder="@"
                     px="2rem"
                     maxWidth="18rem"
                     bg="main.input-bg"
@@ -22,14 +22,14 @@ const StepUsername = ({ onClick }: AuthStepProps) => {
                     fontSize="0.95rem"
                     fontWeight="500"
                     maxWidth="15rem"
-                    marginTop="1.3rem"
+                    marginTop={{ ssm: '1.7rem', sm: '1.3rem' }}
                 >
                     Username can be used for login
                 </Text>
                 <AuthButton
                     onClick={onClick}
                     buttonText="Next"
-                    marginTop="1.9rem"
+                    marginTop="1.7rem"
                 />
             </Card>
         </>

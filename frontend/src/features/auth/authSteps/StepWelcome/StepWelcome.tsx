@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { AuthButton, Card } from '../../../../Components';
 import { AuthStepProps } from '../../../../Types';
@@ -13,7 +13,7 @@ const StepWelcome = ({ onClick }: AuthStepProps) => {
             >
                 <Text
                     textAlign="center"
-                    fontSize="0.95rem"
+                    fontSize={{ ssm: '1rem ', sm: '0.95rem' }}
                     fontWeight="500"
                     maxWidth="21.5rem"
                     marginTop="1rem"
@@ -26,19 +26,19 @@ const StepWelcome = ({ onClick }: AuthStepProps) => {
                     marginTop="1.7rem"
                     onClick={onClick}
                 />
-                <Link to="/login">
-                    <Flex
-                        fontSize="0.9rem"
-                        fontWeight={500}
-                        marginTop="0.94rem"
-                        color={'main.blue'}
-                        gap="0.4rem"
-                        cursor="pointer"
-                    >
-                        <Text>Have an invite text?</Text>
-                        <Text fontWeight="700">Sign in</Text>
-                    </Flex>
-                </Link>
+                <Box
+                    fontSize={{ ssm: '0.95rem ', sm: '0.9rem' }}
+                    fontWeight={500}
+                    marginTop="0.94rem"
+                    color={'main.blue'}
+                >
+                    <Link to="/login">
+                        <Flex gap="0.4rem" cursor="pointer">
+                            <Text>Have an invite text?</Text>
+                            <Text fontWeight="700">Sign in</Text>
+                        </Flex>
+                    </Link>
+                </Box>
             </Card>
         </>
     );

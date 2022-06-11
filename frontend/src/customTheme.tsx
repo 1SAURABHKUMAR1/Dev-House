@@ -22,7 +22,8 @@ const customTheme = extendTheme({
     },
     fontSizes: {},
     breakpoints: {
-        sm: '320px',
+        ssm: '0px',
+        sm: '400px',
         md: '768px',
         lg: '960px',
         xl: '1200px',

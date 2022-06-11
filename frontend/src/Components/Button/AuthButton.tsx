@@ -7,7 +7,7 @@ const AuthButton = ({ buttonText, marginTop, onClick }: AuthButtonProps) => {
         <>
             <Button
                 display="flex"
-                fontSize="0.96rem"
+                fontSize={{ ssm: '1rem ', sm: '0.96rem' }}
                 fontWeight={600}
                 px="2rem"
                 color="white"

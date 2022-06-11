@@ -30,7 +30,9 @@ app.get('/', (req, res) => {
 });
 
 const home = require('./Routes/home');
+const user = require('./Routes/user');
 
 app.use('/api/v1', home);
+app.use('/api/v1', user);
 
 module.exports = app;

@@ -4,9 +4,11 @@ import { Routes, Route } from 'react-router-dom';
 
 import Header from './Layout/Header/Header';
 
-import { Home, Login, Signup } from './features/index';
+import { Home, Login, Authenticate, Activate } from './features/index';
 
-// import PrivateRoute from './Hooks/PrivateRoute';
+import GuestRoute from './Hooks/GuestRoute';
+import SemiProtectedRoute from './Hooks/SemiProtectedRoute';
+import PrivateRoute from './Hooks/PrivateRoute';
 // import useSetAuthWithRefresh from './Hooks/useSetAuthWithRefresh' ;
 
 const App = () => (
@@ -14,8 +16,20 @@ const App = () => (
         <Header />
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
+            <Route
+                path="/authenticate"
+                element={<GuestRoute element={<Authenticate />} />}
+            />
+            <Route
+                path="/activate"
+                element={<SemiProtectedRoute element={<Activate />} />}
+            />
+
+            <Route path="/login" element={<GuestRoute element={<Login />} />} />
+            <Route
+                path="/rooms"
+                element={<PrivateRoute element={<Home />} />}
+            />
             {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
     </div>

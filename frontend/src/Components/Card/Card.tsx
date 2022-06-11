@@ -6,7 +6,7 @@ import { CardProps } from '../../Types';
 const Card = ({ title, icon, children }: CardProps) => {
     return (
         <Box
-            width="90%"
+            width={{ ssm: '100%', sm: '90%' }}
             minHeight="20rem"
             bg={'main.bg.sec'}
             padding="2rem"
@@ -35,7 +35,7 @@ const Card = ({ title, icon, children }: CardProps) => {
                 {title && (
                     <Text
                         className="heading"
-                        fontSize={'1.23rem'}
+                        fontSize={{ ssm: '1.4rem', sm: '1.23rem' }}
                         fontWeight={'700'}
                         color={'main.text'}
                         textAlign="center"

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-
 import { Navigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../store/hooks';
 
 interface PrivateProp {
     element: JSX.Element;
 }
 
 const PrivateRoute = ({ element }: PrivateProp): JSX.Element => {
-    const [login] = useState(false);
+    const { login } = useAppSelector((state) => state.auth);
+
     const location = useLocation();
 
     if (login) {

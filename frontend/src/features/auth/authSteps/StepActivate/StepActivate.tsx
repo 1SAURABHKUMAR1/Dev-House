@@ -29,6 +29,7 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
                     fontWeight="700"
                     maxWidth="15rem"
                     marginTop="1.2rem"
+                    fontSize={{ ssm: '1.12rem', sm: '1rem' }}
                 >
                     Activation in progress ...
                 </Text>

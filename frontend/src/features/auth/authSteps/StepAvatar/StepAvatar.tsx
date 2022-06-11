@@ -22,8 +22,8 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
         <>
             <Card icon="avatar" title="Okay, Saurabh k!" key={'avatarcard'}>
                 <Text
-                    marginTop="0.3rem"
-                    fontSize="0.86rem"
+                    marginTop="0.4rem"
+                    fontSize={{ ssm: '0.95rem', sm: '0.86rem' }}
                     fontWeight={500}
                     color={'main.text'}
                     gap="0.4rem"
@@ -43,7 +43,7 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
                     />
                 </WrapItem>
                 <Flex
-                    fontSize="0.9rem"
+                    fontSize={{ ssm: '0.92rem', sm: '0.9rem' }}
                     fontWeight={500}
                     marginTop="0.8rem"
                     color="main.blue"

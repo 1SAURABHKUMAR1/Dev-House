@@ -18,7 +18,7 @@ export interface AuthButtonProps {
 }
 
 export interface AuthStepProps {
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    onClick: () => void;
 }
 
 export interface authSliceIntialState {
@@ -27,7 +27,20 @@ export interface authSliceIntialState {
     username: string;
     name: string;
     email: string;
+    mobile: string;
     photo: string;
     id: string;
-    getAuthState: string;
+    activated: boolean;
+    authType: 'MOBILE' | 'EMAIL';
+}
+
+export interface emailAction {
+    email: string;
+    mobile: string;
+    authType: 'MOBILE' | 'EMAIL';
+}
+
+export interface authAction {
+    _id: string;
+    user_id: string;
 }

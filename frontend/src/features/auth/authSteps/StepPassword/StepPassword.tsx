@@ -5,17 +5,70 @@ import {
     InputRightElement,
     Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+
+import React, { useState } from 'react';
+
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { useMutation } from 'react-query';
+
 import { AuthButton, Card } from '../../../../Components';
+import { authenticateUser } from '../../../../Services';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import ErrorToast from '../../../../Toast/Error';
+
 import { AuthStepProps } from '../../../../Types';
+import { setAuth } from '../../authSlice';
 
 const StepPassword = ({ onClick }: AuthStepProps) => {
     const [passwordShow, setPasswordShow] = useState(false);
-    const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
     const togglePassword = () => setPasswordShow(!passwordShow);
+    const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
     const toggleConfirmPassword = () =>
         setConfirmPasswordShow(!confirmPasswordShow);
+
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const { email, mobile, authType } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
+    const handlePasswordChange = async (
+        event: React.FormEvent<EventTarget>,
+        type: 'password' | 'confirm-password',
+    ) => {
+        const newPassword = (event.target as HTMLFormElement).value;
+
+        if (type === 'password') {
+            setPassword(newPassword);
+        } else if (type === 'confirm-password') {
+            setConfirmPassword(newPassword);
+        }
+    };
+
+    const handleSubmitPassword = async () => {
+        if (password === confirmPassword) {
+            await mutation.mutateAsync();
+        } else {
+            ErrorToast('Password Doesnot Match');
+        }
+    };
+
+    const mutation = useMutation(
+        () => authenticateUser(email, mobile, password, authType),
+        {
+            onSuccess(data) {
+                dispatch(
+                    setAuth({
+                        _id: data.data.user._id,
+                        user_id: data.data.user.user_id,
+                    }),
+                );
+            },
+            onError(error: any) {
+                if (error?.response?.data?.message === '') ErrorToast('Failed');
+            },
+        },
+    );
 
     return (
         <>
@@ -24,7 +77,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                 title="Create new password"
                 key={'phone number'}
             >
-                <Box marginTop="1.6rem" width="20rem">
+                <Box marginTop="1.6rem" width={{ ssm: '19rem', sm: '20rem' }}>
                     <Text
                         fontWeight="600"
                         fontSize="0.95rem"
@@ -40,6 +93,10 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             bg="main.input-bg"
                             color="main.text.white"
                             required={true}
+                            value={password}
+                            onChange={(event: React.FormEvent<EventTarget>) =>
+                                handlePasswordChange(event, 'password')
+                            }
                         />
                         <InputRightElement
                             width="3rem"
@@ -57,7 +114,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                         </InputRightElement>
                     </InputGroup>
                 </Box>
-                <Box marginTop="1.6rem" width="20rem">
+                <Box marginTop="1.6rem" width={{ ssm: '19rem', sm: '20rem' }}>
                     <Text
                         fontWeight="600"
                         fontSize="0.95rem"
@@ -73,6 +130,10 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             bg="main.input-bg"
                             color="main.text.white"
                             required={true}
+                            value={confirmPassword}
+                            onChange={(event: React.FormEvent<EventTarget>) =>
+                                handlePasswordChange(event, 'confirm-password')
+                            }
                         />
                         <InputRightElement
                             width="3rem"
@@ -93,7 +154,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                 <AuthButton
                     buttonText="Next"
                     marginTop="1.7rem"
-                    onClick={onClick}
+                    onClick={handleSubmitPassword}
                 />
             </Card>
         </>

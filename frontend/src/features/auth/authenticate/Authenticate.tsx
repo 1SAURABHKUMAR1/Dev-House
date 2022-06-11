@@ -1,12 +1,14 @@
 import { Container } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Container as MainContainer } from '../../../Components';
-import { StepMobile, StepLoginPassword } from '../../index';
+import { Container as MainContainer } from '../../../Components/index';
 
-const Login = () => {
+import { StepWelcome, StepMobile, StepPassword } from '../../index';
+
+const Signup = () => {
     const [authSteps] = useState({
-        1: StepMobile,
-        2: StepLoginPassword,
+        1: StepWelcome,
+        2: StepMobile,
+        3: StepPassword,
     });
     const [stepNumber, setStepNumber] = useState<number>(1);
     const CurrentStep = authSteps[stepNumber as keyof typeof authSteps];
@@ -24,4 +26,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;

@@ -46,8 +46,10 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
     };
 
     const handleSubmitPassword = async () => {
-        if (password === confirmPassword) {
+        if (password === confirmPassword && password.length >= 6) {
             await mutation.mutateAsync();
+        } else if (password.length < 6) {
+            ErrorToast('Password should be greater than 6');
         } else {
             ErrorToast('Password Doesnot Match');
         }

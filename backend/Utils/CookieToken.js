@@ -12,18 +12,19 @@ const cookieToken = async (user, res) => {
     const refreshJwtToken = await user.getRefreshToken();
 
     const refreshCookieOptions = {
-        // expires: new Date(
-        // Date.now() + process.env.COOKIE_EXPIRE_DAY * 24 * 60 * 60 * 1000,
-        // ),
+        expires: new Date(
+            Date.now() +
+                process.env.REFRESH_COOKIE_EXPIRE_DAY * 24 * 60 * 60 * 1000,
+        ),
         httpOnly: true,
         secure: true,
         sameSite: 'none',
     };
 
     const accessCookieOptions = {
-        // expires: new Date(
-        // Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 60 * 1000,
-        // ),
+        expires: new Date(
+            Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 1000,
+        ),
         httpOnly: true,
         secure: true,
         sameSite: 'none',

@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './Layout/Header/Header';
 
 import { Home, Login, Authenticate, Activate } from './features/index';
+import { PageNotFound } from './Components';
 
 import GuestRoute from './Hooks/GuestRoute';
 import PrivateRoute from './Hooks/PrivateRoute';
@@ -36,7 +37,7 @@ const App = () => {
                     path="/rooms"
                     element={<PrivateRoute element={<Home />} />}
                 />
-                {/* <Route path="*" element={<PageNotFound />} /> */}
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </div>
     );

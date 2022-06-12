@@ -82,7 +82,12 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
 
     if (!refresh) return next(CustomError(res, 'You are not authorized', 401));
 
-    const isValidRefresh = verifyRefreshToken(refresh);
+    let isValidRefresh;
+    try {
+        isValidRefresh = verifyRefreshToken(refresh);
+    } catch (error) {
+        return next(CustomError(res, 'Token expired ! Login Again', 401));
+    }
 
     if (!isValidRefresh) {
         return next(CustomError(res, 'Token expired ! Login Again', 401));
@@ -97,9 +102,9 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
     const jwtAccessToken = await user.getAccessToken();
 
     const AccessOptions = {
-        // expires: new Date(
-        //     Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 1000,
-        // ),
+        expires: new Date(
+            Date.now() + process.env.ACCESS_COOKIE_EXPIRE_DAY * 60 * 1000,
+        ),
         httpOnly: true,
         secure: true,
         sameSite: 'none',

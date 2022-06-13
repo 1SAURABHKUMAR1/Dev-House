@@ -30,7 +30,7 @@ root.render(
                         <App />
                     </Router>
                 </Provider>
-                <ReactQueryDevtools />
+                {/* <ReactQueryDevtools /> */}
             </QueryClientProvider>
         </ChakraProvider>
     </React.StrictMode>,

@@ -5,7 +5,11 @@ import { Container as MainContainer } from '../index';
 const PageNotFound = () => {
     return (
         <MainContainer center={true}>
-            <Container width="max-content" position="relative">
+            <Container
+                width="max-content"
+                position="relative"
+                marginBottom="1rem"
+            >
                 <Text
                     fontSize="8rem"
                     fontWeight="extrabold"

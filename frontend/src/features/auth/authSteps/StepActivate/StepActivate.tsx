@@ -1,7 +1,39 @@
 import { Box, Spinner, Text } from '@chakra-ui/react';
+
+import { useEffect } from 'react';
+import { useMutation } from 'react-query';
+import { setActivate, resetAuthenticate } from '../../../index';
+
+import { activateUser } from '../../../../Services';
+
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+
 import { AuthStepProps } from '../../../../Types';
 
 const StepActivate = ({ onClick }: AuthStepProps) => {
+    const { name, avatar, username } = useAppSelector(
+        (state) => state.activate,
+    );
+    const dispatch = useAppDispatch();
+
+    const mutation = useMutation(() => activateUser(name, avatar, username), {
+        onSuccess(data: any) {
+            if (data.data.user.activated) {
+                dispatch(setActivate(data.data));
+                dispatch(resetAuthenticate());
+            }
+        },
+    });
+
+    useEffect(() => {
+        const updateUser = async () => {
+            await mutation.mutateAsync();
+        };
+        updateUser();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <Box

@@ -5,7 +5,7 @@ interface PrivateProp {
     element: JSX.Element;
 }
 
-const PrivateRoute = ({ element }: PrivateProp): JSX.Element => {
+const SemiProtectedRoute = ({ element }: PrivateProp): JSX.Element => {
     const { login, activated } = useAppSelector((state) => state.auth);
 
     const location = useLocation();
@@ -13,10 +13,10 @@ const PrivateRoute = ({ element }: PrivateProp): JSX.Element => {
     if (!login) {
         return <Navigate to="/login" state={{ from: location }} />;
     } else if (login && !activated) {
-        return <Navigate to="/activate" state={{ from: location }} />;
+        return <>{element}</>;
     }
 
-    return <>{element}</>;
+    return <Navigate to="/rooms" />;
 };
 
-export default PrivateRoute;
+export default SemiProtectedRoute;

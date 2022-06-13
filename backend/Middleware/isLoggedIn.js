@@ -3,7 +3,7 @@ const BigPromise = require('../Middleware/bigPromise');
 const User = require('../Models/User');
 const jwt = require('jsonwebtoken');
 
-exports.isLoggedIn = BigPromise(async (req, res, next) => {
+const isLoggedIn = BigPromise(async (req, res, next) => {
     let accessToken = req.cookies?.access;
 
     if (!accessToken && req.header('Authorization'))
@@ -30,3 +30,5 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
 
     next();
 });
+
+module.exports = isLoggedIn;

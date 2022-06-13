@@ -13,6 +13,7 @@ import ErrorToast from '../../../../../Toast/Error';
 
 import { setEmail as setEmailDispatch } from '../../../../index';
 import { useAppDispatch } from '../../../../../store/hooks';
+import LoadingButton from '../../../../../Components/Button/LoadingButton';
 
 const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -31,7 +32,9 @@ const StepEmail = ({ onClick }: AuthStepProps) => {
     };
 
     const nextStep = async () => {
-        isValidEmail && (await mutation.mutateAsync());
+        isValidEmail
+            ? await mutation.mutateAsync()
+            : ErrorToast('Email is not valid');
     };
 
     const mutation = useMutation(() => checkEmail(email), {
@@ -71,11 +74,17 @@ const StepEmail = ({ onClick }: AuthStepProps) => {
                 value={email}
                 onChange={handleEmail}
             />
-            <AuthButton
-                buttonText="Next"
-                marginTop="1.6rem"
-                onClick={nextStep}
-            />
+
+            {mutation.isLoading ? (
+                <LoadingButton marginTop="1.6rem" />
+            ) : (
+                <AuthButton
+                    buttonText="Next"
+                    marginTop="1.6rem"
+                    onClick={nextStep}
+                />
+            )}
+
             <Text
                 textAlign="center"
                 fontSize={{ ssm: '0.8rem ', sm: '0.75rem' }}

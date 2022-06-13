@@ -12,6 +12,7 @@ import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useMutation } from 'react-query';
 
 import { AuthButton, Card } from '../../../../Components';
+import LoadingButton from '../../../../Components/Button/LoadingButton';
 import { authenticateUser } from '../../../../Services';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import ErrorToast from '../../../../Toast/Error';
@@ -66,8 +67,8 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                     }),
                 );
             },
-            onError(error: any) {
-                if (error?.response?.data?.message === '') ErrorToast('Failed');
+            onError() {
+                ErrorToast('Failed');
             },
         },
     );
@@ -153,11 +154,15 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                         </InputRightElement>
                     </InputGroup>
                 </Box>
-                <AuthButton
-                    buttonText="Next"
-                    marginTop="1.7rem"
-                    onClick={handleSubmitPassword}
-                />
+                {mutation.isLoading ? (
+                    <LoadingButton marginTop="1.7rem" />
+                ) : (
+                    <AuthButton
+                        buttonText="Next"
+                        marginTop="1.7rem"
+                        onClick={handleSubmitPassword}
+                    />
+                )}
             </Card>
         </>
     );

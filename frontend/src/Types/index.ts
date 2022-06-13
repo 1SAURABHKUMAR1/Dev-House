@@ -53,6 +53,43 @@ export interface refreshTokenAction {
         _id: string;
         mobile: string;
         activated: boolean;
+        name: string;
+        profile_photo: {
+            id: string;
+            secure_url: string;
+        };
+        username: string;
     };
     success: string;
+}
+
+export interface activateInitalState {
+    name: string;
+    avatar: string;
+    username: string;
+}
+
+export interface setNamePayload {
+    name: string;
+}
+
+export interface setAvatarPayload {
+    avatar: string;
+}
+
+export interface setUsernamePayload {
+    username: string;
+}
+
+export interface controller {
+    controller: AbortController;
+}
+
+export type controllerUnMounted = {
+    controller: AbortController;
+    unMounted: boolean;
+};
+
+export interface LoadingButtonProps {
+    marginTop: string;
 }

@@ -5,15 +5,20 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './Layout/Header/Header';
 
 import { Home, Login, Authenticate, Activate } from './features/index';
-import { PageNotFound } from './Components';
+import { MainLoader, PageNotFound } from './Components';
 
 import GuestRoute from './Hooks/GuestRoute';
 import PrivateRoute from './Hooks/PrivateRoute';
+import SemiProtectedRoute from './Hooks/SemiPrivateRoute';
 
-import useSetAuthWithRefresh from './Hooks/useSetAuthWithRefresh';
+import SetAuthWithRefresh from './Hooks/SetAuthWithRefresh';
 
 const App = () => {
-    useSetAuthWithRefresh();
+    const [loading] = SetAuthWithRefresh();
+
+    if (loading) {
+        return <MainLoader />;
+    }
 
     return (
         <div className="app">
@@ -26,7 +31,7 @@ const App = () => {
                 />
                 <Route
                     path="/activate"
-                    element={<PrivateRoute element={<Activate />} />}
+                    element={<SemiProtectedRoute element={<Activate />} />}
                 />
 
                 <Route

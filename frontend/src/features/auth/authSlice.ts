@@ -8,15 +8,15 @@ import {
 
 const initialState: authSliceIntialState = {
     login: false,
+    email: '',
+    mobile: '',
+    authType: 'EMAIL',
     id: '',
     userId: '',
     username: '',
     name: '',
-    email: '',
-    mobile: '',
     photo: '',
     activated: false,
-    authType: 'EMAIL',
 };
 
 const authSlice = createSlice({
@@ -61,9 +61,21 @@ const authSlice = createSlice({
             state.id = action.payload.user._id;
             state.activated = action.payload.user.activated;
 
-            // state.photo = action.payload.user.profile_photo.secure_url;
-            // // state.name = action.payload.user.name;
-            // state.username = action.payload.user.username;
+            if (action.payload.user.activated) {
+                state.photo = action.payload.user.profile_photo.secure_url;
+                state.name = action.payload.user.name;
+                state.username = action.payload.user.username;
+            }
+        },
+
+        setActivate: (
+            state: authSliceIntialState,
+            action: PayloadAction<refreshTokenAction>,
+        ) => {
+            state.username = action.payload.user.username;
+            state.name = action.payload.user.name;
+            state.photo = action.payload.user.profile_photo.secure_url;
+            state.activated = action.payload.user.activated;
         },
     },
     extraReducers: (builders) => {
@@ -76,4 +88,5 @@ export const {
     setEmail,
     setAuth,
     refreshToken: setRefreshToken,
+    setActivate,
 } = authSlice.actions;

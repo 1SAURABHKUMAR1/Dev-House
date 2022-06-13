@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { AuthButton } from '../../../../../Components';
+import LoadingButton from '../../../../../Components/Button/LoadingButton';
 
 import { checkMobile } from '../../../../../Services';
 
@@ -25,7 +26,9 @@ const StepMobile = ({ onClick }: AuthStepProps) => {
     };
 
     const nextStep = async () => {
-        await mutation.mutateAsync();
+        mobile.length >= 10
+            ? await mutation.mutateAsync()
+            : ErrorToast('Mobile Number is not valid');
     };
 
     const mutation = useMutation(() => checkMobile(mobile), {
@@ -62,11 +65,16 @@ const StepMobile = ({ onClick }: AuthStepProps) => {
                 value={mobile}
                 onChange={handleMobile}
             />
-            <AuthButton
-                buttonText="Next"
-                marginTop="1.6rem"
-                onClick={nextStep}
-            />
+            {mutation.isLoading ? (
+                <LoadingButton marginTop="1.6rem" />
+            ) : (
+                <AuthButton
+                    buttonText="Next"
+                    marginTop="1.6rem"
+                    onClick={nextStep}
+                />
+            )}
+
             <Text
                 textAlign="center"
                 fontSize={{ ssm: '0.8rem ', sm: '0.75rem' }}

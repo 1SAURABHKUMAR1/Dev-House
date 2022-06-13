@@ -13,6 +13,7 @@ import StepLoginPassword from './auth/login/Components/StepPassword';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
+export * from './auth/activateSlice';
 
 export {
     Home,

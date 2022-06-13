@@ -18,4 +18,16 @@ const authenticateUser = (
         userType,
     });
 
-export { checkEmail, checkMobile, authenticateUser };
+const checkUsername = (username: string) =>
+    Axios.post('/verify/username', { username });
+
+const activateUser = (name: string, avatar: string, username: string) =>
+    Axios.post('/user/activate', { name, avatar, username });
+
+export {
+    checkEmail,
+    checkMobile,
+    authenticateUser,
+    checkUsername,
+    activateUser,
+};

@@ -6,10 +6,6 @@ const validator = require('validator');
 const uuid = require('uuid').v4;
 
 const userSchema = new mongoose.Schema({
-    // name: {
-    //     type: String,
-    //     maxlength: [40],
-    // },
     email: {
         type: String,
         validate: [validator.isEmail, 'Email is not valid'],
@@ -32,25 +28,28 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    // username: {
-    //     type: String,
-    //     maxlength: [40],
-    // },
-    // profile_photo: {
-    //     id: {
-    //         type: String,
-    //     },
-    //     secure_url: {
-    //         type: String,
-    //     },
-    // },
-    // forgotPasswordToken: {
-    //     type: String,
-    //     unique: true,
-    // },
-    // forgotPasswordExpiry: {
-    //     type: Date,
-    // },
+    name: {
+        type: String,
+        maxlength: [40],
+    },
+    username: {
+        type: String,
+        maxlength: [40],
+    },
+    profile_photo: {
+        id: {
+            type: String,
+        },
+        secure_url: {
+            type: String,
+        },
+    },
+    forgotPasswordToken: {
+        type: String,
+    },
+    forgotPasswordExpiry: {
+        type: Date,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

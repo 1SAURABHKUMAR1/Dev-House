@@ -1,10 +1,18 @@
 import { Avatar, WrapItem, Text, Flex, Input } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { setAvatar } from '../../../index';
+
 import { AuthButton, Card } from '../../../../Components';
+
 import { AuthStepProps } from '../../../../Types';
 
 const StepAvatar = ({ onClick }: AuthStepProps) => {
-    const [image, setImage] = useState('images/defaultavatar.jpg');
+    const { avatar, name } = useAppSelector((state) => state.activate);
+    const disptach = useAppDispatch();
+
+    const [image, setImage] = useState(avatar);
     const avatarRef = useRef(null);
 
     const captureImage = (event: React.FormEvent<EventTarget>) => {
@@ -18,9 +26,44 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
         };
     };
 
+    const handleNext = () => {
+        disptach(setAvatar({ avatar: image }));
+        onClick();
+    };
+
+    useEffect(() => {
+        let unMounted = false;
+
+        const createFile = async () => {
+            const response = await fetch('images/defaultavatar.jpg');
+            const data = await response.blob();
+            const file = new File([data], 'defaultavatar.jpg', {
+                type: 'image/jpg',
+            });
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+                if (image === '') setImage(reader.result?.toString() ?? '');
+
+                if (!unMounted)
+                    disptach(
+                        setAvatar({ avatar: reader.result?.toString() ?? '' }),
+                    );
+            };
+        };
+
+        createFile();
+
+        return () => {
+            unMounted = true;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
-            <Card icon="avatar" title="Okay, Saurabh k!" key={'avatarcard'}>
+            <Card icon="avatar" title={`Okay, ${name}!`} key={'avatarcard'}>
                 <Text
                     marginTop="0.4rem"
                     fontSize={{ ssm: '0.95rem', sm: '0.86rem' }}
@@ -66,7 +109,7 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
                 <AuthButton
                     buttonText="Next"
                     marginTop="1rem"
-                    onClick={onClick}
+                    onClick={handleNext}
                 />
             </Card>
         </>

@@ -4,18 +4,19 @@ const validator = require('validator');
 const User = require('../Models/User');
 const cookieToken = require('../Utils/CookieToken');
 const verifyRefreshToken = require('../Middleware/verifyRefreshToken');
+const cloudinary = require('cloudinary').v2;
 
 exports.checkEmail = BigPromise(async (req, res, next) => {
     const { email } = req.body;
 
-    if (!email) return next(CustomError(res, 'Email is required', 401));
+    if (!email) return next(CustomError(res, 'Email is required', 400));
 
     if (!validator.isEmail(email))
-        return next(CustomError(res, 'Email is not valid', 401));
+        return next(CustomError(res, 'Email is not valid', 400));
 
     const user = await User.findOne({ email });
 
-    if (user) return next(CustomError(res, 'Email already exits', 401));
+    if (user) return next(CustomError(res, 'Email already exits', 400));
 
     res.status(200).json({
         success: true,
@@ -27,11 +28,11 @@ exports.checkMobile = BigPromise(async (req, res, next) => {
     const { mobile } = req.body;
 
     if (!mobile)
-        return next(CustomError(res, 'Mobile number is required', 401));
+        return next(CustomError(res, 'Mobile number is required', 400));
 
     const user = await User.findOne({ mobile });
 
-    if (user) return next(CustomError(res, 'Mobile number already exits', 401));
+    if (user) return next(CustomError(res, 'Mobile number already exits', 400));
 
     res.status(200).json({
         success: true,
@@ -43,10 +44,10 @@ exports.authenticateUser = BigPromise(async (req, res, next) => {
     const { email, mobile, password, userType } = req.body;
 
     if (!((email || mobile) && password && userType))
-        return next(CustomError(res, 'All fields are required', 403));
+        return next(CustomError(res, 'All fields are required', 400));
 
     if (userType !== 'MOBILE' && userType !== 'EMAIL')
-        return next(CustomError(res, 'Invalid User', 403));
+        return next(CustomError(res, 'Invalid User', 400));
 
     let user;
 
@@ -54,13 +55,13 @@ exports.authenticateUser = BigPromise(async (req, res, next) => {
         user = await User.findOne({ mobile });
     } else if (userType === 'EMAIL') {
         if (!validator.isEmail(email)) {
-            return next(CustomError(res, 'Invalid User', 403));
+            return next(CustomError(res, 'Invalid User', 400));
         }
 
         user = await User.findOne({ email });
     }
 
-    if (user) return next(CustomError(res, 'User already exits', 403));
+    if (user) return next(CustomError(res, 'User already exits', 400));
 
     if (userType === 'MOBILE') {
         user = await User.create({
@@ -77,6 +78,66 @@ exports.authenticateUser = BigPromise(async (req, res, next) => {
     cookieToken(user, res);
 });
 
+exports.checkUsername = BigPromise(async (req, res, next) => {
+    const { username } = req.body;
+
+    if (!username) return next(CustomError(res, 'Username is required', 401));
+
+    const user = await User.findOne({ username });
+
+    if (user) return next(CustomError(res, 'Username already exits', 401));
+
+    res.status(200).json({
+        success: true,
+        message: 'Username doesnot exits',
+    });
+});
+
+exports.activateUser = BigPromise(async (req, res, next) => {
+    const { name, avatar, username } = req.body;
+    const { _id, activated } = req.user;
+
+    if (activated) return next(CustomError(res, 'User already activated', 400));
+
+    if (!name || !avatar || !username)
+        return next(CustomError(res, 'All fields are required', 400));
+
+    const newData = {
+        name,
+        username,
+        activated: true,
+    };
+
+    try {
+        if (!validator.isDataURI(avatar))
+            return next(CustomError(res, 'Profile Photo is not valid', 400));
+
+        const cloudinaryPhoto = await cloudinary.uploader.upload(avatar, {
+            folder: 'devhouse',
+            width: 250,
+            crop: 'fit',
+        });
+
+        newData.profile_photo = {
+            id: cloudinaryPhoto.public_id,
+            secure_url: cloudinaryPhoto.secure_url,
+        };
+    } catch (error) {
+        console.log(error);
+
+        return next(CustomError(res, 'Internal Error', 400));
+    }
+
+    const user = await User.findByIdAndUpdate(_id, newData, {
+        runValidators: true,
+    });
+
+    res.status(200).json({
+        success: true,
+        user,
+    });
+});
+
 exports.getAccessToken = BigPromise(async (req, res, next) => {
     const { refresh } = req.cookies;
 
@@ -86,12 +147,11 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
     try {
         isValidRefresh = verifyRefreshToken(refresh);
     } catch (error) {
-        return next(CustomError(res, 'Token expired ! Login Again', 401));
+        return next(CustomError(res, 'Token expired ! Login Again', 400));
     }
 
-    if (!isValidRefresh) {
-        return next(CustomError(res, 'Token expired ! Login Again', 401));
-    }
+    if (!isValidRefresh)
+        return next(CustomError(res, 'Token expired ! Login Again', 400));
 
     const user = await User.findOne({ user_id: isValidRefresh.user_id });
 

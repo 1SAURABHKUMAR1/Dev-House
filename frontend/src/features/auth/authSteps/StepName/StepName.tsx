@@ -1,8 +1,38 @@
 import { Input, Text } from '@chakra-ui/react';
+
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+
 import { AuthButton, Card } from '../../../../Components';
+
+import ErrorToast from '../../../../Toast/Error';
+
 import { AuthStepProps } from '../../../../Types';
 
+import { setName as setNameDispatch } from '../../../index';
+
 const StepName = ({ onClick }: AuthStepProps) => {
+    const dispatch = useAppDispatch();
+    const { name } = useAppSelector((state) => state.activate);
+    const [fullName, setFullName] = useState(name);
+
+    const handleNameChange = (event: React.FormEvent) => {
+        setFullName((event?.target as HTMLButtonElement).value);
+    };
+
+    const handleNextStep = () => {
+        if (fullName === '') {
+            ErrorToast('Enter a valid name');
+            return;
+        } else if (fullName.length >= 40) {
+            ErrorToast('Name cannot be greater than 40');
+            return;
+        }
+
+        dispatch(setNameDispatch({ name: fullName }));
+        onClick();
+    };
+
     return (
         <>
             <Card
@@ -19,6 +49,8 @@ const StepName = ({ onClick }: AuthStepProps) => {
                     type="text"
                     required={true}
                     marginTop="1.4rem"
+                    value={fullName}
+                    onChange={handleNameChange}
                 />
 
                 <Text
@@ -33,7 +65,7 @@ const StepName = ({ onClick }: AuthStepProps) => {
                 <AuthButton
                     buttonText="Next"
                     marginTop="1.3rem"
-                    onClick={onClick}
+                    onClick={handleNextStep}
                 />
             </Card>
         </>

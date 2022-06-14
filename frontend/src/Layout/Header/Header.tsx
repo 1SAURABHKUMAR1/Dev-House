@@ -14,14 +14,34 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useMutation } from 'react-query';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { logoutUserAuth } from '../../features';
 
 import MobileNav from './MobileNav';
+
+import { logoutUser } from '../../Services';
+
+import ErrorToast from '../../Toast/Error';
 
 const Header = () => {
     const { isOpen, onToggle } = useDisclosure();
     const greyColor = useColorModeValue('gray.600', 'gray.200');
     const { login, photo } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
+    const handleLogout = async () => {
+        await mutation.mutateAsync();
+    };
+
+    const mutation = useMutation(() => logoutUser(), {
+        onSuccess() {
+            dispatch(logoutUserAuth());
+        },
+        onError() {
+            ErrorToast('Failed');
+        },
+    });
 
     return (
         <Box>
@@ -136,7 +156,7 @@ const Header = () => {
                     )}
 
                     {login && (
-                        <Link to="/logout">
+                        <Link to="/">
                             <Button
                                 fontSize="sm"
                                 fontWeight={500}
@@ -144,6 +164,7 @@ const Header = () => {
                                 padding="0.5rem"
                                 display={{ base: 'none', md: 'inline-flex' }}
                                 color={greyColor}
+                                onClick={handleLogout}
                             >
                                 Logout
                             </Button>

@@ -6,8 +6,16 @@ import {
     useDisclosure,
     Avatar,
 } from '@chakra-ui/react';
+
+import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { logoutUserAuth } from '../../features';
+
+import { logoutUser } from '../../Services';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+
+import ErrorToast from '../../Toast/Error';
 
 interface NavItem {
     label: string;
@@ -17,6 +25,21 @@ interface NavItem {
 const MobileNav = () => {
     const greyColor = useColorModeValue('gray.600', 'gray.200');
     const { login, photo, username } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+    const { onToggle } = useDisclosure();
+
+    const handleLogout = async () => {
+        await mutation.mutateAsync();
+    };
+
+    const mutation = useMutation(() => logoutUser(), {
+        onSuccess() {
+            dispatch(logoutUserAuth());
+        },
+        onError() {
+            ErrorToast('Failed');
+        },
+    });
 
     return (
         <Stack
@@ -47,7 +70,27 @@ const MobileNav = () => {
 
             {login && <MobileNavItem label={'Profile Settings'} href="/" />}
 
-            {login && <MobileNavItem label={'Logout'} href="/logout" />}
+            {login && (
+                <Link to="/">
+                    <Stack
+                        spacing={4}
+                        onClick={() => {
+                            onToggle();
+                            handleLogout();
+                        }}
+                        px={2}
+                        borderRadius="0.3rem"
+                        _hover={{
+                            bg: 'main.light.blue.hover',
+                        }}
+                        py={2}
+                        fontWeight={600}
+                        color={'gray.600'}
+                    >
+                        <Text>Logout</Text>
+                    </Stack>
+                </Link>
+            )}
         </Stack>
     );
 };

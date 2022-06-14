@@ -35,7 +35,7 @@ const loginUser = (
     userType: 'MOBILE' | 'EMAIL',
 ) => Axios.post('/user/login', { email, mobile, password, userType });
 
-const logoutUser = () => Axios.post('/user/logout');
+const logoutUser = () => Axios.get('/user/logout');
 
 export {
     checkEmail,

@@ -79,6 +79,18 @@ const authSlice = createSlice({
             state.photo = action.payload.user.profile_photo.secure_url;
             state.activated = action.payload.user.activated;
         },
+        logoutUserAuth: (state: authSliceIntialState) => {
+            state.login = false;
+            state.email = '';
+            state.mobile = '';
+            state.authType = 'EMAIL';
+            state.id = '';
+            state.userId = '';
+            state.username = '';
+            state.name = '';
+            state.photo = '';
+            state.activated = false;
+        },
     },
     extraReducers: (builders) => {
         //
@@ -86,5 +98,10 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
-export const { setEmail, setAuth, setUserRefreshToken, setActivate } =
-    authSlice.actions;
+export const {
+    setEmail,
+    setAuth,
+    setUserRefreshToken,
+    setActivate,
+    logoutUserAuth,
+} = authSlice.actions;

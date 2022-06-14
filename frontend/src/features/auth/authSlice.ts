@@ -44,7 +44,7 @@ const authSlice = createSlice({
             state.userId = action.payload.user_id;
         },
 
-        refreshToken: (
+        setUserRefreshToken: (
             state: authSliceIntialState,
             action: PayloadAction<refreshTokenAction>,
         ) => {
@@ -84,9 +84,5 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
-export const {
-    setEmail,
-    setAuth,
-    refreshToken: setRefreshToken,
-    setActivate,
-} = authSlice.actions;
+export const { setEmail, setAuth, setUserRefreshToken, setActivate } =
+    authSlice.actions;

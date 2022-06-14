@@ -2,7 +2,7 @@ import { useAppDispatch } from '../store/hooks';
 
 import Axios from '../Services/Axios';
 
-import { setRefreshToken } from '../features';
+import { setUserRefreshToken } from '../features';
 import { useEffect, useState } from 'react';
 
 const useSetAuthWithRefresh = () => {
@@ -26,7 +26,7 @@ const useSetAuthWithRefresh = () => {
                 );
 
                 if (data.success && !unMounted) {
-                    dispatch(setRefreshToken(data));
+                    dispatch(setUserRefreshToken(data));
                 }
             } catch (error) {
                 console.log(error);

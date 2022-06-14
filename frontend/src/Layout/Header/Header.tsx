@@ -21,7 +21,7 @@ import MobileNav from './MobileNav';
 const Header = () => {
     const { isOpen, onToggle } = useDisclosure();
     const greyColor = useColorModeValue('gray.600', 'gray.200');
-    const { login } = useAppSelector((state) => state.auth);
+    const { login, photo } = useAppSelector((state) => state.auth);
 
     return (
         <Box>
@@ -159,7 +159,7 @@ const Header = () => {
                                 <Avatar
                                     size={'sm'}
                                     name="User Profile"
-                                    src="https://bit.ly/kent-c-dodds"
+                                    src={photo}
                                 />
                             </Button>
                         </Link>

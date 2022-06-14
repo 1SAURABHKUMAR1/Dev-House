@@ -16,7 +16,7 @@ interface NavItem {
 
 const MobileNav = () => {
     const greyColor = useColorModeValue('gray.600', 'gray.200');
-    const { login } = useAppSelector((state) => state.auth);
+    const { login, photo, username } = useAppSelector((state) => state.auth);
 
     return (
         <Stack
@@ -38,13 +38,9 @@ const MobileNav = () => {
                     p={2}
                     align={'center'}
                 >
-                    <Avatar
-                        size={'sm'}
-                        name="User Profile"
-                        src="https://bit.ly/kent-c-dodds"
-                    />
+                    <Avatar size={'sm'} name="User Profile" src={photo} />
                     <Text fontWeight={600} color={greyColor}>
-                        @username
+                        @{username}
                     </Text>
                 </Flex>
             )}

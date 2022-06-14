@@ -1,11 +1,11 @@
 import { Container } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Container as MainContainer } from '../../../Components';
-import { StepMobile, StepLoginPassword } from '../../index';
+import { StepLoginMobileEmail, StepLoginPassword } from '../../index';
 
 const Login = () => {
     const [authSteps] = useState({
-        1: StepMobile,
+        1: StepLoginMobileEmail,
         2: StepLoginPassword,
     });
     const [stepNumber, setStepNumber] = useState<number>(1);

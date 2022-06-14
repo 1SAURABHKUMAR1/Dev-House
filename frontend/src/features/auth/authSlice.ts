@@ -30,8 +30,10 @@ const authSlice = createSlice({
             state.authType = action.payload.authType;
             if (action.payload.authType === 'MOBILE') {
                 state.mobile = action.payload.mobile;
+                state.email = '';
             } else {
                 state.email = action.payload.email;
+                state.mobile = '';
             }
         },
 

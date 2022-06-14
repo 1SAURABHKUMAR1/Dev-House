@@ -152,16 +152,12 @@ const Header = () => {
 
                     {login && (
                         <Link to={'/profile'}>
-                            <Button
-                                variant="link"
-                                display={{ base: 'none', md: 'inline-flex' }}
-                            >
-                                <Avatar
-                                    size={'sm'}
-                                    name="User Profile"
-                                    src={photo}
-                                />
-                            </Button>
+                            <Avatar
+                                marginRight="0.5rem"
+                                size={'sm'}
+                                name="User Profile"
+                                src={photo}
+                            />
                         </Link>
                     )}
                 </Stack>

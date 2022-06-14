@@ -180,3 +180,91 @@ exports.getAccessToken = BigPromise(async (req, res, next) => {
             user,
         });
 });
+
+exports.verifyEmail = BigPromise(async (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) return next(CustomError(res, 'Email is required', 400));
+
+    if (!validator.isEmail(email))
+        return next(CustomError(res, 'Email is not valid', 400));
+
+    const user = await User.findOne({ email });
+
+    if (!user) return next(CustomError(res, 'Email is not registered', 400));
+
+    res.status(200).json({
+        success: true,
+        message: 'User is valid',
+    });
+});
+
+exports.verifyMobile = BigPromise(async (req, res, next) => {
+    const { mobile } = req.body;
+
+    if (!mobile)
+        return next(CustomError(res, 'Mobile number is required', 400));
+
+    const user = await User.findOne({ mobile });
+
+    if (!user)
+        return next(CustomError(res, 'Mobile number is not registered', 400));
+
+    res.status(200).json({
+        success: true,
+        message: 'User is valid',
+    });
+});
+
+exports.loginUser = BigPromise(async (req, res, next) => {
+    const { email, mobile, password, userType } = req.body;
+
+    if (!((email || mobile) && password && userType))
+        return next(CustomError(res, 'All fields are required', 400));
+
+    if (userType !== 'MOBILE' && userType !== 'EMAIL')
+        return next(CustomError(res, 'Invalid User', 400));
+
+    let user;
+
+    if (userType === 'MOBILE') {
+        user = await User.findOne({ mobile }).select('+password');
+    } else if (userType === 'EMAIL') {
+        if (!validator.isEmail(email))
+            return next(CustomError(res, 'Invalid Email', 400));
+
+        user = await User.findOne({ email }).select('+password');
+    }
+
+    if (!user)
+        return next(
+            CustomError(res, 'Email or mobile or password is invalid', 400),
+        );
+
+    const validPassword = await user.isPasswordValid(password);
+
+    if (!validPassword)
+        return next(CustomError(res, 'Email or password is invalid', 400));
+
+    cookieToken(user, res);
+});
+
+exports.logoutUser = BigPromise(async (req, res, next) => {
+    res.status(200)
+        .cookie('access', null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        })
+        .cookie('refresh', null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        })
+        .json({
+            success: true,
+            message: 'Logout Successfull',
+        });
+});

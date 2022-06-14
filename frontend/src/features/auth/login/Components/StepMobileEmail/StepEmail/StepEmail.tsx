@@ -3,17 +3,17 @@ import { Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { AuthButton } from '../../../../../Components';
+import { AuthButton } from '../../../../../../Components';
 
-import { AuthStepProps } from '../../../../../Types';
+import { AuthStepProps } from '../../../../../../Types';
 
-import { checkEmail } from '../../../../../Services';
+import { verifyEmail } from '../../../../../../Services';
 
-import ErrorToast from '../../../../../Toast/Error';
+import ErrorToast from '../../../../../../Toast/Error';
 
-import { setEmail as setEmailDispatch } from '../../../../index';
-import { useAppDispatch } from '../../../../../store/hooks';
-import LoadingButton from '../../../../../Components/Button/LoadingButton';
+import { setEmail as setEmailDispatch } from '../../../../../index';
+import { useAppDispatch } from '../../../../../../store/hooks';
+import LoadingButton from '../../../../../../Components/Button/LoadingButton';
 
 const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -37,7 +37,7 @@ const StepEmail = ({ onClick }: AuthStepProps) => {
             : ErrorToast('Email is not valid');
     };
 
-    const mutation = useMutation(() => checkEmail(email), {
+    const mutation = useMutation(() => verifyEmail(email), {
         onSuccess() {
             dispatch(
                 setEmailDispatch({
@@ -49,8 +49,9 @@ const StepEmail = ({ onClick }: AuthStepProps) => {
             onClick();
         },
         onError(error: any) {
-            if (error?.response?.data?.message === 'Email already exits')
-                ErrorToast('Email already exits');
+            error?.response?.data?.message === 'Email is not registered'
+                ? ErrorToast('Email is not registered')
+                : ErrorToast('Failed');
         },
     });
 

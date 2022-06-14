@@ -5,15 +5,60 @@ import {
     InputRightElement,
     Text,
 } from '@chakra-ui/react';
+
 import { useState } from 'react';
+import { useMutation } from 'react-query';
+
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { loginUser } from '../../../../Services';
+import { setUserRefreshToken } from '../../authSlice';
+
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+
 import { AuthButton, Card } from '../../../../Components';
+import LoadingButton from '../../../../Components/Button/LoadingButton';
+
+import ErrorToast from '../../../../Toast/Error';
+
 import { AuthStepProps } from '../../../../Types';
 
 const StepPassword = ({ onClick }: AuthStepProps) => {
     const [passwordShow, setPasswordShow] = useState(false);
     const togglePassword = () => setPasswordShow(!passwordShow);
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+
+    const [password, setPassword] = useState('');
+
+    const { email, mobile, authType } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
+    const handlePasswordChange = async (
+        event: React.FormEvent<EventTarget>,
+    ) => {
+        const newPassword = (event.target as HTMLFormElement).value;
+        setPassword(newPassword);
+    };
+
+    const handleSubmitPassword = async () => {
+        if (password.length >= 6) {
+            await mutation.mutateAsync();
+        } else if (password.length < 6) {
+            ErrorToast('Password should be greater than 6');
+        } else {
+            ErrorToast('Password Doesnot Match');
+        }
+    };
+
+    const mutation = useMutation(
+        () => loginUser(email, mobile, password, authType),
+        {
+            onSuccess(data) {
+                dispatch(setUserRefreshToken(data.data));
+            },
+            onError() {
+                ErrorToast('Failed');
+            },
+        },
+    );
 
     return (
         <>
@@ -22,7 +67,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                 title="Enter your password"
                 key={'phone number'}
             >
-                <Box marginTop="1.6rem" width={{ ssm: '19rem', sm: '20rem' }}>
+                <Box marginTop="1.6rem" width="18rem">
                     <Text
                         fontWeight="600"
                         fontSize="0.95rem"
@@ -38,6 +83,8 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             bg="main.input-bg"
                             color="main.text.white"
                             required={true}
+                            value={password}
+                            onChange={handlePasswordChange}
                         />
                         <InputRightElement
                             width="3rem"
@@ -55,11 +102,15 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                         </InputRightElement>
                     </InputGroup>
                 </Box>
-                <AuthButton
-                    buttonText="Next"
-                    marginTop="1.7rem"
-                    onClick={onClick}
-                />
+                {mutation.isLoading ? (
+                    <LoadingButton marginTop="1.7rem" />
+                ) : (
+                    <AuthButton
+                        buttonText="Next"
+                        marginTop="1.7rem"
+                        onClick={handleSubmitPassword}
+                    />
+                )}
             </Card>
         </>
     );

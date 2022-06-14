@@ -2,12 +2,12 @@ import { Container } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Container as MainContainer } from '../../../Components/index';
 
-import { StepWelcome, StepMobile, StepPassword } from '../../index';
+import { StepWelcome, StepMobileEmail, StepPassword } from '../../index';
 
 const Signup = () => {
     const [authSteps] = useState({
         1: StepWelcome,
-        2: StepMobile,
+        2: StepMobileEmail,
         3: StepPassword,
     });
     const [stepNumber, setStepNumber] = useState<number>(1);

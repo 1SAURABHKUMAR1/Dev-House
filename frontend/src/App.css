@@ -8,3 +8,10 @@
     margin: 0px;
     min-width: 0px;
 }
+
+.tracking-overflow {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}

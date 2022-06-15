@@ -24,6 +24,7 @@ const customTheme = extendTheme({
     breakpoints: {
         ssm: '0px',
         sm: '400px',
+        mmd: '580px',
         md: '768px',
         lg: '960px',
         xl: '1200px',

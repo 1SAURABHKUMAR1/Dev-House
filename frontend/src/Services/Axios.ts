@@ -12,8 +12,8 @@ const axiosOptions: AxiosRequestConfig = {
 const Axios: AxiosInstance = axios.create(axiosOptions);
 
 Axios.interceptors.response.use(
-    (response) => {
-        return response;
+    (config) => {
+        return config;
     },
     async (error) => {
         const originalRequest = error.config;

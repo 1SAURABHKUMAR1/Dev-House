@@ -97,7 +97,7 @@ const Header = () => {
                     direction="row"
                     spacing={5}
                 >
-                    <Link to="/">
+                    <Link to="/code-studio">
                         <Button
                             fontSize="sm"
                             fontWeight={500}
@@ -110,7 +110,7 @@ const Header = () => {
                         </Button>
                     </Link>
 
-                    <Link to="/">
+                    <Link to="/rooms">
                         <Button
                             fontSize="sm"
                             fontWeight={500}

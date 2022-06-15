@@ -47,9 +47,9 @@ const MobileNav = () => {
             p={4}
             display={{ md: 'none' }}
         >
-            <MobileNavItem label={'Code Studio'} href="/" />
+            <MobileNavItem label={'Code Studio'} href="/code-studio" />
 
-            <MobileNavItem label={'Podcast'} href="/" />
+            <MobileNavItem label={'Podcast'} href="/rooms" />
 
             {login && (
                 <Flex

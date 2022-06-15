@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Header from './Layout/Header/Header';
 
-import { Home, Login, Authenticate, Activate } from './features/index';
+import { Home, Login, Authenticate, Activate, Rooms } from './features/index';
 import { MainLoader, PageNotFound } from './Components';
 
 import GuestRoute from './Hooks/GuestRoute';
@@ -40,7 +40,7 @@ const App = () => {
                 />
                 <Route
                     path="/rooms"
-                    element={<PrivateRoute element={<Home />} />}
+                    element={<PrivateRoute element={<Rooms />} />}
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

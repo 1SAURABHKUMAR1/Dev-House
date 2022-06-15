@@ -4,7 +4,14 @@ import { Routes, Route } from 'react-router-dom';
 
 import Header from './Layout/Header/Header';
 
-import { Home, Login, Authenticate, Activate, Rooms } from './features/index';
+import {
+    Home,
+    Login,
+    Authenticate,
+    Activate,
+    Rooms,
+    SingleRoom,
+} from './features';
 import { MainLoader, PageNotFound } from './Components';
 
 import GuestRoute from './Hooks/GuestRoute';
@@ -41,6 +48,10 @@ const App = () => {
                 <Route
                     path="/rooms"
                     element={<PrivateRoute element={<Rooms />} />}
+                />
+                <Route
+                    path="/room/:roomId"
+                    element={<PrivateRoute element={<SingleRoom />} />}
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

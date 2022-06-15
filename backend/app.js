@@ -31,8 +31,10 @@ app.get('/', (req, res) => {
 
 const home = require('./Routes/home');
 const user = require('./Routes/user');
+const rooms = require('./Routes/rooms');
 
 app.use('/api/v1', home);
 app.use('/api/v1', user);
+app.use('/api/v1', rooms);
 
 module.exports = app;

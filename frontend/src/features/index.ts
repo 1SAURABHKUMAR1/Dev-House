@@ -12,10 +12,12 @@ import StepWelcome from './auth/authSteps/StepWelcome/StepWelcome';
 import StepLoginPassword from './auth/login/Components/StepPassword';
 import StepLoginMobileEmail from './auth/login/Components/StepMobileEmail/StepMobileEmail';
 import Rooms from './rooms/RoomMain/Rooms';
+import SingleRoom from './rooms/SingleRoom/SingleRoom';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
+export * from './rooms/roomsSlice';
 
 export {
     Home,
@@ -32,4 +34,5 @@ export {
     StepLoginPassword,
     StepLoginMobileEmail,
     Rooms,
+    SingleRoom,
 };

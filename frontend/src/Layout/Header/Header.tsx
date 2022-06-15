@@ -10,6 +10,10 @@ import {
     useBreakpointValue,
     useDisclosure,
     Avatar,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
@@ -23,16 +27,20 @@ import MobileNav from './MobileNav';
 import { logoutUser } from '../../Services';
 
 import ErrorToast from '../../Toast/Error';
+import { useState } from 'react';
 
 const Header = () => {
     const { isOpen, onToggle } = useDisclosure();
     const greyColor = useColorModeValue('gray.600', 'gray.200');
     const { login, photo } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
+    const [openedMenu, setOpendMenu] = useState(false);
 
     const handleLogout = async () => {
         await mutation.mutateAsync();
     };
+
+    console.log(openedMenu);
 
     const mutation = useMutation(() => logoutUser(), {
         onSuccess() {
@@ -172,14 +180,46 @@ const Header = () => {
                     )}
 
                     {login && (
-                        <Link to={'/profile'}>
-                            <Avatar
-                                marginRight="0.5rem"
-                                size={'sm'}
-                                name="User Profile"
-                                src={photo}
-                            />
-                        </Link>
+                        <>
+                            <Menu
+                                isLazy
+                                lazyBehavior="unmount"
+                                closeOnBlur
+                                onOpen={() => setOpendMenu(true)}
+                                onClose={() => setOpendMenu(false)}
+                            >
+                                <span
+                                    tabIndex={-1}
+                                    className="sidenav-handler"
+                                    style={{
+                                        display: `${
+                                            openedMenu ? 'block' : 'none'
+                                        }`,
+                                        margin: '0px',
+                                    }}
+                                ></span>
+                                <MenuButton>
+                                    <Avatar
+                                        marginRight="0.5rem"
+                                        size={'sm'}
+                                        name="User Profile"
+                                        src={photo}
+                                    />
+                                </MenuButton>
+
+                                <MenuList zIndex={'9999'}>
+                                    <Link to="/profile">
+                                        <MenuItem>View Profile</MenuItem>
+                                    </Link>
+                                    <Link to="/">
+                                        <MenuItem>Change Password</MenuItem>
+                                    </Link>
+                                    <Link to="/" onClick={handleLogout}>
+                                        <MenuItem>Logout</MenuItem>
+                                    </Link>
+                                </MenuList>
+                            </Menu>
+                        </>
                     )}
                 </Stack>
             </Flex>

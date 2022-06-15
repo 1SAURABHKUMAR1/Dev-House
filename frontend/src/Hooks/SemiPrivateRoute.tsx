@@ -9,6 +9,7 @@ const SemiProtectedRoute = ({ element }: PrivateProp): JSX.Element => {
     const { login, activated } = useAppSelector((state) => state.auth);
 
     const location = useLocation();
+    const state = location.state;
 
     if (!login) {
         return <Navigate to="/login" state={{ from: location }} />;
@@ -16,7 +17,8 @@ const SemiProtectedRoute = ({ element }: PrivateProp): JSX.Element => {
         return <>{element}</>;
     }
 
-    return <Navigate to="/rooms" />;
+    // @ts-ignore
+    return <Navigate to={state.location ?? '/rooms'} />;
 };
 
 export default SemiProtectedRoute;

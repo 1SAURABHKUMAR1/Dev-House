@@ -8,6 +8,7 @@ interface PrivateProp {
 const GuestRoute = ({ element }: PrivateProp): JSX.Element => {
     const { login, activated } = useAppSelector((state) => state.auth);
     const location = useLocation();
+    const from = location.state;
 
     if (!login) {
         return <>{element}</>;
@@ -15,7 +16,8 @@ const GuestRoute = ({ element }: PrivateProp): JSX.Element => {
         return <Navigate to="/activate" state={{ from: location }} />;
     }
 
-    return <Navigate to="/rooms" />;
+    // @ts-ignore
+    return <Navigate to={from?.location ?? '/rooms'} />;
 };
 
 export default GuestRoute;

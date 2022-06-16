@@ -5,6 +5,8 @@ import PageNotFound from './PageNotFound/PageNotFound';
 import MainLoader from './Loader/MainLoader';
 import SingleRoomCard from './Card/SingleRoomCard';
 import BottomContainer from './Container/BottomContainer';
+import SingleRoomAvatar from './Avatar/SingleRoomAvatar';
+import SingleChat from './SingleChat/SingleChat';
 
 export {
     Container,
@@ -14,4 +16,6 @@ export {
     MainLoader,
     SingleRoomCard,
     BottomContainer,
+    SingleRoomAvatar,
+    SingleChat,
 };

@@ -34,7 +34,6 @@ const Card = ({ title, icon, children }: CardProps) => {
                 )}
                 {title && (
                     <Text
-                        className="heading"
                         fontSize={{ ssm: '1.4rem', sm: '1.23rem' }}
                         fontWeight={'700'}
                         color={'main.text'}

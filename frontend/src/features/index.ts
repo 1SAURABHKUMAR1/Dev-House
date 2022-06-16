@@ -13,6 +13,9 @@ import StepLoginPassword from './auth/login/Components/StepPassword';
 import StepLoginMobileEmail from './auth/login/Components/StepMobileEmail/StepMobileEmail';
 import Rooms from './rooms/RoomMain/Rooms';
 import SingleRoom from './rooms/SingleRoom/SingleRoom';
+import Users from './rooms/SingleRoom/Components/Users';
+import ChatBox from './rooms/SingleRoom/Components/ChatBox';
+import Controls from './rooms/SingleRoom/Components/Controls';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
@@ -35,4 +38,7 @@ export {
     StepLoginMobileEmail,
     Rooms,
     SingleRoom,
+    Users,
+    ChatBox,
+    Controls,
 };

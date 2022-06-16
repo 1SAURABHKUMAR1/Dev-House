@@ -40,8 +40,6 @@ const Header = () => {
         await mutation.mutateAsync();
     };
 
-    console.log(openedMenu);
-
     const mutation = useMutation(() => logoutUser(), {
         onSuccess() {
             dispatch(logoutUserAuth());

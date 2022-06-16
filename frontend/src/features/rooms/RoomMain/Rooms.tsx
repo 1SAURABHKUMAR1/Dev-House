@@ -8,18 +8,16 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { BsPerson } from 'react-icons/bs';
-import { BottomContainer, SingleRoomCard } from '../../../Components';
+import {
+    BottomContainer,
+    SingleRoomCard,
+    Container as MainContainer,
+} from '../../../Components';
 
 const Rooms = () => {
     return (
         <>
-            <Box
-                margin="0px"
-                display="flex"
-                flex="1 1 0%"
-                flexDirection="column"
-                width="100%"
-            >
+            <MainContainer marginBottom="0">
                 <Container paddingTop="2rem" maxW="container.xl">
                     <Flex justifyContent="space-between" alignItems="center">
                         <Flex
@@ -84,7 +82,7 @@ const Rooms = () => {
                         <SingleRoomCard />
                     </Grid>
                 </Container>
-            </Box>
+            </MainContainer>
 
             <BottomContainer />
         </>

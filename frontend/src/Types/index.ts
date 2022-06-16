@@ -3,6 +3,7 @@ import React from 'react';
 export interface Children {
     children: React.ReactNode;
     center?: boolean;
+    marginBottom: string;
 }
 
 export interface CardProps {
@@ -92,4 +93,25 @@ export type controllerUnMounted = {
 
 export interface LoadingButtonProps {
     marginTop: string;
+}
+
+export interface SingleRoomAvatarProps {
+    src: string;
+}
+
+export interface ChatBoxProps {
+    onClose: () => void;
+    isOpen: boolean;
+    btnRef: React.RefObject<HTMLButtonElement>;
+}
+
+export interface ControlsProps {
+    onOpen: () => void;
+    btnRef: React.RefObject<HTMLButtonElement>;
+}
+
+export interface SingleChatProps {
+    chatContent: string;
+    userAvatar: string;
+    position: 'LEFT' | 'RIGHT';
 }

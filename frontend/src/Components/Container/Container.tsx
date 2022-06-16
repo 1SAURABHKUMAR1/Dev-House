@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { Children } from '../../Types';
 
-const Container = ({ children, center }: Children) => {
+const Container = ({ children, center, marginBottom }: Children) => {
     return (
         <>
             <Box
@@ -11,7 +11,7 @@ const Container = ({ children, center }: Children) => {
                 flex="1 1 0%"
                 flexDirection="column"
                 width="100%"
-                marginBottom="1rem"
+                marginBottom={`${marginBottom}rem`}
                 style={{ justifyContent: center ? 'center' : '' }}
             >
                 {children}

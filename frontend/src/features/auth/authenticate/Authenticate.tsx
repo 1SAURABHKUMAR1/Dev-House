@@ -15,7 +15,7 @@ const Signup = () => {
 
     return (
         <>
-            <MainContainer center={true}>
+            <MainContainer center={true} marginBottom="1">
                 <Container>
                     <CurrentStep
                         onClick={() => setStepNumber(stepNumber + 1)}

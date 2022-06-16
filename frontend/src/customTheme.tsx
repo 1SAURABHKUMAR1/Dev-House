@@ -5,6 +5,7 @@ const customTheme = extendTheme({
         main: {
             'bg.primary': '#f9fafb',
             'bg.sec': '#e5e7eb',
+            'bg.black.hover': '#00000094',
             text: '#111827',
             'text.white': 'RGBA(255, 255, 255, 0.95)',
             blue: '#0077FF',

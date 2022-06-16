@@ -16,6 +16,9 @@ import SingleRoom from './rooms/SingleRoom/SingleRoom';
 import Users from './rooms/SingleRoom/Components/Users';
 import ChatBox from './rooms/SingleRoom/Components/ChatBox';
 import Controls from './rooms/SingleRoom/Components/Controls';
+import CreateRoomModal from './rooms/RoomMain/Components/CreateRoomModal';
+import AllRooms from './rooms/RoomMain/Components/AllRooms';
+import ModalButtons from './rooms/RoomMain/Components/ModalButtons';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
@@ -41,4 +44,7 @@ export {
     Users,
     ChatBox,
     Controls,
+    CreateRoomModal,
+    AllRooms,
+    ModalButtons,
 };

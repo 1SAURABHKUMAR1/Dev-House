@@ -3,18 +3,24 @@ import {
     Button,
     Container,
     Flex,
-    Grid,
     Input,
     Text,
+    useDisclosure,
 } from '@chakra-ui/react';
+
+import { useRef } from 'react';
 import { BsPerson } from 'react-icons/bs';
+
 import {
     BottomContainer,
-    SingleRoomCard,
     Container as MainContainer,
 } from '../../../Components';
+import { AllRooms, CreateRoomModal } from '../../index';
 
 const Rooms = () => {
+    const { isOpen, onClose, onOpen } = useDisclosure();
+    const globalRoomRef = useRef(null);
+
     return (
         <>
             <MainContainer marginBottom="0">
@@ -53,35 +59,21 @@ const Rooms = () => {
                             _active={{}}
                             _hover={{ bg: 'main.blue.hover' }}
                             leftIcon={<BsPerson />}
+                            onClick={onOpen}
                         >
                             Start a room
                         </Button>
                     </Flex>
                 </Container>
 
-                <Container paddingTop="3rem" maxW="container.xl">
-                    <Grid
-                        templateColumns={{
-                            ssm: 'repeat(1,1fr)',
-                            mmd: 'repeat(2,1fr)',
-                            lg: 'repeat(3,1fr)',
-                            xl: 'repeat(4, 1fr)',
-                        }}
-                        gap="1.2rem"
-                    >
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                        <SingleRoomCard />
-                    </Grid>
-                </Container>
+                <CreateRoomModal
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    key="CreateRoomModal"
+                    createRef={globalRoomRef}
+                />
+
+                <AllRooms />
             </MainContainer>
 
             <BottomContainer />

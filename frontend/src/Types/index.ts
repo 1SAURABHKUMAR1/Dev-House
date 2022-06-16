@@ -115,3 +115,9 @@ export interface SingleChatProps {
     userAvatar: string;
     position: 'LEFT' | 'RIGHT';
 }
+
+export interface CreateRoomModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    createRef: React.RefObject<HTMLButtonElement>;
+}

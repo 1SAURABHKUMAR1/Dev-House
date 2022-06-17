@@ -1,18 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {} from '../../Types';
+import { RoomSliceIntial } from '../../Types';
 
-const initialState = {};
+const initialState: RoomSliceIntial = {};
 
 const roomsSlice = createSlice({
     name: 'rooms',
     initialState,
-    reducers: {
-        //
-    },
+    reducers: {},
     extraReducers: (builders) => {
         //
     },
 });
 
 export const roomsReducer = roomsSlice.reducer;
-export const {} = roomsSlice.actions;
+// export const {} = roomsSlice.actions;

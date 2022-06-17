@@ -19,7 +19,7 @@ import { AllRooms, CreateRoomModal } from '../../index';
 
 const Rooms = () => {
     const { isOpen, onClose, onOpen } = useDisclosure();
-    const globalRoomRef = useRef(null);
+    const roomRef = useRef<HTMLInputElement>(null);
 
     return (
         <>
@@ -49,6 +49,7 @@ const Rooms = () => {
                                 display={{ ssm: 'none', md: 'block' }}
                                 _focus={{}}
                                 _active={{}}
+                                placeholder="Room Name....."
                             />
                         </Flex>
                         <Button
@@ -70,7 +71,7 @@ const Rooms = () => {
                     isOpen={isOpen}
                     onClose={onClose}
                     key="CreateRoomModal"
-                    createRef={globalRoomRef}
+                    inputInitalRef={roomRef}
                 />
 
                 <AllRooms />

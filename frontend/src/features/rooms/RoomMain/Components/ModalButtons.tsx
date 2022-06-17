@@ -1,6 +1,12 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
-const ModalButtons = () => {
+import { ModalButtonProps } from '../../../../Types';
+
+const ModalButtons = ({ roomType, setRoomType }: ModalButtonProps) => {
+    const handleRoomType = (type: 'OPEN' | 'SOCIAL' | 'PRIVATE') => {
+        setRoomType(type);
+    };
+
     return (
         <>
             <Flex pt="5" justifyContent="space-evenly">
@@ -13,11 +19,11 @@ const ModalButtons = () => {
                     px="0.8rem"
                     borderRadius="0.4rem"
                     bg="main.bg.sec"
-                    _focus={{
-                        boxShadow: '0 0 0px 1px #3182ce',
-                        borderColor: '#3182ce',
-                        zIndex: '1',
-                    }}
+                    boxShadow={`0 0 0px 2px ${
+                        roomType === 'OPEN' ? '#3182ce' : 'transparent'
+                    }`}
+                    onClick={() => handleRoomType('OPEN')}
+                    cursor="pointer"
                 >
                     <Image src="/images/open.svg" boxSize="14" />
                     <Text fontWeight="600">Open</Text>
@@ -32,11 +38,11 @@ const ModalButtons = () => {
                     px="0.8rem"
                     borderRadius="0.4rem"
                     bg="main.bg.sec"
-                    _focus={{
-                        boxShadow: '0 0 0px 1px #3182ce',
-                        borderColor: '#3182ce',
-                        zIndex: '1',
-                    }}
+                    boxShadow={`0 0 0px 2px ${
+                        roomType === 'SOCIAL' ? '#3182ce' : 'transparent'
+                    }`}
+                    onClick={() => handleRoomType('SOCIAL')}
+                    cursor="pointer"
                 >
                     <Image src="/images/social.svg" boxSize="14" />
                     <Text fontWeight="600">Social</Text>
@@ -51,11 +57,11 @@ const ModalButtons = () => {
                     px="0.8rem"
                     borderRadius="0.4rem"
                     bg="main.bg.sec"
-                    _focus={{
-                        boxShadow: '0 0 0px 2px #3182ce',
-                        borderColor: '#3182ce',
-                        zIndex: '1',
-                    }}
+                    boxShadow={`0 0 0px 2px ${
+                        roomType === 'PRIVATE' ? '#3182ce' : 'transparent'
+                    }`}
+                    onClick={() => handleRoomType('PRIVATE')}
+                    cursor="pointer"
                 >
                     <Image src="/images/private.svg" boxSize="14" />
                     <Text fontWeight="600">Private</Text>

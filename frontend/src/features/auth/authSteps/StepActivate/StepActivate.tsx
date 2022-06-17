@@ -1,6 +1,7 @@
 import { Box, Spinner, Text } from '@chakra-ui/react';
 
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { setActivate, resetAuthenticate } from '../../../index';
 
@@ -10,11 +11,14 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
 import { AuthStepProps } from '../../../../Types';
 
+import ErrorToast from '../../../../Toast/Error';
+
 const StepActivate = ({ onClick }: AuthStepProps) => {
     const { name, avatar, username } = useAppSelector(
         (state) => state.activate,
     );
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const mutation = useMutation(() => activateUser(name, avatar, username), {
         onSuccess(data: any) {
@@ -22,6 +26,11 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
                 dispatch(setActivate(data.data));
                 dispatch(resetAuthenticate());
             }
+        },
+        onError(error: Error) {
+            console.log(error);
+            ErrorToast('Failed');
+            navigate('/activate');
         },
     });
 

@@ -119,5 +119,51 @@ export interface SingleChatProps {
 export interface CreateRoomModalProps {
     isOpen: boolean;
     onClose: () => void;
-    createRef: React.RefObject<HTMLButtonElement>;
+    inputInitalRef: React.RefObject<HTMLInputElement>;
+}
+
+export interface ModalButtonProps {
+    roomType: 'OPEN' | 'SOCIAL' | 'PRIVATE';
+    setRoomType: React.Dispatch<
+        React.SetStateAction<'OPEN' | 'SOCIAL' | 'PRIVATE'>
+    >;
+}
+
+export interface RoomSliceIntial {
+    //
+}
+
+export interface openRoomModalTypes {
+    inputInitalRef: React.RefObject<HTMLInputElement>;
+    onClose: () => void;
+    nextModal: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface stepShareProps {
+    nextModal: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface userMiniType {
+    email: String;
+    name: String;
+    profile_photo: {
+        id: String;
+        secure_url: String;
+    };
+    user_id: String;
+    username: String;
+    _id: String;
+}
+
+export interface createRoomResponse {
+    room: {
+        createdAt: Date;
+        creator_id: userMiniType;
+        room_id: String;
+        room_name: String;
+        room_type: 'OPEN' | 'SOCIAL' | 'PRIVATE';
+        speakers: Array<userMiniType>;
+        _id: String;
+    };
+    success: true | false;
 }

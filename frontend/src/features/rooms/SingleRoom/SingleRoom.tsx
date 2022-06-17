@@ -12,6 +12,8 @@ const SingleRoom = () => {
     const btnRef = useRef<HTMLButtonElement | null>(null);
     const { onOpen, isOpen, onClose } = useDisclosure();
 
+    //if roomType ==='PRIVATE' | 'SOCIAL"  -> open a dialog box for password
+
     return (
         <>
             <MainContainer marginBottom="0">

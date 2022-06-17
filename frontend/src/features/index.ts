@@ -19,6 +19,8 @@ import Controls from './rooms/SingleRoom/Components/Controls';
 import CreateRoomModal from './rooms/RoomMain/Components/CreateRoomModal';
 import AllRooms from './rooms/RoomMain/Components/AllRooms';
 import ModalButtons from './rooms/RoomMain/Components/ModalButtons';
+import OpenRoomModal from './rooms/RoomMain/Components/OpenRoomModal';
+import StepShare from './rooms/RoomMain/Components/StepShare';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
@@ -47,4 +49,6 @@ export {
     CreateRoomModal,
     AllRooms,
     ModalButtons,
+    StepShare,
+    OpenRoomModal,
 };

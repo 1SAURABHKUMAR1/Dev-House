@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const nocache = require('nocache');
 
 app.use(morgan('tiny'));
 app.use(express.json({ limit: '10mb' }));
@@ -16,6 +17,7 @@ const corsOption = {
 };
 app.use(cors(corsOption));
 app.use(helmet());
+app.use(nocache());
 app.use(cookieParser());
 app.use(
     fileUpload({

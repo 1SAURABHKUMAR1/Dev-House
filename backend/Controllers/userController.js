@@ -130,6 +130,7 @@ exports.activateUser = BigPromise(async (req, res, next) => {
 
     const user = await User.findByIdAndUpdate(_id, newData, {
         runValidators: true,
+        new: true,
     });
 
     res.status(200).json({

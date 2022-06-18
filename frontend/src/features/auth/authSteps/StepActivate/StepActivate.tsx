@@ -1,8 +1,7 @@
 import { Box, Spinner, Text } from '@chakra-ui/react';
 
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import { setActivate, resetAuthenticate } from '../../../index';
 
 import { activateUser } from '../../../../Services';
@@ -20,28 +19,25 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const mutation = useMutation(() => activateUser(name, avatar, username), {
-        onSuccess(data: any) {
-            if (data.data.user.activated) {
+    useQuery(
+        'user/activate',
+        async () => {
+            return await activateUser(name, avatar, username);
+        },
+        {
+            onSuccess: (data: any) => {
+                console.log(data);
+
                 dispatch(setActivate(data.data));
                 dispatch(resetAuthenticate());
-            }
+            },
+            onError: (error: Error) => {
+                console.log(error);
+                ErrorToast('Failed');
+                navigate('/activate');
+            },
         },
-        onError(error: Error) {
-            console.log(error);
-            ErrorToast('Failed');
-            navigate('/activate');
-        },
-    });
-
-    useEffect(() => {
-        const updateUser = async () => {
-            await mutation.mutateAsync();
-        };
-        updateUser();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    );
 
     return (
         <>

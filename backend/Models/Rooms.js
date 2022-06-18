@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const uuid = require('uuid').v4;
 const bcrypt = require('bcryptjs');
-const { nanoid } = require('nanoid');
 
 const roomsSchema = new mongoose.Schema({
-    room_name: {
+    name: {
         type: String,
         maxlength: [40, 'Room Name Cannnot be greater than 40 character'],
         required: [true],
@@ -14,12 +13,12 @@ const roomsSchema = new mongoose.Schema({
         default: uuid,
         required: [true],
     },
-    creator_id: {
+    creator: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: [true],
     },
-    room_type: {
+    type: {
         type: String,
         required: [true],
         enum: {
@@ -34,7 +33,7 @@ const roomsSchema = new mongoose.Schema({
             required: true,
         },
     ],
-    room_password: {
+    password: {
         type: String,
         select: false,
     },
@@ -46,16 +45,15 @@ const roomsSchema = new mongoose.Schema({
 });
 
 roomsSchema.pre('save', async function (next) {
-    if (this.room_type === 'OPEN') {
+    if (this.type === 'OPEN') {
         return next();
     }
 
-    this.room_password = await nanoid();
-    this.room_password = await bcrypt.hash(this.room_password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
 });
 
 roomsSchema.methods.isPasswordValid = async function (roomPassword) {
-    return await bcrypt.compare(roomPassword, this.room_password);
+    return await bcrypt.compare(roomPassword, this.password);
 };
 
 module.exports = mongoose.model('rooms', roomsSchema);

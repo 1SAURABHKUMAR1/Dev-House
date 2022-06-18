@@ -15,6 +15,7 @@ import {
     BottomContainer,
     Container as MainContainer,
 } from '../../../Components';
+
 import { AllRooms, CreateRoomModal } from '../../index';
 
 const Rooms = () => {

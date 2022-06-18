@@ -5,6 +5,6 @@ const isLoggedIn = require('../Middleware/isLoggedIn');
 const { createRoom, getRooms } = require('../Controllers/roomsController');
 
 router.route('/room/create').post(isLoggedIn, createRoom);
-router.route('/room/rooms').post(isLoggedIn, getRooms);
+router.route('/room/rooms').get(isLoggedIn, getRooms);
 
 module.exports = router;

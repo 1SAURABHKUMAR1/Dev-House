@@ -12,15 +12,14 @@ import {
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { createRooms } from '../../../../Services';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
-import { useAppSelector } from '../../../../store/hooks';
-
-import { ModalButtons } from '../../../index';
+import { ModalButtons, setRoomLink } from '../../../index';
 
 import { createRoomResponse, openRoomModalTypes } from '../../../../Types';
+import { AxiosResponse } from 'axios';
 
 import ErrorToast from '../../../../Toast/Error';
-import { AxiosResponse } from 'axios';
 
 const OpenRoomModal = ({
     inputInitalRef,
@@ -32,6 +31,7 @@ const OpenRoomModal = ({
         'OPEN',
     );
     const { login } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
 
     const handleRoomName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRoomName((event.target as HTMLInputElement).value);
@@ -45,13 +45,17 @@ const OpenRoomModal = ({
             : ErrorToast('Login!');
     };
 
+    const handleClose = () => {
+        nextModal(1);
+        onClose();
+    };
+
     const { mutateAsync, isLoading } = useMutation<
         AxiosResponse<createRoomResponse>,
         Error
     >(() => createRooms(roomName, roomType), {
-        onSuccess(data: AxiosResponse<createRoomResponse> | undefined) {
-            console.log(data?.data.room);
-            // TODO:
+        onSuccess(data: AxiosResponse<createRoomResponse>) {
+            dispatch(setRoomLink(data?.data));
 
             nextModal((value) => value + 1);
         },
@@ -60,9 +64,6 @@ const OpenRoomModal = ({
             ErrorToast('Failed');
         },
     });
-
-    // if roomType === 'GLOBAL' => generate  qr code from backend and redirect to stepShare to share link for room qr code and add icons for share to whatsapp , twitter or copy from clipboarrd or download qr code
-    // if roomType === 'Private' | 'Social' => generate password and qr code from backend and redirect to stepShare to share link for room link, password and qr code and add icons for share to whatsapp , twitter or copy from clipboarrd or download qr code
 
     return (
         <>
@@ -75,12 +76,7 @@ const OpenRoomModal = ({
                     <Text fontSize="1.1rem" fontWeight="700">
                         Enter the topic to be discussed
                     </Text>
-                    <ModalCloseButton
-                        position="unset"
-                        onClick={() => {
-                            nextModal(1);
-                        }}
-                    />
+                    <ModalCloseButton position="unset" onClick={handleClose} />
                 </ModalHeader>
 
                 <ModalBody pb={6}>
@@ -133,10 +129,7 @@ const OpenRoomModal = ({
                     <Button
                         w="6rem"
                         fontWeight={600}
-                        onClick={() => {
-                            nextModal(1);
-                            onClose();
-                        }}
+                        onClick={handleClose}
                         borderRadius="1.4rem"
                     >
                         Cancel

@@ -1,16 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RoomSliceIntial } from '../../Types';
+import { createRoomResponse, RoomSliceIntial } from '../../Types';
 
-const initialState: RoomSliceIntial = {};
+const initialState: RoomSliceIntial = {
+    roomId: '',
+    roomPassword: '',
+};
 
 const roomsSlice = createSlice({
     name: 'rooms',
     initialState,
-    reducers: {},
+    reducers: {
+        setRoomLink: (
+            state: RoomSliceIntial,
+            action: PayloadAction<createRoomResponse>,
+        ) => {
+            state.roomId = action.payload.room.room_id;
+
+            action.payload.room.type !== 'OPEN' &&
+                (state.roomPassword = action.payload.room?.password ?? '');
+        },
+        setRoomDefault: (state: RoomSliceIntial) => {
+            state.roomId = '';
+            state.roomPassword = '';
+        },
+    },
     extraReducers: (builders) => {
         //
     },
 });
 
 export const roomsReducer = roomsSlice.reducer;
-// export const {} = roomsSlice.actions;
+export const { setRoomLink, setRoomDefault } = roomsSlice.actions;

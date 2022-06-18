@@ -130,7 +130,8 @@ export interface ModalButtonProps {
 }
 
 export interface RoomSliceIntial {
-    //
+    roomId: string;
+    roomPassword: string;
 }
 
 export interface openRoomModalTypes {
@@ -144,26 +145,34 @@ export interface stepShareProps {
 }
 
 export interface userMiniType {
-    email: String;
-    name: String;
+    email: string;
+    name: string;
     profile_photo: {
-        id: String;
-        secure_url: String;
+        id: string;
+        secure_url: string;
     };
-    user_id: String;
-    username: String;
-    _id: String;
+    user_id: string;
+    username: string;
+    _id: string;
 }
 
 export interface createRoomResponse {
-    room: {
-        createdAt: Date;
-        creator_id: userMiniType;
-        room_id: String;
-        room_name: String;
-        room_type: 'OPEN' | 'SOCIAL' | 'PRIVATE';
-        speakers: Array<userMiniType>;
-        _id: String;
-    };
-    success: true | false;
+    room: roomType;
+    success: boolean;
+}
+
+export interface roomType {
+    _id: string;
+    name: string;
+    creator: userMiniType;
+    room_id: string;
+    type: 'OPEN' | 'SOCIAL' | 'PRIVATE';
+    speakers: Array<userMiniType>;
+    password?: string;
+    createdAt: Date;
+}
+
+export interface singleRoomCardType {
+    roomName: string;
+    speakers: Array<userMiniType>;
 }

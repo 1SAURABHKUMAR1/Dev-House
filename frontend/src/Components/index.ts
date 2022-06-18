@@ -7,6 +7,8 @@ import SingleRoomCard from './Card/SingleRoomCard';
 import BottomContainer from './Container/BottomContainer';
 import SingleRoomAvatar from './Avatar/SingleRoomAvatar';
 import SingleChat from './SingleChat/SingleChat';
+import CopyField from './CopyField/CopyField';
+import ShareButton from './ShareButton/ShareButton';
 
 export {
     Container,
@@ -18,4 +20,6 @@ export {
     BottomContainer,
     SingleRoomAvatar,
     SingleChat,
+    CopyField,
+    ShareButton,
 };

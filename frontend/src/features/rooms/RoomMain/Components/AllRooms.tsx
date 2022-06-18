@@ -33,7 +33,7 @@ const AllRooms = () => {
                     gap="1.2rem"
                 >
                     {data?.data.rooms?.map((room: roomType) => (
-                        <Link to={`/room/${room.room_id}`}>
+                        <Link to={`/room/${room.room_id}`} key={room.room_id}>
                             <SingleRoomCard
                                 roomName={room.name}
                                 speakers={room.speakers}

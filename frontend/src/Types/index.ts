@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconType } from 'react-icons';
 
 export interface Children {
     children: React.ReactNode;
@@ -175,4 +176,20 @@ export interface roomType {
 export interface singleRoomCardType {
     roomName: string;
     speakers: Array<userMiniType>;
+}
+
+export interface copyFieldProps {
+    labelText: string;
+    inputCopyValue: string;
+    marginTop: string;
+    fieldType: 'ROOM_URL' | 'ROOM_PASSWORD';
+}
+
+export interface shareButtonProps {
+    ToolTipText: string;
+    Icon: IconType;
+    ButtonColor: string;
+    roomId: string;
+    roomPassword: string;
+    shareType: 'WHATSAPP' | 'TWITTER' | 'TELEGRAM';
 }

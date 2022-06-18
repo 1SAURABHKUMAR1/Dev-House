@@ -22,6 +22,8 @@ const Rooms = () => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const roomRef = useRef<HTMLInputElement>(null);
 
+    // TODO:  rooms filter
+
     return (
         <>
             <MainContainer marginBottom="0">

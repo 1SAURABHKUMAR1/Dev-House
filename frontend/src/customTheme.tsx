@@ -14,8 +14,7 @@ const customTheme = extendTheme({
             indigo: '#5453E0',
             placeholder: '#e5e7eb',
             'input-bg': '#262626',
-            success: '#20BD5F',
-            danger: '#f44336',
+            icon: '#4b5563',
         },
     },
     fonts: {

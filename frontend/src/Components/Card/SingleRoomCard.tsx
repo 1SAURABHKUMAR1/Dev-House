@@ -30,6 +30,7 @@ const SingleRoomCard = ({ roomName, speakers }: singleRoomCardType) => {
                                             index === 1 ? '20px' : ''
                                         }`,
                                     }}
+                                    key={speaker.user_id}
                                 />
                             ),
                     )}
@@ -55,8 +56,9 @@ const SingleRoomCard = ({ roomName, speakers }: singleRoomCardType) => {
                                                 : ''
                                         }`,
                                     }}
+                                    key={speaker.user_id}
                                 >
-                                    Kent C dos Kent C dos Kent C dos
+                                    {speaker.name}
                                 </Text>
                             ),
                     )}

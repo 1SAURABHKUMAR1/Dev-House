@@ -13,7 +13,7 @@ import StepLoginPassword from './auth/login/Components/StepPassword';
 import StepLoginMobileEmail from './auth/login/Components/StepMobileEmail/StepMobileEmail';
 import Rooms from './rooms/RoomMain/Rooms';
 import SingleRoom from './rooms/SingleRoom/SingleRoom';
-import Users from './rooms/SingleRoom/Components/Users';
+import SingleRoomUsers from './rooms/SingleRoom/Components/SingleRoomUsers';
 import ChatBox from './rooms/SingleRoom/Components/ChatBox';
 import Controls from './rooms/SingleRoom/Components/Controls';
 import CreateRoomModal from './rooms/RoomMain/Components/CreateRoomModal';
@@ -44,7 +44,7 @@ export {
     StepLoginMobileEmail,
     Rooms,
     SingleRoom,
-    Users,
+    SingleRoomUsers,
     ChatBox,
     Controls,
     CreateRoomModal,

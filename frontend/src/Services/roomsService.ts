@@ -11,4 +11,6 @@ const createRooms = (
         type: roomType,
     });
 
-export { getAllRooms, createRooms };
+const singleRoom = (room_id: string) => Axios.get(`/room/single/${room_id}`);
+
+export { getAllRooms, createRooms, singleRoom };

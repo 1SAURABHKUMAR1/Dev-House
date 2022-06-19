@@ -26,8 +26,6 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
         },
         {
             onSuccess: (data: any) => {
-                console.log(data);
-
                 dispatch(setActivate(data.data));
                 dispatch(resetAuthenticate());
             },

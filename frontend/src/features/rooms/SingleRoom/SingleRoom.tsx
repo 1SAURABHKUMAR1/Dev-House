@@ -1,18 +1,56 @@
 import { Box, Container, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { singleRoom } from '../../../Services';
 
 import { BsArrowLeftShort } from 'react-icons/bs';
 
-import { Container as MainContainer } from '../../../Components';
-import { ChatBox, Users, Controls } from '../../index';
+import { Container as MainContainer, MainLoader } from '../../../Components';
+import { ChatBox, SingleRoomUsers, Controls, setRoom } from '../../index';
+
+import { AxiosResponse } from 'axios';
+
+import { createRoomResponse } from '../../../Types';
+import ErrorToast from '../../../Toast/Error';
 
 const SingleRoom = () => {
+    const { roomId } = useParams();
     const btnRef = useRef<HTMLButtonElement | null>(null);
     const { onOpen, isOpen, onClose } = useDisclosure();
+    const { name } = useAppSelector((state) => state.rooms);
+    const dispatch = useAppDispatch();
 
+    const { isLoading, isError } = useQuery<
+        AxiosResponse<createRoomResponse>,
+        Error
+    >(
+        'rooms/getRooms',
+        // @ts-ignore
+        async () => await singleRoom(roomId),
+        {
+            onSuccess: (data: AxiosResponse<createRoomResponse>) => {
+                dispatch(setRoom(data.data));
+            },
+            onError: (error: Error) => {
+                console.log(error);
+                ErrorToast('Failed');
+            },
+        },
+    );
+
+    // TODO:
     //if roomType ==='PRIVATE' | 'SOCIAL"  -> open a dialog box for password
+    // Error handling
+
+    if (isLoading) {
+        return <MainLoader />;
+    } else if (isError) {
+        //
+    }
 
     return (
         <>
@@ -55,9 +93,10 @@ const SingleRoom = () => {
                                     md: '18rem',
                                     lg: '20rem',
                                 }}
+                                fontSize="1.2rem"
                                 fontWeight="700"
                             >
-                                Artifical intelligence is the fututr
+                                {name}
                             </Text>
                             <Flex
                                 gap="1rem"
@@ -70,7 +109,7 @@ const SingleRoom = () => {
                             </Flex>
                         </Flex>
 
-                        <Users />
+                        <SingleRoomUsers />
                     </Container>
                 </Container>
 

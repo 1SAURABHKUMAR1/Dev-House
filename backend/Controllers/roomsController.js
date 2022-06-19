@@ -96,3 +96,21 @@ exports.getRooms = BigPromise(async (req, res, next) => {
         rooms,
     });
 });
+
+exports.singleRoom = BigPromise(async (req, res, next) => {
+    const { roomId } = req.params;
+
+    if (!roomId) return next(CustomError(res, 'Room Not Found', 400));
+
+    const room = await Rooms.findOne({ room_id: roomId }).populate(
+        'creator speakers',
+        'email mobile user_id _id name username profile_photo',
+    );
+
+    if (!room) return next(CustomError(res, 'Room Not Found', 400));
+
+    res.status(200).json({
+        success: true,
+        room,
+    });
+});

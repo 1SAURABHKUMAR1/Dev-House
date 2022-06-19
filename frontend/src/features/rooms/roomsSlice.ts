@@ -5,6 +5,12 @@ const initialState: RoomSliceIntial = {
     roomId: '',
     roomPassword: '',
     qrcode: '',
+
+    _id: '',
+    name: '',
+    room_id: '',
+    speakers: [],
+    type: 'OPEN',
 };
 
 const roomsSlice = createSlice({
@@ -20,6 +26,16 @@ const roomsSlice = createSlice({
             action.payload.room.type !== 'OPEN' &&
                 (state.roomPassword = action.payload.room?.password ?? '');
         },
+        setRoom: (
+            state: RoomSliceIntial,
+            action: PayloadAction<createRoomResponse>,
+        ) => {
+            state._id = action.payload.room._id;
+            state.name = action.payload.room.name;
+            state.room_id = action.payload.room.room_id;
+            state.speakers = action.payload.room.speakers;
+            state.type = action.payload.room.type;
+        },
         setRoomDefault: (state: RoomSliceIntial) => {
             state.roomId = '';
             state.roomPassword = '';
@@ -32,4 +48,4 @@ const roomsSlice = createSlice({
 });
 
 export const roomsReducer = roomsSlice.reducer;
-export const { setRoomLink, setRoomDefault } = roomsSlice.actions;
+export const { setRoomLink, setRoomDefault, setRoom } = roomsSlice.actions;

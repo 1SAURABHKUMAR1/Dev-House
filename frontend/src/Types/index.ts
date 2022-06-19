@@ -98,6 +98,7 @@ export interface LoadingButtonProps {
 
 export interface SingleRoomAvatarProps {
     src: string;
+    username: string;
 }
 
 export interface ChatBoxProps {
@@ -134,6 +135,12 @@ export interface RoomSliceIntial {
     roomId: string;
     roomPassword: string;
     qrcode: string;
+
+    _id: string;
+    name: string;
+    room_id: string;
+    type: 'OPEN' | 'SOCIAL' | 'PRIVATE';
+    speakers: Array<userMiniType>;
 }
 
 export interface openRoomModalTypes {

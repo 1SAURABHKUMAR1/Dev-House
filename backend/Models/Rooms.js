@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uuid = require('uuid').v4;
 const bcrypt = require('bcryptjs');
+const cloudinary = require('cloudinary').v2;
 
 const roomsSchema = new mongoose.Schema({
     name: {
@@ -33,6 +34,14 @@ const roomsSchema = new mongoose.Schema({
             required: true,
         },
     ],
+    qrcode: {
+        id: {
+            type: String,
+        },
+        secure_url: {
+            type: String,
+        },
+    },
     password: {
         type: String,
         select: false,
@@ -42,6 +51,10 @@ const roomsSchema = new mongoose.Schema({
         default: Date.now,
         expires: 24 * 60 * 60,
     },
+});
+
+roomsSchema.pre('remove', async function () {
+    await cloudinary.uploader.destroy(this.qrcode.id);
 });
 
 roomsSchema.pre('save', async function (next) {

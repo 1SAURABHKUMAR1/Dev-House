@@ -1,28 +1,30 @@
 import {
-    Box,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
     Text,
-    Tooltip,
+    useDisclosure,
 } from '@chakra-ui/react';
 
-import { AiOutlineWhatsApp, AiOutlineTwitter } from 'react-icons/ai';
-import { FaTelegramPlane } from 'react-icons/fa';
-import { HiQrcode } from 'react-icons/hi';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
-import { useAppSelector } from '../../../../store/hooks';
-
-import { CopyField, ShareButton } from '../../../../Components';
+import { CopyField, QrModal } from '../../../../Components';
 
 import { stepShareProps } from '../../../../Types';
 
+import { ShareModalFooter, setRoomDefault } from '../../../index';
+
 const StepShare = ({ nextModal }: stepShareProps) => {
     const { roomId, roomPassword } = useAppSelector((state) => state.rooms);
+    const dispatch = useAppDispatch();
+    const { onOpen, onClose, isOpen } = useDisclosure();
 
-    //    TODO: show qr code
+    const closeModel = () => {
+        nextModal(1);
+        dispatch(setRoomDefault());
+    };
 
     return (
         <ModalContent>
@@ -34,12 +36,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                 <Text fontSize="1.1rem" fontWeight="700">
                     Room link and password
                 </Text>
-                <ModalCloseButton
-                    position="unset"
-                    onClick={() => {
-                        nextModal(1);
-                    }}
-                />
+                <ModalCloseButton position="unset" onClick={closeModel} />
             </ModalHeader>
 
             <ModalBody pb={4}>
@@ -70,54 +67,9 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                 borderColor="main.bg.sec"
                 pt=".5rem"
             >
-                {/* FIXME:  qr code */}
-                <Tooltip label="Qr Code">
-                    <Box
-                        bg="rgb(99 179 237)"
-                        textColor="white"
-                        fontSize="1.5rem"
-                        height="auto"
-                        borderRadius="0.2rem"
-                        _focus={{}}
-                        _active={{}}
-                        p="0.4rem"
-                        _hover={{ opacity: '0.8' }}
-                        cursor="pointer"
-                    >
-                        <HiQrcode />
-                    </Box>
-                </Tooltip>
-
-                <ShareButton
-                    ToolTipText="Share on whatsapp"
-                    Icon={AiOutlineWhatsApp}
-                    ButtonColor={'rgb(37, 211, 102)'}
-                    roomId={roomId}
-                    roomPassword={roomPassword}
-                    key={'share on whatsapp'}
-                    shareType={'WHATSAPP'}
-                />
-
-                <ShareButton
-                    ToolTipText="Share on twitter"
-                    Icon={AiOutlineTwitter}
-                    ButtonColor={'rgb(85, 172, 238);'}
-                    roomId={roomId}
-                    roomPassword={roomPassword}
-                    key={'share on twitter'}
-                    shareType={'TWITTER'}
-                />
-
-                <ShareButton
-                    ToolTipText="Share on telegram"
-                    Icon={FaTelegramPlane}
-                    ButtonColor={'rgb(85, 172, 238)'}
-                    roomId={roomId}
-                    roomPassword={roomPassword}
-                    key={'share on telegram'}
-                    shareType={'TELEGRAM'}
-                />
+                <ShareModalFooter qrModalOnOpen={onOpen} />
             </ModalFooter>
+            <QrModal isOpen={isOpen} onClose={onClose} />
         </ModalContent>
     );
 };

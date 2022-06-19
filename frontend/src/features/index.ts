@@ -21,6 +21,7 @@ import AllRooms from './rooms/RoomMain/Components/AllRooms';
 import ModalButtons from './rooms/RoomMain/Components/ModalButtons';
 import OpenRoomModal from './rooms/RoomMain/Components/OpenRoomModal';
 import StepShare from './rooms/RoomMain/Components/StepShare';
+import ShareModalFooter from './rooms/RoomMain/Components/ShareModalFooter';
 
 export * from './home/homeSlice';
 export * from './auth/authSlice';
@@ -51,4 +52,5 @@ export {
     ModalButtons,
     StepShare,
     OpenRoomModal,
+    ShareModalFooter,
 };

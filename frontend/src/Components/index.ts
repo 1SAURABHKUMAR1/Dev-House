@@ -9,6 +9,7 @@ import SingleRoomAvatar from './Avatar/SingleRoomAvatar';
 import SingleChat from './SingleChat/SingleChat';
 import CopyField from './CopyField/CopyField';
 import ShareButton from './ShareButton/ShareButton';
+import QrModal from './QrModal/QrModal';
 
 export {
     Container,
@@ -22,4 +23,5 @@ export {
     SingleChat,
     CopyField,
     ShareButton,
+    QrModal,
 };

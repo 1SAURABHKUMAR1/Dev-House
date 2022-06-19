@@ -133,6 +133,7 @@ export interface ModalButtonProps {
 export interface RoomSliceIntial {
     roomId: string;
     roomPassword: string;
+    qrcode: string;
 }
 
 export interface openRoomModalTypes {
@@ -171,6 +172,10 @@ export interface roomType {
     speakers: Array<userMiniType>;
     password?: string;
     createdAt: Date;
+    qrcode: {
+        id: string;
+        secure_url: string;
+    };
 }
 
 export interface singleRoomCardType {
@@ -192,4 +197,13 @@ export interface shareButtonProps {
     roomId: string;
     roomPassword: string;
     shareType: 'WHATSAPP' | 'TWITTER' | 'TELEGRAM';
+}
+
+export interface qrModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export interface shareModalProps {
+    qrModalOnOpen: () => void;
 }

@@ -15,8 +15,9 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
     const [image, setImage] = useState(avatar);
     const avatarRef = useRef(null);
 
-    const captureImage = (event: React.FormEvent<EventTarget>) => {
-        const file = (event.target as HTMLFormElement).files[0];
+    const captureImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // @ts-ignore
+        const file = event.target.files[0];
 
         const reader = new FileReader();
         reader.readAsDataURL(file);

@@ -16,8 +16,8 @@ const StepName = ({ onClick }: AuthStepProps) => {
     const { name } = useAppSelector((state) => state.activate);
     const [fullName, setFullName] = useState(name);
 
-    const handleNameChange = (event: React.FormEvent) => {
-        setFullName((event?.target as HTMLButtonElement).value);
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFullName(event.target.value);
     };
 
     const handleNextStep = () => {

@@ -19,10 +19,8 @@ const StepMobile = ({ onClick }: AuthStepProps) => {
     const [mobile, setMobile] = useState('');
     const dispatch = useAppDispatch();
 
-    const handleMobile = (event: React.FormEvent<EventTarget>) => {
-        const newMobile = (event.target as HTMLFormElement).value;
-
-        setMobile(newMobile);
+    const handleMobile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setMobile(event.target.value);
     };
 
     const nextStep = async () => {

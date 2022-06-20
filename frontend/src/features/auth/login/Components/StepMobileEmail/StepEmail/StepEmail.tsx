@@ -24,8 +24,8 @@ const StepEmail = ({ onClick }: AuthStepProps) => {
 
     const dispatch = useAppDispatch();
 
-    const handleEmail = async (event: React.FormEvent<EventTarget>) => {
-        const newEmail = (event.target as HTMLFormElement).value;
+    const handleEmail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newEmail = event.target.value;
 
         setEmail(newEmail);
         setIsValidEmail(emailRegex.test(newEmail));

@@ -34,10 +34,10 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
     const dispatch = useAppDispatch();
 
     const handlePasswordChange = async (
-        event: React.FormEvent<EventTarget>,
+        event: React.ChangeEvent<HTMLInputElement>,
         type: 'password' | 'confirm-password',
     ) => {
-        const newPassword = (event.target as HTMLFormElement).value;
+        const newPassword = event.target.value;
 
         if (type === 'password') {
             setPassword(newPassword);
@@ -97,9 +97,9 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             color="main.text.white"
                             required={true}
                             value={password}
-                            onChange={(event: React.FormEvent<EventTarget>) =>
-                                handlePasswordChange(event, 'password')
-                            }
+                            onChange={(
+                                event: React.ChangeEvent<HTMLInputElement>,
+                            ) => handlePasswordChange(event, 'password')}
                         />
                         <InputRightElement
                             width="3rem"
@@ -134,7 +134,9 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             color="main.text.white"
                             required={true}
                             value={confirmPassword}
-                            onChange={(event: React.FormEvent<EventTarget>) =>
+                            onChange={(
+                                event: React.ChangeEvent<HTMLInputElement>,
+                            ) =>
                                 handlePasswordChange(event, 'confirm-password')
                             }
                         />

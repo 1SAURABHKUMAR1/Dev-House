@@ -23,8 +23,10 @@ const StepUsername = ({ onClick }: AuthStepProps) => {
     const dispatch = useAppDispatch();
     const [username, setUsername] = useState(globalUsername);
 
-    const handleUsernameChange = (event: React.FormEvent) => {
-        setUsername((event?.target as HTMLButtonElement).value);
+    const handleUsernameChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setUsername(event.target.value);
     };
 
     const handleNext = async () => {

@@ -34,7 +34,7 @@ const OpenRoomModal = ({
     const dispatch = useAppDispatch();
 
     const handleRoomName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRoomName((event.target as HTMLInputElement).value);
+        setRoomName(event.target.value);
     };
 
     const handleCreateRoom = async () => {

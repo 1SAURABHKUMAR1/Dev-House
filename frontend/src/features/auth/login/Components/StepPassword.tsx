@@ -32,10 +32,9 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
     const dispatch = useAppDispatch();
 
     const handlePasswordChange = async (
-        event: React.FormEvent<EventTarget>,
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
-        const newPassword = (event.target as HTMLFormElement).value;
-        setPassword(newPassword);
+        setPassword(event.target.value);
     };
 
     const handleSubmitPassword = async () => {

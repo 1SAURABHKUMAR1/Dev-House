@@ -114,3 +114,24 @@ exports.singleRoom = BigPromise(async (req, res, next) => {
         room,
     });
 });
+
+exports.verifyRoomPassword = BigPromise(async (req, res, next) => {
+    const { password } = req.body;
+    const { roomId } = req.params;
+
+    if (!(password && roomId))
+        return next(CustomError(res, 'All Fields are required', 400));
+
+    const room = await Rooms.findOne({ room_id: roomId }).select('+password');
+
+    if (!room) return next(CustomError(res, 'Room not found', 400));
+
+    const isPassValid = await room.isPasswordValid(password);
+
+    if (!isPassValid) return next(CustomError(res, 'Password is invalid', 400));
+
+    res.status(200).json({
+        success: true,
+        message: 'Password is valid',
+    });
+});

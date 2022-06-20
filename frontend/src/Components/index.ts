@@ -10,6 +10,8 @@ import SingleChat from './SingleChat/SingleChat';
 import CopyField from './CopyField/CopyField';
 import ShareButton from './ShareButton/ShareButton';
 import QrModal from './QrModal/QrModal';
+import NotFoundTemplate from './PageNotFound/NotFoundTemplate';
+import ContainerLoader from './Loader/ContainerLoader';
 
 export {
     Container,
@@ -24,4 +26,6 @@ export {
     CopyField,
     ShareButton,
     QrModal,
+    NotFoundTemplate,
+    ContainerLoader,
 };

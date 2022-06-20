@@ -6,10 +6,13 @@ const {
     createRoom,
     getRooms,
     singleRoom,
+    checkRoom,
+    verifyRoomPassword,
 } = require('../Controllers/roomsController');
 
 router.route('/room/create').post(isLoggedIn, createRoom);
 router.route('/room/rooms').get(isLoggedIn, getRooms);
 router.route('/room/single/:roomId').get(isLoggedIn, singleRoom);
+router.route('/room/verify/:roomId').post(isLoggedIn, verifyRoomPassword);
 
 module.exports = router;

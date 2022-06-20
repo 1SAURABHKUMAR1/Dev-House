@@ -67,6 +67,7 @@ const Rooms = () => {
                         >
                             Start a room
                         </Button>
+                        {/* TODO: join room link */}
                     </Flex>
                 </Container>
 

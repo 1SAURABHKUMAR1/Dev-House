@@ -12,6 +12,11 @@ const AllRooms = () => {
     const { data, isLoading, isError } = useQuery(
         'rooms/getRooms',
         async () => await getAllRooms(),
+        {
+            retry: 1,
+            refetchOnWindowFocus: false,
+            refetchInterval: 10 * 1000,
+        },
     );
 
     if (isLoading) {

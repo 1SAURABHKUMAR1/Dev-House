@@ -17,10 +17,12 @@ const CopyField = ({
     fieldType,
 }: copyFieldProps) => {
     const { onCopy, hasCopied } = useClipboard(
-        fieldType
+        fieldType === 'ROOM_URL'
             ? `${process.env.REACT_APP_LOCAL_URL}/room/${inputCopyValue}`
             : `${inputCopyValue}`,
     );
+
+    console.log(`${process.env.REACT_APP_LOCAL_URL}/room/${inputCopyValue}`);
 
     return (
         <>

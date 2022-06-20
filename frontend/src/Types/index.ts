@@ -136,6 +136,7 @@ export interface RoomSliceIntial {
     roomPassword: string;
     qrcode: string;
 
+    authenticated: boolean;
     _id: string;
     name: string;
     room_id: string;
@@ -213,4 +214,10 @@ export interface qrModalProps {
 
 export interface shareModalProps {
     qrModalOnOpen: () => void;
+}
+
+export interface notFoundTemplateProps {
+    mainContent: string;
+    buttonText: string;
+    buttonLink: string;
 }

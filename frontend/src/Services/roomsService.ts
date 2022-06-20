@@ -13,4 +13,9 @@ const createRooms = (
 
 const singleRoom = (room_id: string) => Axios.get(`/room/single/${room_id}`);
 
-export { getAllRooms, createRooms, singleRoom };
+const verifyRoomPassword = (room_id: string, password: string) =>
+    Axios.post(`room/verify/${room_id}`, {
+        password,
+    });
+
+export { getAllRooms, createRooms, singleRoom, verifyRoomPassword };

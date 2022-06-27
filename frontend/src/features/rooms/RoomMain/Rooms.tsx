@@ -74,7 +74,7 @@ const Rooms = () => {
                             >
                                 Start room
                             </Button>
-                            {/* TODO: join room link */}
+
                             <Button
                                 bg="main.blue"
                                 textColor="white"

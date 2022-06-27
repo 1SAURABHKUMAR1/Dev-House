@@ -52,7 +52,7 @@ const SingleRoom = () => {
         AxiosResponse<createRoomResponse>,
         Error
     >(
-        'rooms/getRooms',
+        'rooms/singleRoom',
         // @ts-ignore
         async () => await singleRoom(roomId),
         {

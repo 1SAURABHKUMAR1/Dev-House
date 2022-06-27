@@ -41,11 +41,12 @@ const SingleRoom = () => {
     const { name } = useAppSelector((state) => state.rooms);
     const { authenticated, room_id } = useAppSelector((state) => state.rooms);
     const user = useAppSelector((state) => state.auth);
-    const { users, addAudioRef } = useSingleRoomWebRtc(
-        // @ts-ignore
-        roomId,
-        user,
-    );
+    // @ts-ignore
+    const { users, addAudioRef } = useSingleRoomWebRtc(roomId, {
+        photo: user.photo,
+        userId: user.userId,
+        username: user.username,
+    });
     const navigate = useNavigate();
 
     const { isLoading, isError } = useQuery<

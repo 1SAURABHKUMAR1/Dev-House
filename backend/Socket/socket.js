@@ -37,8 +37,6 @@ const socketHandler = (io) => {
                 });
             });
             socket.join(roomId);
-
-            console.log(getRoom(roomId, io));
         });
 
         // get ice candidate and send it ot user
@@ -57,10 +55,8 @@ const socketHandler = (io) => {
             });
         });
 
-        const removeUser = ({ roomId }) => {
+        socket.on(ACTIONS_LEAVE, ({ roomId }) => {
             const allUsers = getRoom(roomId, io);
-
-            console.log('called');
 
             allUsers.forEach((socketId) => {
                 io.to(socketId).emit(ACTIONS_REMOVE_USER, {
@@ -70,11 +66,26 @@ const socketHandler = (io) => {
             });
 
             socket.leave(roomId);
-            delete allUsers[socket.id];
-        };
+        });
 
-        socket.on(ACTIONS_LEAVE, removeUser);
-        socket.on('disconnecting', removeUser);
+        socket.on('disconnecting', () => {
+            const { rooms } = socket;
+
+            rooms.forEach((roomId) => {
+                const allUsers = getRoom(roomId, io);
+
+                allUsers.forEach((socketId) => {
+                    io.to(socketId).emit(ACTIONS_REMOVE_USER, {
+                        userId: connectedUsers[socket.id]?.userId,
+                        socketId: socket.id,
+                    });
+                });
+
+                socket.leave(roomId);
+            });
+
+            delete connectedUsers[socket.id];
+        });
     });
 };
 

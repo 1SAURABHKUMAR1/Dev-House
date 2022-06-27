@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 
 import { SingleRoomAvatar } from '../../../../Components';
 
-import { authSliceIntialState, singleRoomUsersProps } from '../../../../Types';
+import { singleRoomUsersProps, socketUser } from '../../../../Types';
 
 import { memo } from 'react';
 
@@ -17,7 +17,7 @@ const SingleRoomUsers = ({ users, addAudioRef }: singleRoomUsersProps) => {
                 width="100%"
                 justifyContent="center"
             >
-                {users.map((user: authSliceIntialState) => (
+                {users.map((user: socketUser) => (
                     <SingleRoomAvatar
                         src={user.photo}
                         username={user.username}

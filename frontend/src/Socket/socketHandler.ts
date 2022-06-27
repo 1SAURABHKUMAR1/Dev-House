@@ -1,6 +1,5 @@
 import { Socket } from 'socket.io-client';
 import {
-    authSliceIntialState,
     socketADDUSERPROPS,
     socketAddUserProps,
     socketGetIceCandidateProps,
@@ -9,6 +8,7 @@ import {
     socketICECANDIDATEPROPS,
     socketREMOVEUSERPROPS,
     socketRemoveUserProps,
+    socketUser,
 } from '../Types';
 import {
     ACTIONS_JOIN,
@@ -21,11 +21,8 @@ import {
 } from './actions';
 var freeice = require('freeice');
 
-export const socketEmit = (
-    roomId: string,
-    user: authSliceIntialState,
-    socket: Socket,
-) => socket.emit(ACTIONS_JOIN, { roomId, user });
+export const socketEmit = (roomId: string, user: socketUser, socket: Socket) =>
+    socket.emit(ACTIONS_JOIN, { roomId, user });
 
 // flow => check if exits -> create new rtcconnection -> add .onicecandiate (send socket new generated) -> add .ontrack (add new user to users) -> add to local
 export const socketAddUser = ({

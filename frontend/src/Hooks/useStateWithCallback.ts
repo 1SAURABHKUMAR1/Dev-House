@@ -11,7 +11,6 @@ const useStateWithCallBack: updateStateWithCallback = (
 ) => {
     // users state
     const [users, setUsers] = useState<initialUsersType>(initalUsers);
-    // holds cb ref
     const cbRef = useRef<cbRefType>({ stateFunction: null });
 
     // add user based on many checks

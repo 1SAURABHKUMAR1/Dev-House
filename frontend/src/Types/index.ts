@@ -225,7 +225,7 @@ export interface notFoundTemplateProps {
     buttonLink: string;
 }
 
-export type initialUsersType = Array<authSliceIntialState>;
+export type initialUsersType = Array<socketUser>;
 
 export type newStateType = (
     prevState: initialUsersType,
@@ -234,9 +234,7 @@ export type newStateType = (
 export type cbType = (users: initialUsersType) => void;
 
 export type addUserType = (
-    newUserInfo:
-        | authSliceIntialState
-        | ((users: initialUsersType) => initialUsersType),
+    newUserInfo: socketUser | ((users: initialUsersType) => initialUsersType),
     cb: cbType | null,
 ) => void;
 
@@ -246,8 +244,15 @@ export type updateStateWithCallback = (
 
 export type useSingleRoomWebRtcType = (
     roomId: string,
-    user: authSliceIntialState,
-) => { users: Array<authSliceIntialState>; addAudioRef: addAudioRefType };
+    user: socketUser,
+) => { users: Array<socketUser>; addAudioRef: addAudioRefType };
+
+export type socketUser = {
+    userId: string;
+    username: string;
+    photo: string;
+    muted?: boolean;
+};
 
 export type cbRefType = {
     stateFunction: cbType | null;
@@ -259,7 +264,7 @@ export type addAudioRefType = (
 ) => void;
 
 export interface singleRoomUsersProps {
-    users: Array<authSliceIntialState>;
+    users: Array<socketUser>;
     addAudioRef: addAudioRefType;
 }
 
@@ -302,7 +307,7 @@ export interface socketRemoveUserProps {
 export interface socketADDUSERPROPS {
     socketId: string;
     createOffer: boolean;
-    user: authSliceIntialState;
+    user: socketUser;
 }
 
 export interface socketICECANDIDATEPROPS {

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { BsArrowLeftShort } from 'react-icons/bs';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { verifyRoomPassword } from '../../../../Services';
@@ -29,6 +29,7 @@ const PasswordModal = () => {
     const [password, setPassword] = useState('');
     const { roomId } = useParams();
     const navigate = useNavigate();
+    const passwordRefFocus = useRef(null);
 
     const { mutateAsync, isLoading } = useMutation<AxiosResponse<any>, Error>(
         // @ts-ignore
@@ -67,6 +68,7 @@ const PasswordModal = () => {
                 isCentered
                 closeOnOverlayClick={false}
                 size={'md'}
+                initialFocusRef={passwordRefFocus}
             >
                 <ModalOverlay backdropFilter="blur(4px)" />
 
@@ -109,6 +111,7 @@ const PasswordModal = () => {
                             marginTop="1rem"
                             value={password}
                             onChange={handlePasswordChange}
+                            ref={passwordRefFocus}
                         />
 
                         <Button

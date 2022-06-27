@@ -10,10 +10,12 @@ const SingleRoomUsers = ({ users, addAudioRef }: singleRoomUsersProps) => {
     return (
         <>
             <Grid
-                gridTemplateColumns="repeat(auto-fill, 4rem)"
-                gap="1.3rem"
-                columnGap="2.8rem"
+                gridTemplateColumns="repeat(auto-fill, 5.5rem)"
+                gap="1.5rem"
+                columnGap="2rem"
                 marginTop="2rem"
+                width="100%"
+                justifyContent="center"
             >
                 {users.map((user: authSliceIntialState) => (
                     <SingleRoomAvatar

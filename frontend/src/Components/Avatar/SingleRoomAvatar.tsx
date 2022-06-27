@@ -11,9 +11,10 @@ const SingleRoomAvatar = ({
 }: SingleRoomAvatarProps) => {
     return (
         <>
-            <Box width="max-content" textAlign="center">
+            <Box width="max-content" textAlign="center" margin="auto">
                 <Avatar
-                    size="lg"
+                    height="5rem"
+                    width="5rem"
                     showBorder
                     name="user avatar"
                     borderColor="main.blue"
@@ -28,7 +29,12 @@ const SingleRoomAvatar = ({
                     autoPlay
                     // controls={true}
                 ></audio>
-                <Text fontSize="0.85rem" fontWeight="600">
+                <Text
+                    fontSize="0.85rem"
+                    fontWeight="600"
+                    className="tracking-overflow"
+                    maxW="5.5rem"
+                >
                     @{username}
                 </Text>
             </Box>

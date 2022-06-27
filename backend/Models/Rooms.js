@@ -49,7 +49,7 @@ const roomsSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 24 * 60 * 60,
+        expires: 86400,
     },
 });
 

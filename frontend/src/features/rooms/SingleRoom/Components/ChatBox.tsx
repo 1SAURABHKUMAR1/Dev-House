@@ -34,7 +34,7 @@ const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
                 onClose={onClose}
                 finalFocusRef={btnRef}
                 initialFocusRef={inputRef}
-                size={{ ssm: 'xs', md: 'sm' }}
+                size="sm"
             >
                 <DrawerOverlay />
                 <DrawerContent>

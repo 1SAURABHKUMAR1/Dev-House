@@ -12,6 +12,7 @@ import ShareButton from './ShareButton/ShareButton';
 import QrModal from './QrModal/QrModal';
 import NotFoundTemplate from './PageNotFound/NotFoundTemplate';
 import ContainerLoader from './Loader/ContainerLoader';
+import SingleRoomButton from './Button/SingleRoomButton';
 
 export {
     Container,
@@ -28,4 +29,5 @@ export {
     QrModal,
     NotFoundTemplate,
     ContainerLoader,
+    SingleRoomButton,
 };

@@ -35,7 +35,7 @@ const QrModal = ({ isOpen, onClose }: qrModalProps) => {
                         display="flex"
                     >
                         <Text fontSize="1.1rem" fontWeight="700">
-                            Room link and password
+                            Room Qr Code
                         </Text>
                         <ModalCloseButton position="unset" onClick={onClose} />
                     </ModalHeader>

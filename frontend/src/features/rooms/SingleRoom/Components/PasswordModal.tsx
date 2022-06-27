@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { verifyRoomPassword } from '../../../../Services';
 
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { resetUserAuthRoom, setUserAuthenticatedToJoin } from '../../../index';
+import { setUserRoomJoined } from '../../../index';
 
 import { AxiosResponse } from 'axios';
 
@@ -35,7 +35,7 @@ const PasswordModal = () => {
         () => verifyRoomPassword(roomId, password),
         {
             onSuccess() {
-                dispatch(setUserAuthenticatedToJoin());
+                dispatch(setUserRoomJoined());
             },
             onError(error: Error) {
                 console.log(error);
@@ -55,14 +55,13 @@ const PasswordModal = () => {
     };
 
     const handleBackButton = () => {
-        dispatch(resetUserAuthRoom());
         navigate('/rooms');
     };
 
     return (
         <>
             <Modal
-                isOpen={!authenticated}
+                isOpen={authenticated === 'NOTAUTHENTICATED'}
                 onClose={onClose}
                 blockScrollOnMount={false}
                 isCentered
@@ -97,7 +96,6 @@ const PasswordModal = () => {
                         >
                             <BsArrowLeftShort fontSize="1.7rem" />
                         </Button>
-                        {/* TODO:loader in backgroudn */}
                         Enter password to enter
                     </ModalHeader>
 

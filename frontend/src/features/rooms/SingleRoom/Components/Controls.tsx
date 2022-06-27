@@ -1,52 +1,47 @@
-import { Button, Image } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-import { BsFillChatDotsFill } from 'react-icons/bs';
+import { SingleRoomButton } from '../../../../Components';
 
 import { ControlsProps } from '../../../../Types';
 
-const Controls = ({ btnRef, onOpen }: ControlsProps) => {
+const Controlls = ({ btnRef, onOpen }: ControlsProps) => {
+    const navigate = useNavigate();
+
+    const handleBackButton = () => {
+        navigate('/rooms');
+    };
+
     return (
-        <>
-            <Button
-                bg="main.input-bg"
-                textColor="white"
-                borderRadius="50%"
-                padding="0px"
-                _focus={{}}
-                _active={{}}
-                _hover={{ bg: 'main.bg.black.hover' }}
-            >
-                <Image src="/images/hand-icon.svg" />
-            </Button>
-            <Button
-                bg="main.input-bg"
-                textColor="white"
-                borderRadius="1.4rem"
-                _focus={{}}
-                _active={{}}
-                _hover={{ bg: 'main.bg.black.hover' }}
-                gap="0.5rem"
-                fontSize="0.9rem"
-            >
-                <Image src="/images/hand-leave.svg" />
-                Leave quietly
-            </Button>
-            <Button
-                bg="main.input-bg"
-                textColor="white"
-                borderRadius="1.4rem"
-                _focus={{}}
-                _active={{}}
-                _hover={{ bg: 'main.bg.black.hover' }}
-                fontSize="0.9rem"
-                leftIcon={<BsFillChatDotsFill />}
-                onClick={onOpen}
-                ref={btnRef}
-            >
-                Chat Box
-            </Button>
-        </>
+        <Container
+            maxW={{ ssm: '100%', mmd: 'max-content' }}
+            bg="main.text.white"
+            borderRadius="0.4rem"
+            position={{ ssm: 'fixed', mmd: 'absolute' }}
+            bottom={{ ssm: '0rem', mmd: '2rem' }}
+            left={{ mmd: '50%' }}
+            transform={{ mmd: 'translate(-50%,0%)' }}
+            right={{ ssm: '0rem', mmd: 'auto' }}
+            padding={'0.4rem'}
+        >
+            <Box display="flex" justifyContent="space-evenly">
+                <SingleRoomButton buttonText="Mute" tooltipLabel="Mute" />
+
+                <SingleRoomButton
+                    buttonText="Leave quietly"
+                    tooltipLabel="Leave"
+                    onClick={handleBackButton}
+                />
+
+                <SingleRoomButton
+                    buttonText="Chat"
+                    tooltipLabel="Chat Box"
+                    btnRef={btnRef}
+                    onClick={onOpen}
+                />
+            </Box>
+        </Container>
     );
 };
 
-export default Controls;
+export default Controlls;

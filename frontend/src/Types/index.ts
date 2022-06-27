@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconType } from 'react-icons';
+import { Socket } from 'socket.io-client';
 
 export interface Children {
     children: React.ReactNode;
@@ -99,6 +100,8 @@ export interface LoadingButtonProps {
 export interface SingleRoomAvatarProps {
     src: string;
     username: string;
+    addAudioRef: addAudioRefType;
+    userId: string;
 }
 
 export interface ChatBoxProps {
@@ -136,7 +139,7 @@ export interface RoomSliceIntial {
     roomPassword: string;
     qrcode: string;
 
-    authenticated: boolean;
+    authenticated: 'PENDING' | 'NOTAUTHENTICATED' | 'AUTHENTICATED';
     _id: string;
     name: string;
     room_id: string;
@@ -220,4 +223,106 @@ export interface notFoundTemplateProps {
     mainContent: string;
     buttonText: string;
     buttonLink: string;
+}
+
+export type initialUsersType = Array<authSliceIntialState>;
+
+export type newStateType = (
+    prevState: initialUsersType,
+) => initialUsersType | initialUsersType;
+
+export type cbType = (users: initialUsersType) => void;
+
+export type addUserType = (
+    newUserInfo:
+        | authSliceIntialState
+        | ((users: initialUsersType) => initialUsersType),
+    cb: cbType | null,
+) => void;
+
+export type updateStateWithCallback = (
+    initalUsers: initialUsersType,
+) => [initialUsersType, addUserType];
+
+export type useSingleRoomWebRtcType = (
+    roomId: string,
+    user: authSliceIntialState,
+) => { users: Array<authSliceIntialState>; addAudioRef: addAudioRefType };
+
+export type cbRefType = {
+    stateFunction: cbType | null;
+};
+
+export type addAudioRefType = (
+    userId: string,
+    instance: HTMLAudioElement,
+) => void;
+
+export interface singleRoomUsersProps {
+    users: Array<authSliceIntialState>;
+    addAudioRef: addAudioRefType;
+}
+
+export type currentUserAudioInput = {
+    media: MediaStream | null;
+};
+
+export type roomUserType = {
+    rtc: {
+        [socketId: string]: RTCPeerConnection;
+    };
+    audio: {
+        [userId: string]: HTMLAudioElement;
+    };
+};
+
+export interface socketAddUserProps {
+    addUser: addUserType;
+    currentUserAudioInput: React.MutableRefObject<currentUserAudioInput>;
+    socket: Socket;
+    roomUsers: React.MutableRefObject<roomUserType>;
+}
+
+export interface socketGetIceCandidateProps {
+    socket: Socket;
+    roomUsers: React.MutableRefObject<roomUserType>;
+}
+
+export interface socketGetOfferAnsProps {
+    socket: Socket;
+    roomUsers: React.MutableRefObject<roomUserType>;
+}
+
+export interface socketRemoveUserProps {
+    addUser: addUserType;
+    socket: Socket;
+    roomUsers: React.MutableRefObject<roomUserType>;
+}
+
+export interface socketADDUSERPROPS {
+    socketId: string;
+    createOffer: boolean;
+    user: authSliceIntialState;
+}
+
+export interface socketICECANDIDATEPROPS {
+    socketId: string;
+    icecandidate: RTCIceCandidate;
+}
+
+export interface socketGETOFFERANSPROPS {
+    socketId: string;
+    offerOrAns: RTCSessionDescriptionInit;
+}
+
+export interface socketREMOVEUSERPROPS {
+    userId: string;
+    socketId: string;
+}
+
+export interface SingleRoomButton {
+    tooltipLabel: string;
+    buttonText: string;
+    onClick?: () => void;
+    btnRef?: React.RefObject<HTMLButtonElement>;
 }

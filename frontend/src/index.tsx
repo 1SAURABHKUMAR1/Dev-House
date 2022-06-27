@@ -21,17 +21,17 @@ if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-    <React.StrictMode>
-        <ChakraProvider resetCSS={true} theme={theme}>
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <Toaster position="top-right" reverseOrder={false} />
-                    <Router>
-                        <App />
-                    </Router>
-                </Provider>
-                {/* <ReactQueryDevtools /> */}
-            </QueryClientProvider>
-        </ChakraProvider>
-    </React.StrictMode>,
+    // <React.StrictMode>
+    <ChakraProvider resetCSS={true} theme={theme}>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <Toaster position="top-right" reverseOrder={false} />
+                <Router>
+                    <App />
+                </Router>
+            </Provider>
+            <ReactQueryDevtools />
+        </QueryClientProvider>
+    </ChakraProvider>,
+    // </React.StrictMode>,
 );

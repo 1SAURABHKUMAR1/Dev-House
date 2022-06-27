@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, GridItem, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, GridItem, Text, Tooltip } from '@chakra-ui/react';
 import { BsPersonFill } from 'react-icons/bs';
 import { singleRoomCardType, userMiniType } from '../../Types';
 
@@ -66,12 +66,14 @@ const SingleRoomCard = ({ roomName, speakers }: singleRoomCardType) => {
             </Flex>
 
             <Box justifyContent="flex-end" alignItems="center" display="flex">
-                <Flex alignItems="center" gap="0.2rem">
-                    <Text as="span" fontWeight="700">
-                        {speakers.length}
-                    </Text>
-                    <BsPersonFill />
-                </Flex>
+                <Tooltip label="Speakers">
+                    <Flex alignItems="center" gap="0.2rem">
+                        <Text as="span" fontWeight="700">
+                            {speakers.length}
+                        </Text>
+                        <BsPersonFill />
+                    </Flex>
+                </Tooltip>
             </Box>
         </GridItem>
     );

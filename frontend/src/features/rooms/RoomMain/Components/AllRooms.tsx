@@ -7,6 +7,7 @@ import { getAllRooms } from '../../../../Services';
 import { MainLoader, SingleRoomCard } from '../../../../Components';
 
 import { roomType } from '../../../../Types';
+import { memo } from 'react';
 
 const AllRooms = () => {
     const { data, isLoading, isError } = useQuery(
@@ -14,7 +15,7 @@ const AllRooms = () => {
         async () => await getAllRooms(),
         {
             retry: 1,
-            refetchOnWindowFocus: false,
+            // refetchOnWindowFocus: false,
             refetchInterval: 10 * 1000,
         },
     );
@@ -52,4 +53,4 @@ const AllRooms = () => {
     );
 };
 
-export default AllRooms;
+export default memo(AllRooms);

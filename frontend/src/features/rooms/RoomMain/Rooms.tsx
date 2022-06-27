@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 
 import { useRef } from 'react';
-import { BsPerson } from 'react-icons/bs';
 
 import {
     BottomContainer,
@@ -17,10 +16,17 @@ import {
 } from '../../../Components';
 
 import { AllRooms, CreateRoomModal } from '../../index';
+import JoinRoomModal from './Components/JoinRoomModal';
 
 const Rooms = () => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const roomRef = useRef<HTMLInputElement>(null);
+    const {
+        isOpen: isOpenJoinRoom,
+        onClose: onCloseJoinRoom,
+        onOpen: onOpenJoinRoom,
+    } = useDisclosure();
+    const joinRoomRef = useRef<HTMLInputElement>(null);
 
     // TODO:  rooms filter
 
@@ -55,19 +61,32 @@ const Rooms = () => {
                                 placeholder="Room Name....."
                             />
                         </Flex>
-                        <Button
-                            bg="main.blue"
-                            textColor="white"
-                            borderRadius="1.4rem"
-                            _focus={{}}
-                            _active={{}}
-                            _hover={{ bg: 'main.blue.hover' }}
-                            leftIcon={<BsPerson />}
-                            onClick={onOpen}
-                        >
-                            Start a room
-                        </Button>
-                        {/* TODO: join room link */}
+                        <Box>
+                            <Button
+                                bg="main.blue"
+                                textColor="white"
+                                borderRadius="1.4rem"
+                                _focus={{}}
+                                _active={{}}
+                                _hover={{ bg: 'main.blue.hover' }}
+                                onClick={onOpen}
+                                marginRight="0.5rem"
+                            >
+                                Start room
+                            </Button>
+                            {/* TODO: join room link */}
+                            <Button
+                                bg="main.blue"
+                                textColor="white"
+                                borderRadius="1.4rem"
+                                _focus={{}}
+                                _active={{}}
+                                _hover={{ bg: 'main.blue.hover' }}
+                                onClick={onOpenJoinRoom}
+                            >
+                                Join room
+                            </Button>
+                        </Box>
                     </Flex>
                 </Container>
 
@@ -76,6 +95,13 @@ const Rooms = () => {
                     onClose={onClose}
                     key="CreateRoomModal"
                     inputInitalRef={roomRef}
+                />
+
+                <JoinRoomModal
+                    isOpen={isOpenJoinRoom}
+                    onClose={onCloseJoinRoom}
+                    inputInitalRef={joinRoomRef}
+                    key="joinRoomModal"
                 />
 
                 <AllRooms />

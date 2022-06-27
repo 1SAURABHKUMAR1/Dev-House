@@ -49,7 +49,7 @@ exports.createRoom = BigPromise(async (req, res, next) => {
             room.room_id
         }${room.password ? `  where password is ${randomPassword}` : ''}`,
         async (error, url) => {
-            if (error) return next(CustomError(res, 'Internal Error', 400));
+            if (error) next(CustomError(res, 'Internal Error', 400));
 
             const cloudinaryPhoto = await cloudinary.uploader
                 .upload(url, {

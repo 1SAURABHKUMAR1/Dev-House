@@ -2,13 +2,11 @@ import { Grid } from '@chakra-ui/react';
 
 import { SingleRoomAvatar } from '../../../../Components';
 
-import { useAppSelector } from '../../../../store/hooks';
+import { authSliceIntialState, singleRoomUsersProps } from '../../../../Types';
 
-import { userMiniType } from '../../../../Types';
+import { memo } from 'react';
 
-const SingleRoomUsers = () => {
-    const { speakers } = useAppSelector((state) => state.rooms);
-
+const SingleRoomUsers = ({ users, addAudioRef }: singleRoomUsersProps) => {
     return (
         <>
             <Grid
@@ -17,11 +15,13 @@ const SingleRoomUsers = () => {
                 columnGap="2.8rem"
                 marginTop="2rem"
             >
-                {speakers.map((speaker: userMiniType) => (
+                {users.map((user: authSliceIntialState) => (
                     <SingleRoomAvatar
-                        src={speaker.profile_photo?.secure_url}
-                        username={speaker.username}
-                        key={speaker.user_id}
+                        src={user.photo}
+                        username={user.username}
+                        addAudioRef={addAudioRef}
+                        userId={user.userId}
+                        key={user.userId}
                     />
                 ))}
             </Grid>
@@ -29,4 +29,4 @@ const SingleRoomUsers = () => {
     );
 };
 
-export default SingleRoomUsers;
+export default memo(SingleRoomUsers);

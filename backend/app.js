@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const { Server } = require('socket.io');
+const httpsServer = require('http').createServer(app);
+const socketHandler = require('./Socket/socket');
 
 app.use(morgan('tiny'));
 app.use(express.json({ limit: '10mb' }));
@@ -39,4 +42,14 @@ app.use('/api/v1', home);
 app.use('/api/v1', user);
 app.use('/api/v1', rooms);
 
-module.exports = app;
+const io = new Server(httpsServer, {
+    cors: {
+        origin: process.env.CLIENT_URL,
+        methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
+        credentials: true,
+    },
+});
+socketHandler(io);
+
+exports.app = app;
+exports.httpsServer = httpsServer;

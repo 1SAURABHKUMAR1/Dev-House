@@ -1,5 +1,5 @@
 require('dotenv').config();
-const app = require('./app');
+const { app, httpsServer } = require('./app');
 const connectDB = require('./Config/database');
 const cloudinary = require('cloudinary').v2;
 
@@ -14,6 +14,6 @@ cloudinary.config({
 
 const { PORT } = process.env;
 
-app.listen(PORT, () => {
+httpsServer.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`);
 });

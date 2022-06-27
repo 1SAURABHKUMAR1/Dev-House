@@ -6,7 +6,7 @@ const initialState: RoomSliceIntial = {
     roomPassword: '',
     qrcode: '',
 
-    authenticated: false,
+    authenticated: 'PENDING',
     _id: '',
     name: '',
     room_id: '',
@@ -37,17 +37,19 @@ const roomsSlice = createSlice({
             state.speakers = action.payload.room.speakers;
             state.type = action.payload.room.type;
 
-            if (action.payload.room.type === 'OPEN') {
-                state.authenticated = true;
-            } else {
-                state.authenticated = false;
+            if (state.authenticated !== 'AUTHENTICATED') {
+                if (action.payload.room.type === 'OPEN') {
+                    state.authenticated = 'AUTHENTICATED';
+                } else {
+                    state.authenticated = 'NOTAUTHENTICATED';
+                }
             }
         },
-        setUserAuthenticatedToJoin: (state: RoomSliceIntial) => {
-            state.authenticated = true;
+        setUserRoomJoined: (state: RoomSliceIntial) => {
+            state.authenticated = 'AUTHENTICATED';
         },
         resetUserAuthRoom: (state: RoomSliceIntial) => {
-            state.authenticated = false;
+            state.authenticated = 'PENDING';
             state._id = '';
             state.name = '';
             state.room_id = '';
@@ -70,6 +72,6 @@ export const {
     setRoomLink,
     setRoomDefault,
     setRoom,
-    setUserAuthenticatedToJoin,
+    setUserRoomJoined,
     resetUserAuthRoom,
 } = roomsSlice.actions;

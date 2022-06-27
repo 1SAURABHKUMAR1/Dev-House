@@ -1,8 +1,14 @@
 import { Avatar, Box, Text } from '@chakra-ui/react';
+import { memo } from 'react';
 
 import { SingleRoomAvatarProps } from '../../Types';
 
-const SingleRoomAvatar = ({ src, username }: SingleRoomAvatarProps) => {
+const SingleRoomAvatar = ({
+    src,
+    username,
+    addAudioRef,
+    userId,
+}: SingleRoomAvatarProps) => {
     return (
         <>
             <Box width="max-content" textAlign="center">
@@ -16,6 +22,12 @@ const SingleRoomAvatar = ({ src, username }: SingleRoomAvatarProps) => {
                     src={src}
                     mb="0.2rem"
                 />
+                <audio
+                    // @ts-ignore
+                    ref={(refInstance) => addAudioRef(userId, refInstance)}
+                    autoPlay
+                    // controls={true}
+                ></audio>
                 <Text fontSize="0.85rem" fontWeight="600">
                     @{username}
                 </Text>
@@ -24,4 +36,4 @@ const SingleRoomAvatar = ({ src, username }: SingleRoomAvatarProps) => {
     );
 };
 
-export default SingleRoomAvatar;
+export default memo(SingleRoomAvatar);

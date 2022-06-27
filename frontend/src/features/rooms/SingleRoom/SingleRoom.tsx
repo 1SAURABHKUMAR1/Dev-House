@@ -1,7 +1,7 @@
 import { Box, Container, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
-import { useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -24,6 +24,8 @@ import {
     PasswordModal,
 } from '../../index';
 
+import useSingleRoomWebRtc from '../../../Hooks/useSingleRoomWebRtc';
+
 import { AxiosResponse } from 'axios';
 import { createRoomResponse } from '../../../Types';
 
@@ -31,11 +33,20 @@ import ErrorToast from '../../../Toast/Error';
 
 const SingleRoom = () => {
     const { roomId } = useParams();
+
     const btnRef = useRef<HTMLButtonElement | null>(null);
     const { onOpen, isOpen, onClose } = useDisclosure();
-    const { name } = useAppSelector((state) => state.rooms);
-    const { authenticated } = useAppSelector((state) => state.rooms);
+
     const dispatch = useAppDispatch();
+    const { name } = useAppSelector((state) => state.rooms);
+    const { authenticated, room_id } = useAppSelector((state) => state.rooms);
+    const user = useAppSelector((state) => state.auth);
+    const { users, addAudioRef } = useSingleRoomWebRtc(
+        // @ts-ignore
+        roomId,
+        user,
+    );
+    const navigate = useNavigate();
 
     const { isLoading, isError } = useQuery<
         AxiosResponse<createRoomResponse>,
@@ -57,9 +68,16 @@ const SingleRoom = () => {
         },
     );
 
-    const handleAllRoomsButton = () => {
-        dispatch(resetUserAuthRoom());
+    const handleBackButton = () => {
+        navigate('/rooms');
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetUserAuthRoom());
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (isLoading) {
         return <MainLoader />;
@@ -81,7 +99,7 @@ const SingleRoom = () => {
                         <Link to="/rooms">
                             <BsArrowLeftShort
                                 fontSize={'1.5rem'}
-                                onClick={handleAllRoomsButton}
+                                onClick={handleBackButton}
                             />
                         </Link>
                         <Box width="5rem">
@@ -104,47 +122,33 @@ const SingleRoom = () => {
                     paddingTop="2rem"
                     position="relative"
                 >
-                    {authenticated && (
-                        <Container maxW="container.xl">
-                            <Flex
-                                justifyContent="space-between"
-                                rowGap={'1rem'}
-                                alignItems={{ ssm: '', md: 'center' }}
-                                flexDirection={{ ssm: 'column', md: 'row' }}
-                            >
-                                <Text
-                                    textAlign="center"
-                                    maxWidth={{
-                                        ssm: '100%',
-                                        md: '18rem',
-                                        lg: '20rem',
-                                    }}
-                                    fontSize="1.2rem"
-                                    fontWeight="700"
-                                >
-                                    {name}
-                                </Text>
-                                <Flex
-                                    gap="1rem"
-                                    justifyContent="flex-end"
-                                    alignItems="center"
-                                    display="flex"
-                                    flexWrap="wrap"
-                                >
-                                    <Controls btnRef={btnRef} onOpen={onOpen} />
-                                </Flex>
-                            </Flex>
-
-                            <SingleRoomUsers />
-                        </Container>
+                    {authenticated === 'NOTAUTHENTICATED' && (
+                        <ContainerLoader />
                     )}
 
-                    {!authenticated && <ContainerLoader />}
+                    {authenticated === 'AUTHENTICATED' && (
+                        <Container maxW="container.xl">
+                            <Text
+                                textAlign="center"
+                                maxW="100%"
+                                fontSize="1.2rem"
+                                fontWeight="700"
+                            >
+                                {name}
+                            </Text>
+
+                            <SingleRoomUsers
+                                users={users}
+                                addAudioRef={addAudioRef}
+                            />
+                            <Controls btnRef={btnRef} onOpen={onOpen} />
+                        </Container>
+                    )}
                 </Container>
 
                 <ChatBox btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
             </MainContainer>
-            <PasswordModal />
+            {room_id && <PasswordModal />}
         </>
     );
 };

@@ -119,7 +119,7 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
             });
 
             // join socket
-            socketEmit(roomId, user);
+            socketEmit(roomId, { ...user, muted: user.muted });
 
             // handle add new user
             socketAddUser({

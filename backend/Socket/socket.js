@@ -100,6 +100,8 @@ const socketHandler = (io) => {
                         mute,
                     });
             });
+
+            connectedUsers[socket.id].muted = mute;
         });
     });
 };

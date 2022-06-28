@@ -59,7 +59,7 @@ export const socketAddUser = ({
             roomUsers.current.rtc[socketId].ontrack = (
                 event: RTCTrackEvent,
             ) => {
-                addUser({ ...user, muted: true }, () => {
+                addUser({ ...user }, () => {
                     // check user audio element preset
                     if (roomUsers.current.audio[user.userId]) {
                         roomUsers.current.audio[user.userId].srcObject =

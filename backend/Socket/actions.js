@@ -6,3 +6,5 @@ exports.ACTIONS_SEND_SESSION_DESC = 'send_sdp';
 exports.ACTIONS_SESSION_DESCRIPTION = 'session_description';
 exports.ACTIONS_ICE_CANDIDATE = 'ice_candidate';
 exports.ACTIONS_LEAVE = 'leave';
+exports.ACTIONS_SEND_MUTE_UNMUTE = 'send_mute_unmute';
+exports.ACTIONS_MUTE_UNMUTE = 'mute_unmute';

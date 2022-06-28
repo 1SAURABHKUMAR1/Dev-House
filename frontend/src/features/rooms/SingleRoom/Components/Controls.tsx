@@ -1,11 +1,12 @@
 import { Box, Container } from '@chakra-ui/react';
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { SingleRoomButton } from '../../../../Components';
 
 import { ControlsProps } from '../../../../Types';
 
-const Controlls = ({ btnRef, onOpen }: ControlsProps) => {
+const Controls = ({ btnRef, onOpen, handleMuted, userId }: ControlsProps) => {
     const navigate = useNavigate();
 
     const handleBackButton = () => {
@@ -25,7 +26,11 @@ const Controlls = ({ btnRef, onOpen }: ControlsProps) => {
             padding={'0.4rem'}
         >
             <Box display="flex" justifyContent="space-evenly">
-                <SingleRoomButton buttonText="Mute" tooltipLabel="Mute" />
+                <SingleRoomButton
+                    buttonText="Mute"
+                    tooltipLabel="Mute"
+                    onClick={() => handleMuted(userId)}
+                />
 
                 <SingleRoomButton
                     buttonText="Leave quietly"
@@ -44,4 +49,4 @@ const Controlls = ({ btnRef, onOpen }: ControlsProps) => {
     );
 };
 
-export default Controlls;
+export default memo(Controls);

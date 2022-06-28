@@ -1,4 +1,3 @@
-import { Socket } from 'socket.io-client';
 import {
     socketADDUSERPROPS,
     socketAddUserProps,
@@ -6,6 +5,8 @@ import {
     socketGETOFFERANSPROPS,
     socketGetOfferAnsProps,
     socketICECANDIDATEPROPS,
+    socketMUTEUNMUTEPROPS,
+    socketMuteUnmuteProps,
     socketREMOVEUSERPROPS,
     socketRemoveUserProps,
     socketUser,
@@ -18,17 +19,18 @@ import {
     ACTIONS_SEND_SESSION_DESC,
     ACTIONS_SESSION_DESCRIPTION,
     ACTIONS_ICE_CANDIDATE,
+    ACTIONS_MUTE_UNMUTE,
 } from './actions';
+import { socket } from './socket';
 var freeice = require('freeice');
 
-export const socketEmit = (roomId: string, user: socketUser, socket: Socket) =>
+export const socketEmit = (roomId: string, user: socketUser) =>
     socket.emit(ACTIONS_JOIN, { roomId, user });
 
 // flow => check if exits -> create new rtcconnection -> add .onicecandiate (send socket new generated) -> add .ontrack (add new user to users) -> add to local
 export const socketAddUser = ({
     addUser,
     currentUserAudioInput,
-    socket,
     roomUsers,
 }: socketAddUserProps) =>
     socket.on(
@@ -57,7 +59,7 @@ export const socketAddUser = ({
             roomUsers.current.rtc[socketId].ontrack = (
                 event: RTCTrackEvent,
             ) => {
-                addUser(user, () => {
+                addUser({ ...user, muted: true }, () => {
                     // check user audio element preset
                     if (roomUsers.current.audio[user.userId]) {
                         roomUsers.current.audio[user.userId].srcObject =
@@ -109,7 +111,6 @@ export const socketAddUser = ({
     );
 
 export const socketGetIceCandidate = ({
-    socket,
     roomUsers,
 }: socketGetIceCandidateProps) =>
     socket.on(
@@ -125,10 +126,7 @@ export const socketGetIceCandidate = ({
         },
     );
 
-export const socketGetOfferAns = ({
-    socket,
-    roomUsers,
-}: socketGetOfferAnsProps) => {
+export const socketGetOfferAns = ({ roomUsers }: socketGetOfferAnsProps) => {
     socket.on(
         ACTIONS_SESSION_DESCRIPTION,
         async ({ socketId, offerOrAns }: socketGETOFFERANSPROPS) => {
@@ -157,7 +155,6 @@ export const socketGetOfferAns = ({
 
 export const socketRemoveUser = ({
     addUser,
-    socket,
     roomUsers,
 }: socketRemoveUserProps) => {
     socket.on(
@@ -168,6 +165,19 @@ export const socketRemoveUser = ({
             delete roomUsers.current.audio[userId];
             addUser((user) => {
                 return user.filter((single) => single.userId !== userId);
+            }, null);
+        },
+    );
+};
+
+export const socketUserMuteUnmute = ({ addUser }: socketMuteUnmuteProps) => {
+    socket.on(
+        ACTIONS_MUTE_UNMUTE,
+        ({ userId, mute }: socketMUTEUNMUTEPROPS) => {
+            addUser((allUser) => {
+                return allUser.map((user) =>
+                    user.userId === userId ? { ...user, muted: mute } : user,
+                );
             }, null);
         },
     );

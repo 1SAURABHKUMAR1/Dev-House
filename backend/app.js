@@ -6,10 +6,10 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const nocache = require('nocache');
 const { Server } = require('socket.io');
 const httpsServer = require('http').createServer(app);
 const socketHandler = require('./Socket/socket');
+const compression = require('compression');
 
 app.use(morgan('tiny'));
 app.use(express.json({ limit: '10mb' }));
@@ -20,7 +20,6 @@ const corsOption = {
 };
 app.use(cors(corsOption));
 app.use(helmet());
-app.use(nocache());
 app.use(cookieParser());
 app.use(
     fileUpload({
@@ -28,6 +27,7 @@ app.use(
         tempFileDir: '/tmp/',
     }),
 );
+app.use(compression());
 
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => {

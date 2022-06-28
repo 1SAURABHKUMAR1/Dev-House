@@ -23,6 +23,7 @@ const SingleRoomUsers = ({ users, addAudioRef }: singleRoomUsersProps) => {
                         username={user.username}
                         addAudioRef={addAudioRef}
                         userId={user.userId}
+                        muted={user.muted}
                         key={user.userId}
                     />
                 ))}

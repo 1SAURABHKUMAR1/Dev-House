@@ -8,8 +8,8 @@ import {
     socketGetIceCandidate,
     socketGetOfferAns,
     socketRemoveUser,
+    socketUserMuteUnmute,
 } from '../Socket/socketHandler';
-import { ACTIONS_LEAVE } from '../Socket/actions';
 
 import useStateWithCallback from './useStateWithCallback';
 import { useAppSelector } from '../store/hooks';
@@ -20,13 +20,15 @@ import {
     useSingleRoomWebRtcType,
     roomUserType,
 } from '../Types';
-import { Socket } from 'socket.io-client';
 
 import {
     ACTIONS_ADD_USER,
     ACTIONS_REMOVE_USER,
     ACTIONS_SESSION_DESCRIPTION,
     ACTIONS_ICE_CANDIDATE,
+    ACTIONS_LEAVE,
+    ACTIONS_MUTE_UNMUTE,
+    ACTIONS_SEND_MUTE_UNMUTE,
 } from '../Socket/actions';
 
 const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
@@ -35,9 +37,6 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
 
     // all clients connection  ,  all clients audio input ref for mute and unmute and audio
     const roomUsers = useRef<roomUserType>({ audio: {}, rtc: {} });
-
-    // ref for socket.io
-    const socketRef = useRef<Socket>(socket);
 
     // current user audio input box
     const currentUserAudioInput = useRef<currentUserAudioInput>({
@@ -54,8 +53,52 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
         currentUserAudioInput.current.media =
             await navigator.mediaDevices.getUserMedia({
                 audio: true,
-                video: false,
             });
+
+        currentUserAudioInput.current.media &&
+            (currentUserAudioInput.current.media.getTracks()[0].enabled =
+                false);
+    };
+
+    const handleMuted = (userId: string) => {
+        const currentUser = users.find((user) => user.userId === userId);
+
+        // change user icons
+        addUser((allUser) => {
+            return allUser.map((user) =>
+                user.userId === userId
+                    ? {
+                          ...user,
+                          muted: !user.muted,
+                      }
+                    : user,
+            );
+
+            // return allUser.map((user) =>
+            //     user.userId === userId
+            //         ? ((user.muted = !user.muted), user)
+            //         : user,
+            // );
+        }, null);
+
+        if (currentUserAudioInput.current.media && !!currentUser) {
+            currentUserAudioInput.current.media.getTracks()[0].enabled =
+                currentUser.muted;
+
+            if (currentUser.muted) {
+                socket.emit(ACTIONS_SEND_MUTE_UNMUTE, {
+                    roomId: roomId,
+                    userId: userId,
+                    mute: false,
+                });
+            } else {
+                socket.emit(ACTIONS_SEND_MUTE_UNMUTE, {
+                    roomId: roomId,
+                    userId: userId,
+                    mute: true,
+                });
+            }
+        }
     };
 
     // called when user is authenticated for room
@@ -65,7 +108,7 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
             await captureUserMedia();
 
             // add to users list
-            addUser(user, () => {
+            addUser({ ...user, muted: true }, () => {
                 const currentUser = roomUsers.current.audio[user.userId];
 
                 // mute currrent user
@@ -76,32 +119,32 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
             });
 
             // join socket
-            socketEmit(roomId, user, socket);
+            socketEmit(roomId, user);
 
             // handle add new user
             socketAddUser({
                 addUser,
                 currentUserAudioInput,
-                socket: socketRef.current,
                 roomUsers,
             });
 
             // handle ice candidate
             socketGetIceCandidate({
-                socket: socketRef.current,
                 roomUsers,
             });
 
             // handle offer and ans
             socketGetOfferAns({
-                socket: socketRef.current,
                 roomUsers,
             });
 
             socketRemoveUser({
                 addUser,
-                socket: socketRef.current,
                 roomUsers,
+            });
+
+            socketUserMuteUnmute({
+                addUser,
             });
         };
 
@@ -112,27 +155,24 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
 
     // called on app mounted and unmounted
     useEffect(() => {
-        if (socketRef.current === null) {
-            socketRef.current = socket;
-        }
-
         return () => {
             currentUserAudioInput.current.media
                 ?.getTracks()
                 .forEach((track) => track.stop());
-            socketRef.current.emit(ACTIONS_LEAVE, { roomId });
+            socket.emit(ACTIONS_LEAVE, { roomId });
             for (const socketId in roomUsers.current.rtc) {
                 roomUsers.current.rtc[socketId].close();
                 delete roomUsers.current.rtc[socketId];
             }
-            socketRef.current.off(ACTIONS_ADD_USER);
-            socketRef.current.off(ACTIONS_ICE_CANDIDATE);
-            socketRef.current.off(ACTIONS_SESSION_DESCRIPTION);
-            socketRef.current.off(ACTIONS_REMOVE_USER);
+            socket.off(ACTIONS_ADD_USER);
+            socket.off(ACTIONS_ICE_CANDIDATE);
+            socket.off(ACTIONS_SESSION_DESCRIPTION);
+            socket.off(ACTIONS_REMOVE_USER);
+            socket.off(ACTIONS_MUTE_UNMUTE);
         };
     }, []);
 
-    return { users, addAudioRef };
+    return { users, addAudioRef, handleMuted };
 };
 
 export default useSingleRoomWebRtc;

@@ -42,10 +42,11 @@ const SingleRoom = () => {
     const { authenticated, room_id } = useAppSelector((state) => state.rooms);
     const user = useAppSelector((state) => state.auth);
     // @ts-ignore
-    const { users, addAudioRef } = useSingleRoomWebRtc(roomId, {
+    const { users, handleMuted, addAudioRef } = useSingleRoomWebRtc(roomId, {
         photo: user.photo,
         userId: user.userId,
         username: user.username,
+        muted: true,
     });
     const navigate = useNavigate();
 
@@ -142,7 +143,12 @@ const SingleRoom = () => {
                                 users={users}
                                 addAudioRef={addAudioRef}
                             />
-                            <Controls btnRef={btnRef} onOpen={onOpen} />
+                            <Controls
+                                btnRef={btnRef}
+                                onOpen={onOpen}
+                                handleMuted={handleMuted}
+                                userId={user.userId}
+                            />
                         </Container>
                     )}
                 </Container>

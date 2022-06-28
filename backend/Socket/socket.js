@@ -7,6 +7,8 @@ const {
     ACTIONS_SESSION_DESCRIPTION,
     ACTIONS_ICE_CANDIDATE,
     ACTIONS_LEAVE,
+    ACTIONS_SEND_MUTE_UNMUTE,
+    ACTIONS_MUTE_UNMUTE,
 } = require('./actions');
 
 const connectedUsers = {};
@@ -85,6 +87,19 @@ const socketHandler = (io) => {
             });
 
             delete connectedUsers[socket.id];
+        });
+
+        // handle mute and unmute
+        socket.on(ACTIONS_SEND_MUTE_UNMUTE, ({ roomId, userId, mute }) => {
+            const allUsers = getRoom(roomId, io);
+
+            allUsers.forEach((socketId) => {
+                socket.id !== socketId &&
+                    io.to(socketId).emit(ACTIONS_MUTE_UNMUTE, {
+                        userId,
+                        mute,
+                    });
+            });
         });
     });
 };

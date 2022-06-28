@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconType } from 'react-icons';
-import { Socket } from 'socket.io-client';
 
 export interface Children {
     children: React.ReactNode;
@@ -102,6 +101,7 @@ export interface SingleRoomAvatarProps {
     username: string;
     addAudioRef: addAudioRefType;
     userId: string;
+    muted?: boolean;
 }
 
 export interface ChatBoxProps {
@@ -113,6 +113,8 @@ export interface ChatBoxProps {
 export interface ControlsProps {
     onOpen: () => void;
     btnRef: React.RefObject<HTMLButtonElement>;
+    handleMuted: mutedFunction;
+    userId: string;
 }
 
 export interface SingleChatProps {
@@ -245,13 +247,17 @@ export type updateStateWithCallback = (
 export type useSingleRoomWebRtcType = (
     roomId: string,
     user: socketUser,
-) => { users: Array<socketUser>; addAudioRef: addAudioRefType };
+) => {
+    users: Array<socketUser>;
+    handleMuted: mutedFunction;
+    addAudioRef: addAudioRefType;
+};
 
 export type socketUser = {
     userId: string;
     username: string;
     photo: string;
-    muted?: boolean;
+    muted: boolean;
 };
 
 export type cbRefType = {
@@ -284,23 +290,19 @@ export type roomUserType = {
 export interface socketAddUserProps {
     addUser: addUserType;
     currentUserAudioInput: React.MutableRefObject<currentUserAudioInput>;
-    socket: Socket;
     roomUsers: React.MutableRefObject<roomUserType>;
 }
 
 export interface socketGetIceCandidateProps {
-    socket: Socket;
     roomUsers: React.MutableRefObject<roomUserType>;
 }
 
 export interface socketGetOfferAnsProps {
-    socket: Socket;
     roomUsers: React.MutableRefObject<roomUserType>;
 }
 
 export interface socketRemoveUserProps {
     addUser: addUserType;
-    socket: Socket;
     roomUsers: React.MutableRefObject<roomUserType>;
 }
 
@@ -330,4 +332,15 @@ export interface SingleRoomButton {
     buttonText: string;
     onClick?: () => void;
     btnRef?: React.RefObject<HTMLButtonElement>;
+}
+
+export type mutedFunction = (userId: string) => void;
+
+export interface socketMuteUnmuteProps {
+    addUser: addUserType;
+}
+
+export interface socketMUTEUNMUTEPROPS {
+    userId: string;
+    mute: boolean;
 }

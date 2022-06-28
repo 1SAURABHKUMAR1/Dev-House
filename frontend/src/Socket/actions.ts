@@ -6,3 +6,5 @@ export const ACTIONS_SEND_SESSION_DESC = 'send_sdp';
 export const ACTIONS_SESSION_DESCRIPTION = 'session_description';
 export const ACTIONS_ICE_CANDIDATE = 'ice_candidate';
 export const ACTIONS_LEAVE = 'leave';
+export const ACTIONS_SEND_MUTE_UNMUTE = 'send_mute_unmute';
+export const ACTIONS_MUTE_UNMUTE = 'mute_unmute';

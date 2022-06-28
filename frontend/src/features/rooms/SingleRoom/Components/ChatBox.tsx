@@ -10,7 +10,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 
-import { useLayoutEffect, useRef } from 'react';
+import { memo, useLayoutEffect, useRef } from 'react';
 import { BiSend } from 'react-icons/bi';
 
 import { SingleChat } from '../../../../Components';
@@ -84,4 +84,4 @@ const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
     );
 };
 
-export default ChatBox;
+export default memo(ChatBox);

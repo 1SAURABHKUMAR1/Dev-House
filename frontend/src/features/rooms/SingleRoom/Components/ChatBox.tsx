@@ -1,4 +1,6 @@
 import {
+    Box,
+    Button,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
@@ -17,7 +19,13 @@ import { SingleChat } from '../../../../Components';
 
 import { ChatBoxProps } from '../../../../Types';
 
-const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
+const ChatBox = ({
+    chats,
+    btnRef,
+    isOpen,
+    onClose,
+    handleChatFunction,
+}: ChatBoxProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const chatRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +33,13 @@ const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
         chatRef.current !== null &&
             (chatRef.current.scrollTop = chatRef.current.scrollHeight);
     });
+
+    const handleNewChat = () => {
+        if (inputRef.current?.value) {
+            handleChatFunction(inputRef.current.value);
+            inputRef.current.value = '';
+        }
+    };
 
     return (
         <>
@@ -55,17 +70,28 @@ const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
                         role="chat"
                         ref={chatRef}
                     >
-                        <SingleChat
-                            position="LEFT"
-                            chatContent=" hey threr how are yoou guys ?  threr how are yoou guys ?  threr how are yoou guys ?  threr how are yoou guys ? i am fine how are you i am fine how are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are you how are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are youhow are you i am fine how are youv v v i am fine how are youi am fine how are youi am fine how are youi am fine how are you"
-                            userAvatar="https://bit.ly/kent-c-dodds"
-                        />
+                        {chats.length === 0 && (
+                            <>
+                                <Box
+                                    height="100%"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent={'center'}
+                                >
+                                    Start a conversation
+                                </Box>
+                            </>
+                        )}
 
-                        <SingleChat
-                            position="RIGHT"
-                            chatContent="i am fine how are you i am fine how are you i am fine how are you i am fine how are you i am fine how are you i am fine how are you  i am fine how are you i am fine how are you i am fine how are you i am fine how are you "
-                            userAvatar="https://bit.ly/kent-c-dodds"
-                        />
+                        {chats.length > 0 &&
+                            chats?.map((chat) => (
+                                <>
+                                    <SingleChat
+                                        username={chat.username}
+                                        chatContent={chat.messageBody}
+                                    />
+                                </>
+                            ))}
                     </DrawerBody>
 
                     <DrawerFooter gap="0.7rem">
@@ -76,7 +102,9 @@ const ChatBox = ({ btnRef, isOpen, onClose }: ChatBoxProps) => {
                             zIndex="1"
                             _hover={{}}
                         />
-                        <BiSend fontSize="1.8rem" cursor="pointer" />
+                        <Button padding="1rem 0rem" onClick={handleNewChat}>
+                            <BiSend fontSize="1.4rem" cursor="pointer" />
+                        </Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>

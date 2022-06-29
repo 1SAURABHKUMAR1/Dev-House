@@ -1,6 +1,8 @@
 import {
     socketADDUSERPROPS,
     socketAddUserProps,
+    socketChatProps,
+    socketCHATSPROPS,
     socketGetIceCandidateProps,
     socketGETOFFERANSPROPS,
     socketGetOfferAnsProps,
@@ -20,6 +22,7 @@ import {
     ACTIONS_SESSION_DESCRIPTION,
     ACTIONS_ICE_CANDIDATE,
     ACTIONS_MUTE_UNMUTE,
+    ACTIONS_CHAT,
 } from './actions';
 import { socket } from './socket';
 var freeice = require('freeice');
@@ -181,4 +184,14 @@ export const socketUserMuteUnmute = ({ addUser }: socketMuteUnmuteProps) => {
             }, null);
         },
     );
+};
+
+export const socketChat = ({ addChats }: socketChatProps) => {
+    socket.on(ACTIONS_CHAT, ({ chats }: socketCHATSPROPS) => {
+        if (Array.isArray(chats)) {
+            addChats((prev) => chats);
+        } else {
+            addChats(chats);
+        }
+    });
 };

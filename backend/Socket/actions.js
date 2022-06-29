@@ -8,3 +8,5 @@ exports.ACTIONS_ICE_CANDIDATE = 'ice_candidate';
 exports.ACTIONS_LEAVE = 'leave';
 exports.ACTIONS_SEND_MUTE_UNMUTE = 'send_mute_unmute';
 exports.ACTIONS_MUTE_UNMUTE = 'mute_unmute';
+exports.ACTIONS_CHAT = 'chat';
+exports.ACTIONS_SEND_CHAT = 'send_chat';

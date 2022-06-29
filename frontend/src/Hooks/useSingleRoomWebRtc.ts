@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { socket } from '../Socket/socket';
 import {
     socketAddUser,
+    socketChat,
     socketEmit,
     socketGetIceCandidate,
     socketGetOfferAns,
@@ -19,6 +20,7 @@ import {
     currentUserAudioInput,
     useSingleRoomWebRtcType,
     roomUserType,
+    handleNewChatFunction,
 } from '../Types';
 
 import {
@@ -29,10 +31,12 @@ import {
     ACTIONS_LEAVE,
     ACTIONS_MUTE_UNMUTE,
     ACTIONS_SEND_MUTE_UNMUTE,
+    ACTIONS_CHAT,
+    ACTIONS_SEND_CHAT,
 } from '../Socket/actions';
 
 const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
-    const [users, addUser] = useStateWithCallback([]);
+    const [users, addUser, chats, addChats] = useStateWithCallback([], []);
     const { authenticated } = useAppSelector((state) => state.rooms);
 
     // all clients connection  ,  all clients audio input ref for mute and unmute and audio
@@ -101,6 +105,14 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
         }
     };
 
+    const handleNewChat: handleNewChatFunction = (messageBody) => {
+        socket.emit(ACTIONS_SEND_CHAT, {
+            roomId,
+            messageBody,
+            username: user.username,
+        });
+    };
+
     // called when user is authenticated for room
     useEffect(() => {
         const initalize = async () => {
@@ -146,6 +158,10 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
             socketUserMuteUnmute({
                 addUser,
             });
+
+            socketChat({
+                addChats,
+            });
         };
 
         if (authenticated === 'AUTHENTICATED') {
@@ -169,10 +185,11 @@ const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
             socket.off(ACTIONS_SESSION_DESCRIPTION);
             socket.off(ACTIONS_REMOVE_USER);
             socket.off(ACTIONS_MUTE_UNMUTE);
+            socket.off(ACTIONS_CHAT);
         };
     }, []);
 
-    return { users, addAudioRef, handleMuted };
+    return { users, chats, addAudioRef, handleMuted, handleNewChat };
 };
 
 export default useSingleRoomWebRtc;

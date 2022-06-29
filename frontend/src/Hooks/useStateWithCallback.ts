@@ -1,17 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+    addChatType,
     addUserType,
     cbRefType,
+    initialChatType,
     initialUsersType,
     updateStateWithCallback,
 } from '../Types';
 
 const useStateWithCallBack: updateStateWithCallback = (
-    initalUsers: initialUsersType,
+    initalUsers,
+    initalChats,
 ) => {
     // users state
     const [users, setUsers] = useState<initialUsersType>(initalUsers);
     const cbRef = useRef<cbRefType>({ stateFunction: null });
+
+    const [chats, setChats] = useState<initialChatType>(initalChats);
 
     // add user based on many checks
     const addUser: addUserType = useCallback(
@@ -38,6 +43,28 @@ const useStateWithCallBack: updateStateWithCallback = (
         [users],
     );
 
+    const addChats: addChatType = useCallback(
+        (newChat) => {
+            const isAdded =
+                typeof newChat === 'function'
+                    ? -1
+                    : chats.findIndex(
+                          (chat) => chat.messageBody === newChat.messageBody,
+                      );
+
+            if (isAdded === -1) {
+                setChats((prev) => {
+                    if (typeof newChat === 'function') {
+                        return newChat(prev);
+                    }
+
+                    return [...prev, newChat];
+                });
+            }
+        },
+        [chats],
+    );
+
     // cb -> do when clients update
     useEffect(() => {
         if (cbRef.current) {
@@ -46,7 +73,7 @@ const useStateWithCallBack: updateStateWithCallback = (
         }
     }, [users]);
 
-    return [users, addUser];
+    return [users, addUser, chats, addChats];
 };
 
 export default useStateWithCallBack;

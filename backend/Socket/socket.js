@@ -9,9 +9,12 @@ const {
     ACTIONS_LEAVE,
     ACTIONS_SEND_MUTE_UNMUTE,
     ACTIONS_MUTE_UNMUTE,
+    ACTIONS_CHAT,
+    ACTIONS_SEND_CHAT,
 } = require('./actions');
 
 const connectedUsers = {};
+const chats = {};
 
 const getRoom = (roomId, io) => {
     return [...(io.sockets.adapter.rooms.get(roomId) || [])];
@@ -38,6 +41,11 @@ const socketHandler = (io) => {
                     user: connectedUsers[socketId],
                 });
             });
+
+            socket.emit(ACTIONS_CHAT, {
+                chats: chats.roomId ?? [],
+            });
+
             socket.join(roomId);
         });
 
@@ -102,6 +110,18 @@ const socketHandler = (io) => {
             });
 
             connectedUsers[socket.id].muted = mute;
+        });
+
+        socket.on(ACTIONS_SEND_CHAT, ({ roomId, messageBody, username }) => {
+            const allUsers = getRoom(roomId, io);
+
+            allUsers.forEach((socketId) => {
+                io.to(socketId).emit(ACTIONS_CHAT, {
+                    chats: { messageBody, username },
+                });
+            });
+
+            chats.roomId = [...(chats.roomId ?? []), { messageBody, username }];
         });
     });
 };

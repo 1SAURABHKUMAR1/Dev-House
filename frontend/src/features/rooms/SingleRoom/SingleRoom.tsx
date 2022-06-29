@@ -41,13 +41,17 @@ const SingleRoom = () => {
     const { name } = useAppSelector((state) => state.rooms);
     const { authenticated, room_id } = useAppSelector((state) => state.rooms);
     const user = useAppSelector((state) => state.auth);
-    // @ts-ignore
-    const { users, handleMuted, addAudioRef } = useSingleRoomWebRtc(roomId, {
-        photo: user.photo,
-        userId: user.userId,
-        username: user.username,
-        muted: true,
-    });
+    const { users, chats, handleMuted, addAudioRef, handleNewChat } =
+        useSingleRoomWebRtc(
+            // @ts-ignore
+            roomId,
+            {
+                photo: user.photo,
+                userId: user.userId,
+                username: user.username,
+                muted: true,
+            },
+        );
     const navigate = useNavigate();
 
     const { isLoading, isError } = useQuery<
@@ -153,7 +157,13 @@ const SingleRoom = () => {
                     )}
                 </Container>
 
-                <ChatBox btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
+                <ChatBox
+                    chats={chats}
+                    btnRef={btnRef}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    handleChatFunction={handleNewChat}
+                />
             </MainContainer>
             {room_id && <PasswordModal />}
         </>

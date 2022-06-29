@@ -105,9 +105,11 @@ export interface SingleRoomAvatarProps {
 }
 
 export interface ChatBoxProps {
+    chats: Array<chatType>;
     onClose: () => void;
     isOpen: boolean;
     btnRef: React.RefObject<HTMLButtonElement>;
+    handleChatFunction: handleNewChatFunction;
 }
 
 export interface ControlsProps {
@@ -119,8 +121,7 @@ export interface ControlsProps {
 
 export interface SingleChatProps {
     chatContent: string;
-    userAvatar: string;
-    position: 'LEFT' | 'RIGHT';
+    username: string;
 }
 
 export interface CreateRoomModalProps {
@@ -242,15 +243,23 @@ export type addUserType = (
 
 export type updateStateWithCallback = (
     initalUsers: initialUsersType,
-) => [initialUsersType, addUserType];
+    initalChats: initialChatType,
+) => [
+    users: initialUsersType,
+    addUser: addUserType,
+    chats: initialChatType,
+    addChat: addChatType,
+];
 
 export type useSingleRoomWebRtcType = (
     roomId: string,
     user: socketUser,
 ) => {
     users: Array<socketUser>;
-    handleMuted: mutedFunction;
+    chats: Array<chatType>;
     addAudioRef: addAudioRefType;
+    handleMuted: mutedFunction;
+    handleNewChat: handleNewChatFunction;
 };
 
 export type socketUser = {
@@ -344,3 +353,24 @@ export interface socketMUTEUNMUTEPROPS {
     userId: string;
     mute: boolean;
 }
+
+export interface chatType {
+    username: string;
+    messageBody: string;
+}
+
+export type initialChatType = Array<chatType>;
+
+export type addChatType = (
+    newChat: chatType | ((chat: initialChatType) => initialChatType),
+) => void;
+
+export interface socketChatProps {
+    addChats: addChatType;
+}
+
+export interface socketCHATSPROPS {
+    chats: Array<chatType> | chatType;
+}
+
+export type handleNewChatFunction = (messageBody: string) => void;

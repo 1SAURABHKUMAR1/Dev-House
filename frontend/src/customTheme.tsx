@@ -15,6 +15,7 @@ const customTheme = extendTheme({
             placeholder: '#e5e7eb',
             'input-bg': '#262626',
             icon: '#4b5563',
+            message: '#f1f5f9',
         },
     },
     fonts: {

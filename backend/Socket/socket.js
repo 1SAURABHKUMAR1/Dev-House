@@ -12,9 +12,10 @@ const {
     ACTIONS_CHAT,
     ACTIONS_SEND_CHAT,
 } = require('./actions');
+const uuid = require('uuid').v4;
 
-const connectedUsers = {};
-const chats = {};
+const connectedUsers = {}; // object with socketId as key and value as user which contains username , photo and userId
+const chats = {}; // object with roomId as key and value as single chat which contains messageBody and username
 
 const getRoom = (roomId, io) => {
     return [...(io.sockets.adapter.rooms.get(roomId) || [])];
@@ -114,14 +115,18 @@ const socketHandler = (io) => {
 
         socket.on(ACTIONS_SEND_CHAT, ({ roomId, messageBody, username }) => {
             const allUsers = getRoom(roomId, io);
+            const messageId = uuid();
 
             allUsers.forEach((socketId) => {
                 io.to(socketId).emit(ACTIONS_CHAT, {
-                    chats: { messageBody, username },
+                    chats: { messageBody, username, messageId },
                 });
             });
 
-            chats.roomId = [...(chats.roomId ?? []), { messageBody, username }];
+            chats.roomId = [
+                ...(chats.roomId ?? []),
+                { messageBody, username, messageId },
+            ];
         });
     });
 };

@@ -49,7 +49,7 @@ const useStateWithCallBack: updateStateWithCallback = (
                 typeof newChat === 'function'
                     ? -1
                     : chats.findIndex(
-                          (chat) => chat.messageBody === newChat.messageBody,
+                          (chat) => chat.messageId === newChat.messageId,
                       );
 
             if (isAdded === -1) {

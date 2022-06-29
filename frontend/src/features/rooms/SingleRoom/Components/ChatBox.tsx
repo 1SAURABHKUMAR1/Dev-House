@@ -65,7 +65,7 @@ const ChatBox = ({
                     <DrawerBody
                         display="flex"
                         flexDirection="column"
-                        gap="1.5rem"
+                        gap="0.7rem"
                         scrollBehavior="smooth"
                         role="chat"
                         ref={chatRef}
@@ -89,6 +89,7 @@ const ChatBox = ({
                                     <SingleChat
                                         username={chat.username}
                                         chatContent={chat.messageBody}
+                                        key={chat.messageId}
                                     />
                                 </>
                             ))}

@@ -357,6 +357,7 @@ export interface socketMUTEUNMUTEPROPS {
 export interface chatType {
     username: string;
     messageBody: string;
+    messageId: string;
 }
 
 export type initialChatType = Array<chatType>;

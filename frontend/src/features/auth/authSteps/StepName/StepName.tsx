@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
 import { AuthButton, Card } from '../../../../Components';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 import { AuthStepProps } from '../../../../Types';
 

@@ -26,7 +26,7 @@ import { verifyRoomPassword } from '../../../../Services';
 import { AxiosResponse } from 'axios';
 import { CreateRoomModalProps } from '../../../../Types';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 const JoinRoomModal = ({
     inputInitalRef,

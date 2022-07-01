@@ -13,7 +13,7 @@ import { setEmail as setEmailDispatch } from '../../../../../index';
 
 import { AuthStepProps } from '../../../../../../Types';
 
-import ErrorToast from '../../../../../../Toast/Error';
+import ErrorToast from '../../../../../../Utils/Toast/Error';
 
 const StepMobile = ({ onClick }: AuthStepProps) => {
     const [mobile, setMobile] = useState('');

@@ -15,7 +15,7 @@ import { logoutUser } from '../../Services';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-import ErrorToast from '../../Toast/Error';
+import ErrorToast from '../../Utils/Toast/Error';
 
 interface NavItem {
     label: string;
@@ -47,9 +47,9 @@ const MobileNav = () => {
             p={4}
             display={{ md: 'none' }}
         >
-            <MobileNavItem label={'Code Studio'} href="/code-studio" />
+            <MobileNavItem label={'Code Box'} href="/code-box" />
 
-            <MobileNavItem label={'Podcast'} href="/rooms" />
+            <MobileNavItem label={'Meetp'} href="/meetp" />
 
             {login && (
                 <Flex

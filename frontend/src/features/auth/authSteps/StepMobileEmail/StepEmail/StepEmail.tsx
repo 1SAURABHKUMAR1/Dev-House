@@ -9,7 +9,7 @@ import { AuthStepProps } from '../../../../../Types';
 
 import { checkEmail } from '../../../../../Services';
 
-import ErrorToast from '../../../../../Toast/Error';
+import ErrorToast from '../../../../../Utils/Toast/Error';
 
 import { setEmail as setEmailDispatch } from '../../../../index';
 import { useAppDispatch } from '../../../../../store/hooks';

@@ -18,7 +18,7 @@ const SemiProtectedRoute = ({ element }: PrivateProp): JSX.Element => {
     }
 
     // @ts-ignore
-    return <Navigate to={from?.from?.pathname ?? '/rooms'} />;
+    return <Navigate to={from?.from?.pathname ?? '/codebox'} />;
 };
 
 export default SemiProtectedRoute;

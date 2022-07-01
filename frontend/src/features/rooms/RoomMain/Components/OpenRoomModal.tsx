@@ -19,7 +19,7 @@ import { ModalButtons, setRoomLink } from '../../../index';
 import { createRoomResponse, openRoomModalTypes } from '../../../../Types';
 import { AxiosResponse } from 'axios';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 const OpenRoomModal = ({
     inputInitalRef,

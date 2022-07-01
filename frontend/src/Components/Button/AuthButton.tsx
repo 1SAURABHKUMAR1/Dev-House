@@ -2,16 +2,23 @@ import { Button } from '@chakra-ui/react';
 import { BsArrowRightShort } from 'react-icons/bs';
 import { AuthButtonProps } from '../../Types';
 
-const AuthButton = ({ buttonText, marginTop, onClick }: AuthButtonProps) => {
+const AuthButton = ({
+    buttonText,
+    marginTop,
+    onClick,
+    margin,
+    padding = '0rem 2rem',
+}: AuthButtonProps) => {
     return (
         <>
             <Button
                 display="flex"
                 fontSize={{ ssm: '1rem ', sm: '0.96rem' }}
                 fontWeight={600}
-                px="2rem"
+                padding={padding}
                 color="white"
                 bg="main.blue"
+                margin={margin}
                 marginTop={marginTop}
                 _active={{ bg: 'main.blue.hover' }}
                 _hover={{ bg: 'main.blue.hover' }}

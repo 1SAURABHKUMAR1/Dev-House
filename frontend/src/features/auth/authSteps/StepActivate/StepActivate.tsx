@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
 import { AuthStepProps } from '../../../../Types';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 const StepActivate = ({ onClick }: AuthStepProps) => {
     const { name, avatar, username } = useAppSelector(

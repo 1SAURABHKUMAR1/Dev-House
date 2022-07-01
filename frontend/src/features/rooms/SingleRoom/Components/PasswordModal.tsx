@@ -20,7 +20,7 @@ import { setUserRoomJoined } from '../../../index';
 
 import { AxiosResponse } from 'axios';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 const PasswordModal = () => {
     const { onClose } = useDisclosure();
@@ -56,7 +56,7 @@ const PasswordModal = () => {
     };
 
     const handleBackButton = () => {
-        navigate('/rooms');
+        navigate('/meetp');
     };
 
     return (

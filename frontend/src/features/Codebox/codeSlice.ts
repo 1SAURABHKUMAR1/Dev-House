@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {};
 
-const homeSlice = createSlice({
-    name: 'home',
+const codeSlice = createSlice({
+    name: 'code',
     initialState,
     reducers: {
         //
@@ -13,4 +13,4 @@ const homeSlice = createSlice({
     },
 });
 
-export const homeReducer = homeSlice.reducer;
+export const codeReducer = codeSlice.reducer;

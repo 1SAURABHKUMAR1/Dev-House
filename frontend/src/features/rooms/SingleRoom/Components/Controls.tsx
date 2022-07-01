@@ -10,7 +10,7 @@ const Controls = ({ btnRef, onOpen, handleMuted, userId }: ControlsProps) => {
     const navigate = useNavigate();
 
     const handleBackButton = () => {
-        navigate('/rooms');
+        navigate('/meetp');
     };
 
     return (

@@ -46,7 +46,7 @@ const App = () => {
                     element={<GuestRoute element={<Login />} />}
                 />
                 <Route
-                    path="/rooms"
+                    path="/meetp"
                     element={<PrivateRoute element={<Rooms />} />}
                 />
                 <Route

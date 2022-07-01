@@ -23,8 +23,13 @@ import OpenRoomModal from './rooms/RoomMain/Components/OpenRoomModal';
 import StepShare from './rooms/RoomMain/Components/StepShare';
 import ShareModalFooter from './rooms/RoomMain/Components/ShareModalFooter';
 import PasswordModal from './rooms/SingleRoom/Components/PasswordModal';
+import SingleIcon from './home/Components/SingleIcon';
+import Typewriter from './home/Components/Typewriter';
+import Tile from './home/Components/Tile';
+import Header from './home/Components/Header';
+import HeaderTiles from './home/Components/HeaderTiles';
+import RoomSection from './home/Components/RoomSection';
 
-export * from './home/homeSlice';
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
 export * from './rooms/roomsSlice';
@@ -55,4 +60,10 @@ export {
     OpenRoomModal,
     ShareModalFooter,
     PasswordModal,
+    SingleIcon,
+    Typewriter,
+    Tile,
+    Header,
+    HeaderTiles,
+    RoomSection,
 };

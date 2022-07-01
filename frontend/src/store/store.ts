@@ -1,15 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import {
-    activateReducer,
-    authReducer,
-    homeReducer,
-    roomsReducer,
-} from '../features';
+import { activateReducer, authReducer, roomsReducer } from '../features';
 
 export const store = configureStore({
     reducer: {
-        home: homeReducer,
         auth: authReducer,
         activate: activateReducer,
         rooms: roomsReducer,

@@ -26,6 +26,7 @@ const customTheme = extendTheme({
         ssm: '0px',
         sm: '400px',
         mmd: '580px',
+        mdlg: '650px',
         md: '768px',
         lg: '960px',
         xl: '1200px',

@@ -29,7 +29,7 @@ import useSingleRoomWebRtc from '../../../Hooks/useSingleRoomWebRtc';
 import { AxiosResponse } from 'axios';
 import { createRoomResponse } from '../../../Types';
 
-import ErrorToast from '../../../Toast/Error';
+import ErrorToast from '../../../Utils/Toast/Error';
 
 const SingleRoom = () => {
     const { roomId } = useParams();
@@ -75,7 +75,7 @@ const SingleRoom = () => {
     );
 
     const handleBackButton = () => {
-        navigate('/rooms');
+        navigate('/meetp');
     };
 
     useEffect(() => {
@@ -92,7 +92,7 @@ const SingleRoom = () => {
             <NotFoundTemplate
                 mainContent="Room Not Found"
                 buttonText="Go To Rooms"
-                buttonLink="/rooms"
+                buttonLink="/meetp"
             />
         );
     }
@@ -102,7 +102,7 @@ const SingleRoom = () => {
             <MainContainer marginBottom="0">
                 <Container paddingTop="2rem" maxW="container.xl">
                     <Flex alignItems="center" gap="0.8rem">
-                        <Link to="/rooms">
+                        <Link to="/meetp">
                             <BsArrowLeftShort
                                 fontSize={'1.5rem'}
                                 onClick={handleBackButton}

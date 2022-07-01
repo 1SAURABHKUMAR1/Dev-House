@@ -17,6 +17,8 @@ export interface AuthButtonProps {
     buttonText: string;
     marginTop: string;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
+    margin?: string;
+    padding?: string;
 }
 
 export interface AuthStepProps {
@@ -375,3 +377,22 @@ export interface socketCHATSPROPS {
 }
 
 export type handleNewChatFunction = (messageBody: string) => void;
+
+export interface typewriterProps {
+    nonTypewriterText: string;
+    typewriterText: Array<string>;
+    delay: number;
+    afterWidthSM: string;
+    afterWidthMMD: string;
+    afterWidthLG: string;
+}
+
+export interface singleIconProps {
+    iconName: string;
+}
+
+export interface tileProps {
+    iconName: 'people' | 'flash' | 'npm';
+    headingTitle: string;
+    comment: string;
+}

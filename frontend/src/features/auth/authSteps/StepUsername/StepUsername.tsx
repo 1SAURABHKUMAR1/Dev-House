@@ -12,7 +12,7 @@ import { AuthButton, Card } from '../../../../Components';
 
 import { checkUsername } from '../../../../Services';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 import { AuthStepProps } from '../../../../Types';
 

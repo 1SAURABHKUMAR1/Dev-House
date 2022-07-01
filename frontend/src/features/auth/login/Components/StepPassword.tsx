@@ -18,7 +18,7 @@ import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { AuthButton, Card } from '../../../../Components';
 import LoadingButton from '../../../../Components/Button/LoadingButton';
 
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 import { AuthStepProps } from '../../../../Types';
 

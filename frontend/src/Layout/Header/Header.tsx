@@ -26,7 +26,7 @@ import MobileNav from './MobileNav';
 
 import { logoutUser } from '../../Services';
 
-import ErrorToast from '../../Toast/Error';
+import ErrorToast from '../../Utils/Toast/Error';
 import { useState } from 'react';
 
 const Header = () => {
@@ -103,7 +103,7 @@ const Header = () => {
                     direction="row"
                     spacing={5}
                 >
-                    <Link to="/code-studio">
+                    <Link to="/code-box">
                         <Button
                             fontSize="sm"
                             fontWeight={500}
@@ -112,11 +112,11 @@ const Header = () => {
                             display={{ base: 'none', md: 'inline-flex' }}
                             color={useColorModeValue('gray.600', 'gray.200')}
                         >
-                            Code Studio
+                            Code Box
                         </Button>
                     </Link>
 
-                    <Link to="/rooms">
+                    <Link to="/meetp">
                         <Button
                             fontSize="sm"
                             fontWeight={500}
@@ -125,7 +125,7 @@ const Header = () => {
                             display={{ base: 'none', md: 'inline-flex' }}
                             color={useColorModeValue('gray.600', 'gray.200')}
                         >
-                            Podcast
+                            Meetp
                         </Button>
                     </Link>
 

@@ -15,7 +15,7 @@ import { AuthButton, Card } from '../../../../Components';
 import LoadingButton from '../../../../Components/Button/LoadingButton';
 import { authenticateUser } from '../../../../Services';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import ErrorToast from '../../../../Toast/Error';
+import ErrorToast from '../../../../Utils/Toast/Error';
 
 import { AuthStepProps } from '../../../../Types';
 import { setAuth } from '../../authSlice';

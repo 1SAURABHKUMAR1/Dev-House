@@ -65,7 +65,7 @@ const Rooms = () => {
                             <Button
                                 bg="main.blue"
                                 textColor="white"
-                                borderRadius="1.4rem"
+                                borderRadius="0.4rem"
                                 _focus={{}}
                                 _active={{}}
                                 _hover={{ bg: 'main.blue.hover' }}
@@ -78,7 +78,7 @@ const Rooms = () => {
                             <Button
                                 bg="main.blue"
                                 textColor="white"
-                                borderRadius="1.4rem"
+                                borderRadius="0.4rem"
                                 _focus={{}}
                                 _active={{}}
                                 _hover={{ bg: 'main.blue.hover' }}

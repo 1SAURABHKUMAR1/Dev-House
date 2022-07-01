@@ -8,8 +8,8 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
-    Input,
     Text,
+    Textarea,
 } from '@chakra-ui/react';
 
 import { memo, useLayoutEffect, useRef } from 'react';
@@ -26,7 +26,7 @@ const ChatBox = ({
     onClose,
     handleChatFunction,
 }: ChatBoxProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     const chatRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
@@ -96,12 +96,17 @@ const ChatBox = ({
                     </DrawerBody>
 
                     <DrawerFooter gap="0.7rem">
-                        <Input
+                        <Textarea
                             placeholder="Type here..."
                             ref={inputRef}
                             borderColor="blackAlpha.900"
                             zIndex="1"
                             _hover={{}}
+                            height="2rem"
+                            resize="none"
+                            minH="2.6rem"
+                            maxH="2.6rem"
+                            className="hide-scrollbar"
                         />
                         <Button padding="1rem 0rem" onClick={handleNewChat}>
                             <BiSend fontSize="1.4rem" cursor="pointer" />

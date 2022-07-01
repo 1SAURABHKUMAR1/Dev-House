@@ -114,7 +114,7 @@ const OpenRoomModal = ({
                     <Button
                         bg="main.blue"
                         textColor="white"
-                        borderRadius="1.4rem"
+                        borderRadius="0.4rem"
                         minW="6rem"
                         _hover={{ bg: 'main.blue.hover' }}
                         onClick={handleCreateRoom}
@@ -128,7 +128,7 @@ const OpenRoomModal = ({
                         w="6rem"
                         fontWeight={600}
                         onClick={handleClose}
-                        borderRadius="1.4rem"
+                        borderRadius="0.4rem"
                     >
                         Cancel
                     </Button>

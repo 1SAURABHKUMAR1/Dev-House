@@ -15,9 +15,9 @@ import {
 import { memo, useLayoutEffect, useRef } from 'react';
 import { BiSend } from 'react-icons/bi';
 
-import { SingleChat } from '../../../../Components';
+import { SingleChat } from 'Components';
 
-import { ChatBoxProps } from '../../../../Types';
+import { ChatBoxProps } from 'Types';
 
 const ChatBox = ({
     chats,

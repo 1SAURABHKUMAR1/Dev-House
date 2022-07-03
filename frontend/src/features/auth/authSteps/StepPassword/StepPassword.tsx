@@ -11,14 +11,13 @@ import React, { useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useMutation } from 'react-query';
 
-import { AuthButton, Card } from '../../../../Components';
-import LoadingButton from '../../../../Components/Button/LoadingButton';
-import { authenticateUser } from '../../../../Services';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import ErrorToast from '../../../../Utils/Toast/Error';
+import { AuthButton, Card, LoadingButton } from 'Components';
+import { authenticateUser } from 'Services';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import ErrorToast from 'Utils/Toast/Error';
 
-import { AuthStepProps } from '../../../../Types';
-import { setAuth } from '../../authSlice';
+import { AuthStepProps } from 'Types';
+import { setAuth } from 'features';
 
 const StepPassword = ({ onClick }: AuthStepProps) => {
     const [passwordShow, setPasswordShow] = useState(false);

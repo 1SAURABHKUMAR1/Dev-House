@@ -3,18 +3,16 @@ import { Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import LoadingButton from '../../../../Components/Button/LoadingButton';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setUsername as setUsernameDisptach } from 'features';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { setUsername as setUsernameDisptach } from '../../../index';
+import { AuthButton, Card, LoadingButton } from 'Components';
 
-import { AuthButton, Card } from '../../../../Components';
+import { checkUsername } from 'Services';
 
-import { checkUsername } from '../../../../Services';
+import ErrorToast from 'Utils/Toast/Error';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
-
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
 const StepUsername = ({ onClick }: AuthStepProps) => {
     const { username: globalUsername } = useAppSelector(

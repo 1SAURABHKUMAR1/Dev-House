@@ -1,8 +1,8 @@
 import { Container } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Container as MainContainer } from '../../../Components/index';
+import { Container as MainContainer } from 'Components/index';
 
-import { StepName, StepAvatar, StepUsername, StepActivate } from '../../index';
+import { StepName, StepAvatar, StepUsername, StepActivate } from 'features';
 
 const Activate = () => {
     const [authSteps] = useState({

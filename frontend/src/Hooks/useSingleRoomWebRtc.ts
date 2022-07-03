@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 
-import { socket } from '../Socket/socket';
+import { socket } from 'Socket/socket';
 import {
     socketAddUser,
     socketChat,
@@ -10,10 +10,10 @@ import {
     socketGetOfferAns,
     socketRemoveUser,
     socketUserMuteUnmute,
-} from '../Socket/socketHandler';
+} from 'Socket/socketHandler';
 
 import useStateWithCallback from './useStateWithCallback';
-import { useAppSelector } from '../store/hooks';
+import { useAppSelector } from 'store/hooks';
 
 import {
     addAudioRefType,
@@ -21,7 +21,7 @@ import {
     useSingleRoomWebRtcType,
     roomUserType,
     handleNewChatFunction,
-} from '../Types';
+} from 'Types';
 
 import {
     ACTIONS_ADD_USER,
@@ -33,7 +33,7 @@ import {
     ACTIONS_SEND_MUTE_UNMUTE,
     ACTIONS_CHAT,
     ACTIONS_SEND_CHAT,
-} from '../Socket/actions';
+} from 'Socket/actions';
 
 const useSingleRoomWebRtc: useSingleRoomWebRtcType = (roomId, user) => {
     const [users, addUser, chats, addChats] = useStateWithCallback([], []);

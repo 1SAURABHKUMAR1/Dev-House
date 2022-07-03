@@ -1,7 +1,7 @@
 import { Avatar, Box, Image, Text } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { SingleRoomAvatarProps } from '../../Types';
+import { SingleRoomAvatarProps } from 'Types';
 
 const SingleRoomAvatar = ({
     src,

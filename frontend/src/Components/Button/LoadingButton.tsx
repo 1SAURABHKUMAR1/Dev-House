@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import { LoadingButtonProps } from '../../Types';
+import { LoadingButtonProps } from 'Types';
 
 const LoadingButton = ({ marginTop }: LoadingButtonProps) => {
     return (

@@ -1,5 +1,5 @@
 import { Box, Image, Text } from '@chakra-ui/react';
-import { tileProps } from '../../../Types';
+import { tileProps } from 'Types';
 
 const Tile = ({ iconName, headingTitle, comment }: tileProps) => {
     return (

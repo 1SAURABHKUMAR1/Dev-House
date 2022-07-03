@@ -1,7 +1,7 @@
 import { Box, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { CardProps } from '../../Types';
+import { CardProps } from 'Types';
 
 const Card = ({ title, icon, children }: CardProps) => {
     return (

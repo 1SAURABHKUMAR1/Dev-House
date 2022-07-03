@@ -2,9 +2,9 @@ import { Box, Container } from '@chakra-ui/react';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { SingleRoomButton } from '../../../../Components';
+import { SingleRoomButton } from 'Components';
 
-import { ControlsProps } from '../../../../Types';
+import { ControlsProps } from 'Types';
 
 const Controls = ({ btnRef, onOpen, handleMuted, userId }: ControlsProps) => {
     const navigate = useNavigate();

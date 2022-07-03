@@ -2,11 +2,11 @@ import { Container, Grid } from '@chakra-ui/react';
 
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { getAllRooms } from '../../../../Services';
+import { getAllRooms } from 'Services';
 
-import { MainLoader, SingleRoomCard } from '../../../../Components';
+import { MainLoader, SingleRoomCard } from 'Components';
 
-import { roomType } from '../../../../Types';
+import { roomType } from 'Types';
 import { memo } from 'react';
 
 const AllRooms = () => {

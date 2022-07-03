@@ -2,15 +2,15 @@ import { Box, Spinner, Text } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { setActivate, resetAuthenticate } from '../../../index';
+import { setActivate, resetAuthenticate } from 'features';
 
-import { activateUser } from '../../../../Services';
+import { activateUser } from 'Services';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const StepActivate = ({ onClick }: AuthStepProps) => {
     const { name, avatar, username } = useAppSelector(

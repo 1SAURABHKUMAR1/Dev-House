@@ -1,5 +1,5 @@
 import { Image } from '@chakra-ui/react';
-import { singleIconProps } from '../../../Types';
+import { singleIconProps } from 'Types';
 
 const SingleIcon = ({ iconName }: singleIconProps) => {
     return (

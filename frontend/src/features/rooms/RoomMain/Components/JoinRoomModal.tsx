@@ -19,14 +19,14 @@ import { useNavigate } from 'react-router-dom';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 import { useMutation } from 'react-query';
-import { setUserRoomJoined } from '../../roomsSlice';
-import { useAppDispatch } from '../../../../store/hooks';
-import { verifyRoomPassword } from '../../../../Services';
+import { setUserRoomJoined } from 'features';
+import { useAppDispatch } from 'store/hooks';
+import { verifyRoomPassword } from 'Services';
 
 import { AxiosResponse } from 'axios';
-import { CreateRoomModalProps } from '../../../../Types';
+import { CreateRoomModalProps } from 'Types';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const JoinRoomModal = ({
     inputInitalRef,

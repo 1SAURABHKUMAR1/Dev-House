@@ -8,7 +8,7 @@ import {
     useClipboard,
 } from '@chakra-ui/react';
 
-import { copyFieldProps } from '../../Types';
+import { copyFieldProps } from 'Types';
 
 const CopyField = ({
     inputCopyValue,

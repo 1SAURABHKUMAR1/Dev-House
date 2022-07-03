@@ -19,14 +19,14 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { logoutUserAuth } from '../../features';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { logoutUserAuth } from 'features';
 
 import MobileNav from './MobileNav';
 
-import { logoutUser } from '../../Services';
+import { logoutUser } from 'Services';
 
-import ErrorToast from '../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 import { useState } from 'react';
 
 const Header = () => {

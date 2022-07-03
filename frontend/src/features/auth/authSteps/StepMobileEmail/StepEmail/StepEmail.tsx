@@ -3,17 +3,16 @@ import { Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { AuthButton } from '../../../../../Components';
+import { AuthButton, LoadingButton } from 'Components';
 
-import { AuthStepProps } from '../../../../../Types';
+import { AuthStepProps } from 'Types';
 
-import { checkEmail } from '../../../../../Services';
+import { checkEmail } from 'Services';
 
-import ErrorToast from '../../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
-import { setEmail as setEmailDispatch } from '../../../../index';
-import { useAppDispatch } from '../../../../../store/hooks';
-import LoadingButton from '../../../../../Components/Button/LoadingButton';
+import { setEmail as setEmailDispatch } from 'features';
+import { useAppDispatch } from 'store/hooks';
 
 const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

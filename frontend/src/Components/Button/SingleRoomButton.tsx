@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@chakra-ui/react';
-import { SingleRoomButton as SingleRoomButtonProps } from '../../Types';
+import { SingleRoomButton as SingleRoomButtonProps } from 'Types';
 
 const SingleRoomButton = ({
     buttonText,

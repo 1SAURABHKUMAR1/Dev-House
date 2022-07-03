@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { AuthButton } from '../../../Components';
-import { SingleIcon } from '../../index';
+import { AuthButton } from 'Components';
+import { SingleIcon } from 'features';
 
 import { useNavigate } from 'react-router-dom';
 

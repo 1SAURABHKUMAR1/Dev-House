@@ -10,9 +10,9 @@ import {
     Text,
 } from '@chakra-ui/react';
 
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector } from 'store/hooks';
 
-import { qrModalProps } from '../../Types';
+import { qrModalProps } from 'Types';
 
 const QrModal = ({ isOpen, onClose }: qrModalProps) => {
     const { qrcode } = useAppSelector((state) => state.rooms);

@@ -10,12 +10,9 @@ import {
 
 import { useRef } from 'react';
 
-import {
-    BottomContainer,
-    Container as MainContainer,
-} from '../../../Components';
+import { BottomContainer, Container as MainContainer } from 'Components';
 
-import { AllRooms, CreateRoomModal } from '../../index';
+import { AllRooms, CreateRoomModal } from 'features';
 import JoinRoomModal from './Components/JoinRoomModal';
 
 const Rooms = () => {

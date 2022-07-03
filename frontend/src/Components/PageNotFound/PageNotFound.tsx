@@ -1,4 +1,4 @@
-import { NotFoundTemplate } from '../index';
+import { NotFoundTemplate } from 'Components';
 
 const PageNotFound = () => {
     return (

@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { Tile } from '../../index';
+import { Tile } from 'features';
 
 const HeaderTiles = () => {
     return (

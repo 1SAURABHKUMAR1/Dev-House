@@ -2,9 +2,9 @@ import { Box, Button, Container, Text } from '@chakra-ui/react';
 
 import { Link } from 'react-router-dom';
 
-import { Container as MainContainer } from '../index';
+import { Container as MainContainer } from 'Components';
 
-import { notFoundTemplateProps } from '../../Types';
+import { notFoundTemplateProps } from 'Types';
 
 const NotFoundTemplate = ({
     mainContent,

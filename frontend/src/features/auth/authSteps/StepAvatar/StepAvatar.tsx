@@ -1,12 +1,12 @@
 import { Avatar, WrapItem, Text, Flex, Input } from '@chakra-ui/react';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { setAvatar } from '../../../index';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setAvatar } from 'features';
 
-import { AuthButton, Card } from '../../../../Components';
+import { AuthButton, Card } from 'Components';
 
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
 const StepAvatar = ({ onClick }: AuthStepProps) => {
     const { avatar, name } = useAppSelector((state) => state.activate);

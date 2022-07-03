@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { AuthButton, Card } from '../../../../Components';
-import { AuthStepProps } from '../../../../Types';
+import { AuthButton, Card } from 'Components';
+import { AuthStepProps } from 'Types';
 
 const StepWelcome = ({ onClick }: AuthStepProps) => {
     return (

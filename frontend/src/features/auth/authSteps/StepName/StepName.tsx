@@ -1,15 +1,15 @@
 import { Input, Text } from '@chakra-ui/react';
 
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { AuthButton, Card } from '../../../../Components';
+import { AuthButton, Card } from 'Components';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
-import { setName as setNameDispatch } from '../../../index';
+import { setName as setNameDispatch } from 'features';
 
 const StepName = ({ onClick }: AuthStepProps) => {
     const dispatch = useAppDispatch();

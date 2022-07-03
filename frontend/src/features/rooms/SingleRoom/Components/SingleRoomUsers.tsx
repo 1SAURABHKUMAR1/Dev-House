@@ -1,8 +1,8 @@
 import { Grid } from '@chakra-ui/react';
 
-import { SingleRoomAvatar } from '../../../../Components';
+import { SingleRoomAvatar } from 'Components';
 
-import { singleRoomUsersProps, socketUser } from '../../../../Types';
+import { singleRoomUsersProps, socketUser } from 'Types';
 
 import { memo } from 'react';
 

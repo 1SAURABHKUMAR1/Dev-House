@@ -1,8 +1,8 @@
 import { useAppDispatch } from '../store/hooks';
 
-import Axios from '../Services/Axios';
+import Axios from 'Services/Axios';
 
-import { setUserRefreshToken } from '../features';
+import { setUserRefreshToken } from 'features';
 import { useEffect, useState } from 'react';
 
 const useSetAuthWithRefresh = () => {

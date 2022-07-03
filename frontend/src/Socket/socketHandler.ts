@@ -12,7 +12,7 @@ import {
     socketREMOVEUSERPROPS,
     socketRemoveUserProps,
     socketUser,
-} from '../Types';
+} from 'Types';
 import {
     ACTIONS_JOIN,
     ACTIONS_ADD_USER,

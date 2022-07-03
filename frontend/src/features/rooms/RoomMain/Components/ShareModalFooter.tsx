@@ -4,11 +4,11 @@ import { HiQrcode } from 'react-icons/hi';
 import { AiOutlineWhatsApp, AiOutlineTwitter } from 'react-icons/ai';
 import { FaTelegramPlane } from 'react-icons/fa';
 
-import { ShareButton } from '../../../../Components';
+import { ShareButton } from 'Components';
 
-import { shareModalProps } from '../../../../Types';
+import { shareModalProps } from 'Types';
 
-import { useAppSelector } from '../../../../store/hooks';
+import { useAppSelector } from 'store/hooks';
 
 const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
     const { roomId, roomPassword } = useAppSelector((state) => state.rooms);

@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { singleRoom } from '../../../Services';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { singleRoom } from 'Services';
 
 import { BsArrowLeftShort } from 'react-icons/bs';
 
@@ -14,7 +14,7 @@ import {
     ContainerLoader,
     MainLoader,
     NotFoundTemplate,
-} from '../../../Components';
+} from 'Components';
 import {
     ChatBox,
     SingleRoomUsers,
@@ -22,14 +22,14 @@ import {
     setRoom,
     resetUserAuthRoom,
     PasswordModal,
-} from '../../index';
+} from 'features';
 
-import useSingleRoomWebRtc from '../../../Hooks/useSingleRoomWebRtc';
+import useSingleRoomWebRtc from 'Hooks/useSingleRoomWebRtc';
 
 import { AxiosResponse } from 'axios';
-import { createRoomResponse } from '../../../Types';
+import { createRoomResponse } from 'Types';
 
-import ErrorToast from '../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const SingleRoom = () => {
     const { roomId } = useParams();

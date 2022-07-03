@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { Children } from '../../Types';
+import { Children } from 'Types';
 
 const Container = ({ children, center, marginBottom }: Children) => {
     return (

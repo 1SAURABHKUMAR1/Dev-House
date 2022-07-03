@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
-import { ModalButtonProps } from '../../../../Types';
+import { ModalButtonProps } from 'Types';
 
 const ModalButtons = ({ roomType, setRoomType }: ModalButtonProps) => {
     const handleRoomType = (type: 'OPEN' | 'SOCIAL' | 'PRIVATE') => {

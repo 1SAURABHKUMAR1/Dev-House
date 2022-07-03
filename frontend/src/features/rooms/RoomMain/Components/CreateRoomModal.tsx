@@ -2,9 +2,9 @@ import { Modal, ModalOverlay } from '@chakra-ui/react';
 
 import React, { useState } from 'react';
 
-import { StepShare, OpenRoomModal } from '../../../index';
+import { StepShare, OpenRoomModal } from 'features';
 
-import { CreateRoomModalProps } from '../../../../Types';
+import { CreateRoomModalProps } from 'Types';
 
 const CreateRoomModal = ({
     isOpen,

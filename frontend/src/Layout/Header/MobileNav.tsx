@@ -9,13 +9,13 @@ import {
 
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
-import { logoutUserAuth } from '../../features';
+import { logoutUserAuth } from 'features';
 
-import { logoutUser } from '../../Services';
+import { logoutUser } from 'Services';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import ErrorToast from '../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 interface NavItem {
     label: string;

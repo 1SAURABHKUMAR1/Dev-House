@@ -1,8 +1,8 @@
 import { Box, Container } from '@chakra-ui/react';
 
-import { Container as MainContainer } from '../../Components';
-import Footer from '../../Layout/Footer';
-import { Header, Typewriter, HeaderTiles, RoomSection } from '../index';
+import { Container as MainContainer } from 'Components';
+import Footer from 'Layout/Footer';
+import { Header, Typewriter, HeaderTiles, RoomSection } from 'features';
 
 const Home = () => {
     return (

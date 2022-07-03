@@ -1,9 +1,9 @@
 import { Box, Tooltip } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import createShareLink from '../../Utils/CreateShareLink';
+import createShareLink from 'Utils/CreateShareLink';
 
-import { shareButtonProps } from '../../Types';
+import { shareButtonProps } from 'Types';
 
 const ShareButton = ({
     ToolTipText,

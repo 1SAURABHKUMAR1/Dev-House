@@ -6,7 +6,7 @@ import {
     initialChatType,
     initialUsersType,
     updateStateWithCallback,
-} from '../Types';
+} from 'Types';
 
 const useStateWithCallBack: updateStateWithCallback = (
     initalUsers,

@@ -9,18 +9,18 @@ import {
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { loginUser } from '../../../../Services';
-import { setUserRefreshToken } from '../../authSlice';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { loginUser } from 'Services';
+import { setUserRefreshToken } from 'features';
 
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
-import { AuthButton, Card } from '../../../../Components';
-import LoadingButton from '../../../../Components/Button/LoadingButton';
+import { AuthButton, Card } from 'Components';
+import LoadingButton from 'Components/Button/LoadingButton';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
 const StepPassword = ({ onClick }: AuthStepProps) => {
     const [passwordShow, setPasswordShow] = useState(false);

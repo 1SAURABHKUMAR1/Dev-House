@@ -3,17 +3,16 @@ import { Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { AuthButton } from '../../../../../../Components';
-import LoadingButton from '../../../../../../Components/Button/LoadingButton';
+import { AuthButton, LoadingButton } from 'Components';
 
-import { verifyMobile } from '../../../../../../Services';
+import { verifyMobile } from 'Services';
 
-import { useAppDispatch } from '../../../../../../store/hooks';
-import { setEmail as setEmailDispatch } from '../../../../../index';
+import { useAppDispatch } from 'store/hooks';
+import { setEmail as setEmailDispatch } from 'features';
 
-import { AuthStepProps } from '../../../../../../Types';
+import { AuthStepProps } from 'Types';
 
-import ErrorToast from '../../../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const StepMobile = ({ onClick }: AuthStepProps) => {
     const [mobile, setMobile] = useState('');

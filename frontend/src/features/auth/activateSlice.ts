@@ -4,7 +4,7 @@ import {
     setAvatarPayload,
     setNamePayload,
     setUsernamePayload,
-} from '../../Types';
+} from 'Types';
 
 const initialState: activateInitalState = {
     name: '',

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createRoomResponse, RoomSliceIntial } from '../../Types';
+import { createRoomResponse, RoomSliceIntial } from 'Types';
 
 const initialState: RoomSliceIntial = {
     roomId: '',

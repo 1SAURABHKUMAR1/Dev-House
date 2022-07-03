@@ -4,11 +4,11 @@ import { MdPhoneAndroid } from 'react-icons/md';
 
 import { useState } from 'react';
 
-import { Card } from '../../../../Components';
+import { Card } from 'Components';
 import StepMobile from './StepMobile/StepMobile';
 import StepEmail from './StepEmail/StepEmail';
 
-import { AuthStepProps } from '../../../../Types';
+import { AuthStepProps } from 'Types';
 
 const StepMobileEmail = ({ onClick }: AuthStepProps) => {
     const [phoneEmail] = useState({

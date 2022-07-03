@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 
 import Typewrite from 'typewriter-effect';
 
-import { typewriterProps } from '../../../Types';
+import { typewriterProps } from 'Types';
 
 const Typewriter = ({
     nonTypewriterText,

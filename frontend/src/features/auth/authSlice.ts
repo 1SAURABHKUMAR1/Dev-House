@@ -4,7 +4,7 @@ import {
     authSliceIntialState,
     emailAction,
     refreshTokenAction,
-} from '../../Types';
+} from 'Types';
 
 const initialState: authSliceIntialState = {
     login: false,

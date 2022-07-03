@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { BsArrowRightShort } from 'react-icons/bs';
-import { AuthButtonProps } from '../../Types';
+import { AuthButtonProps } from 'Types';
 
 const AuthButton = ({
     buttonText,

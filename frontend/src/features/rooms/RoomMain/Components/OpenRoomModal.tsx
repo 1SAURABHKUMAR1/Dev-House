@@ -11,15 +11,15 @@ import {
 
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { createRooms } from '../../../../Services';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { createRooms } from 'Services';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { ModalButtons, setRoomLink } from '../../../index';
+import { ModalButtons, setRoomLink } from 'features';
 
-import { createRoomResponse, openRoomModalTypes } from '../../../../Types';
+import { createRoomResponse, openRoomModalTypes } from 'Types';
 import { AxiosResponse } from 'axios';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const OpenRoomModal = ({
     inputInitalRef,

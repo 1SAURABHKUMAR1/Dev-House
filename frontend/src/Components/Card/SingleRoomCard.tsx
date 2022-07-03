@@ -1,6 +1,6 @@
 import { Avatar, Box, Flex, GridItem, Text, Tooltip } from '@chakra-ui/react';
 import { BsPersonFill } from 'react-icons/bs';
-import { singleRoomCardType, userMiniType } from '../../Types';
+import { singleRoomCardType, userMiniType } from 'Types';
 
 const SingleRoomCard = ({ roomName, speakers }: singleRoomCardType) => {
     return (

@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { SingleChatProps } from '../../Types';
+import { SingleChatProps } from 'Types';
 
 const SingleChat = ({ chatContent, username }: SingleChatProps) => {
     return (

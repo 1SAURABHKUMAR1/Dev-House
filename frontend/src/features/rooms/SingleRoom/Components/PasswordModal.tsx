@@ -13,14 +13,14 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 import React, { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { verifyRoomPassword } from '../../../../Services';
+import { verifyRoomPassword } from 'Services';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { setUserRoomJoined } from '../../../index';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setUserRoomJoined } from 'features';
 
 import { AxiosResponse } from 'axios';
 
-import ErrorToast from '../../../../Utils/Toast/Error';
+import ErrorToast from 'Utils/Toast/Error';
 
 const PasswordModal = () => {
     const { onClose } = useDisclosure();

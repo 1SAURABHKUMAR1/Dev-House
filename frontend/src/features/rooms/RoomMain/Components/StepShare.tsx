@@ -8,13 +8,13 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { CopyField, QrModal } from '../../../../Components';
+import { CopyField, QrModal } from 'Components';
 
-import { stepShareProps } from '../../../../Types';
+import { stepShareProps } from 'Types';
 
-import { ShareModalFooter, setRoomDefault } from '../../../index';
+import { ShareModalFooter, setRoomDefault } from 'features';
 
 const StepShare = ({ nextModal }: stepShareProps) => {
     const { roomId, roomPassword } = useAppSelector((state) => state.rooms);

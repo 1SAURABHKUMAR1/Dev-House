@@ -37,10 +37,12 @@ app.get('/', (req, res) => {
 const home = require('./Routes/home');
 const user = require('./Routes/user');
 const rooms = require('./Routes/rooms');
+const codebox = require('./Routes/codebox');
 
 app.use('/api/v1', home);
 app.use('/api/v1', user);
 app.use('/api/v1', rooms);
+app.use('/api/v1', codebox);
 
 const io = new Server(httpsServer, {
     cors: {

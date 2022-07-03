@@ -12,7 +12,9 @@ const SemiProtectedRoute = ({ element }: PrivateProp): JSX.Element => {
     const from = location.state;
 
     if (!login) {
-        return <Navigate to="/login" state={{ from: location }} />;
+        return (
+            <Navigate to="/login" state={{ from: location }} replace={true} />
+        );
     } else if (login && !activated) {
         return <>{element}</>;
     }

@@ -12,6 +12,7 @@ const AuthButton = ({
     return (
         <>
             <Button
+                width="100%"
                 display="flex"
                 fontSize={{ ssm: '1rem ', sm: '0.96rem' }}
                 fontWeight={600}
@@ -23,7 +24,7 @@ const AuthButton = ({
                 _active={{ bg: 'main.blue.hover' }}
                 _hover={{ bg: 'main.blue.hover' }}
                 alignItems="center"
-                minWidth="11.8rem"
+                maxW="11.8rem"
                 iconSpacing="0.2rem"
                 onClick={onClick}
                 rightIcon={

@@ -13,6 +13,7 @@ import QrModal from './QrModal/QrModal';
 import NotFoundTemplate from './PageNotFound/NotFoundTemplate';
 import ContainerLoader from './Loader/ContainerLoader';
 import SingleRoomButton from './Button/SingleRoomButton';
+import LoadingButton from './Button/LoadingButton';
 
 export {
     Container,
@@ -30,4 +31,5 @@ export {
     NotFoundTemplate,
     ContainerLoader,
     SingleRoomButton,
+    LoadingButton,
 };

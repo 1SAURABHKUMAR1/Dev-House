@@ -11,6 +11,7 @@ import {
     Activate,
     Rooms,
     SingleRoom,
+    Codebox,
 } from './features';
 import { MainLoader, PageNotFound } from './Components';
 
@@ -52,6 +53,10 @@ const App = () => {
                 <Route
                     path="/room/:roomId"
                     element={<PrivateRoute element={<SingleRoom />} />}
+                />
+                <Route
+                    path="/code-box"
+                    element={<PrivateRoute element={<Codebox />} />}
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

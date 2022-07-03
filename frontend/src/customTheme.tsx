@@ -16,6 +16,7 @@ const customTheme = extendTheme({
             'input-bg': '#262626',
             icon: '#4b5563',
             message: '#f1f5f9',
+            codeBox: 'rgb(245 245 245)',
         },
     },
     fonts: {

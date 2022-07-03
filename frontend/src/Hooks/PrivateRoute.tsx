@@ -11,9 +11,17 @@ const PrivateRoute = ({ element }: PrivateProp): JSX.Element => {
     const location = useLocation();
 
     if (!login) {
-        return <Navigate to="/login" state={{ from: location }} />;
+        return (
+            <Navigate to="/login" state={{ from: location }} replace={true} />
+        );
     } else if (login && !activated) {
-        return <Navigate to="/activate" state={{ from: location }} />;
+        return (
+            <Navigate
+                to="/activate"
+                state={{ from: location }}
+                replace={true}
+            />
+        );
     }
 
     return <>{element}</>;

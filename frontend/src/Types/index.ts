@@ -396,3 +396,56 @@ export interface tileProps {
     headingTitle: string;
     comment: string;
 }
+
+export interface CreateCodeboxProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export type codeBoxType =
+    | 'JAVASCRIPT'
+    | 'CPP'
+    | 'JAVA'
+    | 'PYTHON'
+    | 'VANILLA'
+    | 'VANILLA TYPESCRIPT'
+    | 'REACT'
+    | 'REACT TYPESCRIPT'
+    | 'NEXTJS'
+    | 'REMIX'
+    | 'NODEJS'
+    | 'ANGULAR';
+
+export interface codeBoxSingleIcon {
+    type: codeBoxType;
+    setCodeboxType: () => void;
+    langauage: codeBoxType;
+}
+
+export interface intialCodebox {
+    codeBoxType: 'LIBRARY' | 'LANGUAGE';
+    language: codeBoxType;
+}
+
+export interface setLanguageAction {
+    language: codeBoxType;
+}
+
+export interface codeBoxResponseType {
+    qrcode: {
+        id: string;
+        secure_url: string;
+    };
+    _id: string;
+    name: string;
+    codebox_id: string;
+    creator: userMiniType;
+    language: codeBoxType;
+    createdAt: Date;
+    codebox_type: 'LIBRARY' | 'LANGUAGE';
+}
+
+export interface codeBoxCreateResponse {
+    success: boolean;
+    room: codeBoxResponseType;
+}

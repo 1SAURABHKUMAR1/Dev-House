@@ -29,10 +29,16 @@ import Tile from './home/Components/Tile';
 import Header from './home/Components/Header';
 import HeaderTiles from './home/Components/HeaderTiles';
 import RoomSection from './home/Components/RoomSection';
+import Codebox from './Codebox/Codebox/Codebox';
+import CreateCodeBox from './Codebox/Codebox/Components/CreateCodebox';
+import JoinCodeBox from './Codebox/Codebox/Components/JoinCodeBox';
+import CodeboxType from './Codebox/Codebox/Components/CodeboxType';
+import CodeboxSingleIcon from './Codebox/Codebox/Components/CodeboxSingleIcon';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
 export * from './rooms/roomsSlice';
+export * from './Codebox/codeSlice';
 
 export {
     Home,
@@ -66,4 +72,9 @@ export {
     Header,
     HeaderTiles,
     RoomSection,
+    Codebox,
+    CreateCodeBox,
+    JoinCodeBox,
+    CodeboxType,
+    CodeboxSingleIcon,
 };

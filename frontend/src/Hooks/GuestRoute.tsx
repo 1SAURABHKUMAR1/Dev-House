@@ -13,7 +13,13 @@ const GuestRoute = ({ element }: PrivateProp): JSX.Element => {
     if (!login) {
         return <>{element}</>;
     } else if (login && !activated) {
-        return <Navigate to="/activate" state={{ from: location }} />;
+        return (
+            <Navigate
+                to="/activate"
+                state={{ from: location }}
+                replace={true}
+            />
+        );
     }
 
     // @ts-ignore

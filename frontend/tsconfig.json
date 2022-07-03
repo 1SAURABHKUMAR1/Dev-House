@@ -1,6 +1,11 @@
 {
     "include": ["./src/", "**/*.ts", "**/s.tsx"],
     "compilerOptions": {
+        "baseUrl": "src/",
+        // "paths": {
+        //     "@components/*": ["Components/*"],
+        //     "@features/*": ["features/*"]
+        // },
         "types": ["react/next", "react-dom/next", "node"],
         "allowJs": true,
         "esModuleInterop": true,

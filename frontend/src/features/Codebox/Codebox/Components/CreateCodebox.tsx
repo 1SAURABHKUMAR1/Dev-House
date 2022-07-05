@@ -1,13 +1,13 @@
 import { Button, Flex, Input, Text, useDisclosure } from '@chakra-ui/react';
 
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { useAppSelector } from 'store/hooks';
 
 import { AuthButton, LoadingButton } from 'Components';
 
-import { CodeboxType, resetLanguage } from 'features';
+import { CodeboxType } from 'features';
 
 import { createCodebox } from 'Services';
 import { AxiosResponse } from 'axios';
@@ -20,19 +20,11 @@ const CreateCodeBox = () => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const [codeboxName, setCodeboxName] = useState('');
     const { language } = useAppSelector((state) => state.codebox);
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setCodeboxName(event.target.value);
     };
-
-    useEffect(() => {
-        return () => {
-            dispatch(resetLanguage());
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const { mutateAsync, isLoading } = useMutation<
         AxiosResponse<codeBoxCreateResponse>,

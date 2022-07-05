@@ -1,9 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { intialCodebox, setLanguageAction } from 'Types';
+import { codeBoxResponseType, intialCodebox, setLanguageAction } from 'Types';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
     language: 'REACT',
+
+    authenticated: 'IDLE',
+    qrcode: {
+        id: '',
+        secure_url: '',
+    },
+    _id: '',
+    name: '',
+    codebox_id: '',
+    creator: {
+        name: '',
+        _id: '',
+        email: '',
+        profile_photo: {
+            id: '',
+            secure_url: '',
+        },
+        user_id: '',
+        username: '',
+    },
 };
 
 const codeSlice = createSlice({
@@ -27,16 +47,33 @@ const codeSlice = createSlice({
                 state.language = action.payload.language;
             }
         },
-        resetLanguage: (state: intialCodebox) => {
-            state.codeBoxType = 'LIBRARY';
-            state.language = 'REACT';
+        setUserJoined: (
+            state: intialCodebox,
+            action: PayloadAction<codeBoxResponseType>,
+        ) => {
+            if (
+                action.payload.language === 'JAVASCRIPT' ||
+                action.payload.language === 'CPP' ||
+                action.payload.language === 'JAVA' ||
+                action.payload.language === 'PYTHON'
+            ) {
+                state.codeBoxType = 'LANGUAGE';
+                state.language = action.payload.language;
+            } else {
+                state.codeBoxType = 'LIBRARY';
+                state.language = action.payload.language;
+            }
+
+            state.authenticated = 'AUTHENTICATED';
+            state.qrcode = action.payload.qrcode;
+            state.name = action.payload.name;
+            state.codebox_id = action.payload.codebox_id;
+            state.creator = action.payload.creator;
+            state._id = action.payload._id;
         },
-        setUserJoined: (state: intialCodebox) => {
-            // set codeboxtype and language
+        resetState: (state: intialCodebox) => {
+            return initialState;
         },
-        // resetState: () => {
-        //     //set language and library back to libray and react on codebox page unmount
-        // },
     },
     extraReducers: (builder) => {
         //
@@ -44,4 +81,8 @@ const codeSlice = createSlice({
 });
 
 export const codeReducer = codeSlice.reducer;
-export const { setLanguage, resetLanguage } = codeSlice.actions;
+export const {
+    setLanguage,
+    setUserJoined: setUserJoinedCodebox,
+    resetState: resetCodeboxState,
+} = codeSlice.actions;

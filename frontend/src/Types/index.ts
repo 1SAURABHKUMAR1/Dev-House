@@ -425,6 +425,16 @@ export interface codeBoxSingleIcon {
 export interface intialCodebox {
     codeBoxType: 'LIBRARY' | 'LANGUAGE';
     language: codeBoxType;
+
+    authenticated: 'IDLE' | 'AUTHENTICATED';
+    qrcode: {
+        id: string;
+        secure_url: string;
+    };
+    _id: string;
+    name: string;
+    codebox_id: string;
+    creator: userMiniType;
 }
 
 export interface setLanguageAction {
@@ -448,4 +458,17 @@ export interface codeBoxResponseType {
 export interface codeBoxCreateResponse {
     success: boolean;
     room: codeBoxResponseType;
+}
+
+export interface monacoEditorBox {
+    language: 'CPP' | 'JAVA' | 'JAVASCRIPT' | 'PYTHON';
+    codeMonaco: string;
+    setCodeMonaco: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface inputFieldMonaco {
+    label: 'Input -' | 'Output -';
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+    readonly: boolean;
 }

@@ -65,3 +65,9 @@
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
+@font-face {
+    font-family: 'League Mono';
+    font-weight: 400;
+    src: local('League Mono Regular'), url(../public/font/LeagueMono-Regular.woff2), local('League Mono SemiBold'), url(../public/font//LeagueMono-SemiBold.woff2), local('League Mono Bold'), url(../public/font/LeagueMono-Bold.woff2);
+}

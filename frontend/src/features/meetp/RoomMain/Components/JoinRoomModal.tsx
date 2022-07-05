@@ -58,7 +58,7 @@ const JoinRoomModal = ({
         {
             onSuccess() {
                 dispatch(setUserRoomJoined());
-                navigate(`/room/${roomId}`);
+                navigate(`/meetp/${roomId}`);
             },
             onError(error: Error) {
                 console.log(error);

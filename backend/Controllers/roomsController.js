@@ -45,7 +45,7 @@ exports.createRoom = BigPromise(async (req, res, next) => {
     }
 
     QRCode.toDataURL(
-        `Join the conversation on ${process.env.CLIENT_URL}/room/${
+        `Join the conversation on ${process.env.CLIENT_URL}/meetp/${
             room.room_id
         }${room.password ? `  where password is ${randomPassword}` : ''}`,
         async (error, url) => {

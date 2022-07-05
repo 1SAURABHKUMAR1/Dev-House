@@ -12,14 +12,15 @@ import {
     Rooms,
     SingleRoom,
     Codebox,
-} from './features';
-import { MainLoader, PageNotFound } from './Components';
+    SingleCodebox,
+} from 'features';
+import { MainLoader, PageNotFound } from 'Components';
 
-import GuestRoute from './Hooks/GuestRoute';
-import PrivateRoute from './Hooks/PrivateRoute';
-import SemiProtectedRoute from './Hooks/SemiPrivateRoute';
+import GuestRoute from 'Hooks/GuestRoute';
+import PrivateRoute from 'Hooks/PrivateRoute';
+import SemiProtectedRoute from 'Hooks/SemiPrivateRoute';
 
-import SetAuthWithRefresh from './Hooks/SetAuthWithRefresh';
+import SetAuthWithRefresh from 'Hooks/SetAuthWithRefresh';
 
 const App = () => {
     const [loading] = SetAuthWithRefresh();
@@ -51,12 +52,16 @@ const App = () => {
                     element={<PrivateRoute element={<Rooms />} />}
                 />
                 <Route
-                    path="/room/:roomId"
+                    path="/meetp/:roomId"
                     element={<PrivateRoute element={<SingleRoom />} />}
                 />
                 <Route
                     path="/code-box"
                     element={<PrivateRoute element={<Codebox />} />}
+                />
+                <Route
+                    path="/code-box/:codeboxId"
+                    element={<PrivateRoute element={<SingleCodebox />} />}
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

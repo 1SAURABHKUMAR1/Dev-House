@@ -1,11 +1,9 @@
 import { Input } from '@chakra-ui/react';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { joinCodebox } from 'Services';
-import { useAppDispatch } from 'store/hooks';
-import { resetLanguage } from 'features/Codebox/codeSlice';
 
 import { AuthButton, LoadingButton } from 'Components';
 
@@ -17,7 +15,6 @@ import ErrorToast from 'Utils/Toast/Error';
 const JoinCodeBox = () => {
     const [roomId, setRoomId] = useState('');
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
 
     const handleRoomIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRoomId(event.target.value);
@@ -39,13 +36,6 @@ const JoinCodeBox = () => {
     const handleCreateCodebox = async () => {
         roomId === '' ? ErrorToast('Enter a valid name') : await mutateAsync();
     };
-
-    useEffect(() => {
-        return () => {
-            dispatch(resetLanguage());
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <>

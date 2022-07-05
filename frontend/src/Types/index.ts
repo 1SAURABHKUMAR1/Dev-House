@@ -472,3 +472,8 @@ export interface inputFieldMonaco {
     setValue: React.Dispatch<React.SetStateAction<string>>;
     readonly: boolean;
 }
+
+export interface outputMonacoArea {
+    resetCode: () => void;
+    formatCode: () => void;
+}

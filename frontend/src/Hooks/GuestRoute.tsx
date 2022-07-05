@@ -23,7 +23,7 @@ const GuestRoute = ({ element }: PrivateProp): JSX.Element => {
     }
 
     // @ts-ignore
-    return <Navigate to={from?.from?.pathname ?? '/code-box'} />;
+    return <Navigate to={from?.from?.pathname ?? '/code-box'} replace={true} />;
 };
 
 export default GuestRoute;

@@ -72,7 +72,7 @@ const LanguageCodebox = () => {
         Error
     >(
         // @ts-ignore
-        () => executeCodebox(language, code, inputContent),
+        async () => await executeCodebox(language, code, inputContent),
         {
             onSuccess(data: AxiosResponse<runCodeResponse>) {
                 outputContent.current &&

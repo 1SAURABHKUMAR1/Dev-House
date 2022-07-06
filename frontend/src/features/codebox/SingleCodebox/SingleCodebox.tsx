@@ -32,7 +32,7 @@ const SingleCodebox = () => {
         AxiosResponse<codeBoxCreateResponse>,
         Error
     >(
-        'rooms/singleRoom',
+        'codebox/singleRoom',
         // @ts-ignore
         async () => await joinCodebox(codeboxId),
         {

@@ -1,14 +1,20 @@
 import { Box, Flex, Text, Textarea } from '@chakra-ui/react';
 
-import React from 'react';
+import React, { memo } from 'react';
 
 import { inputFieldMonaco } from 'Types';
 
-const InputField = ({ label, setValue, value, readonly }: inputFieldMonaco) => {
+const InputField = ({
+    label,
+    setValue,
+    value,
+    readonly,
+    valueRef,
+}: inputFieldMonaco) => {
     const handleInputChange = (
         event: React.ChangeEvent<HTMLTextAreaElement>,
     ) => {
-        setValue(() => event.target.value);
+        setValue && setValue(() => event.target.value);
     };
 
     return (
@@ -40,9 +46,12 @@ const InputField = ({ label, setValue, value, readonly }: inputFieldMonaco) => {
                         _focus={{}}
                         fontWeight="600"
                         outline="none"
+                        fontSize="0.85rem"
                         border="none"
                         height="100%"
                         width="100%"
+                        fontFamily="League Mono"
+                        ref={valueRef}
                         value={value}
                         onChange={handleInputChange}
                         readOnly={readonly}
@@ -53,4 +62,4 @@ const InputField = ({ label, setValue, value, readonly }: inputFieldMonaco) => {
     );
 };
 
-export default InputField;
+export default memo(InputField);

@@ -1,17 +1,20 @@
 import { Box, Button, Flex, Image, Tooltip } from '@chakra-ui/react';
 
-import { useState } from 'react';
-
 import { useAppSelector } from 'store/hooks';
 import { InputField } from 'features';
 
 import { outputMonacoArea } from 'Types';
 
-const OutputArea = ({ resetCode, formatCode }: outputMonacoArea) => {
+const OutputArea = ({
+    resetCode,
+    formatCode,
+    executeCode,
+    inputContent,
+    outputContent,
+    setInputContent,
+    isExecutingCode,
+}: outputMonacoArea) => {
     const { language } = useAppSelector((state) => state.codebox);
-
-    const [inputArea, setInputArea] = useState('');
-    const [outputArea, setOutputArea] = useState('');
 
     return (
         <Box
@@ -33,7 +36,18 @@ const OutputArea = ({ resetCode, formatCode }: outputMonacoArea) => {
                 justifyContent="center"
             >
                 <Tooltip label="Run Code">
-                    <Button bg="rgb(249, 249, 249)">Run</Button>
+                    <Button
+                        bg="rgb(249, 249, 249)"
+                        onClick={executeCode}
+                        isLoading={isExecutingCode}
+                        _loading={{
+                            color: '#30baee',
+                            fontWeight: '600',
+                            fontSize: '1.2rem',
+                        }}
+                    >
+                        Run
+                    </Button>
                 </Tooltip>
 
                 <Tooltip label="Format Code">
@@ -73,16 +87,15 @@ const OutputArea = ({ resetCode, formatCode }: outputMonacoArea) => {
             <Flex flexDir="column" flex="1 1 0px" height="auto">
                 <InputField
                     label="Input -"
-                    value={inputArea}
-                    setValue={setInputArea}
+                    value={inputContent}
+                    setValue={setInputContent}
                     readonly={false}
                 />
 
                 <InputField
                     label="Output -"
-                    value={outputArea}
-                    setValue={setOutputArea}
                     readonly={true}
+                    valueRef={outputContent}
                 />
             </Flex>
         </Box>

@@ -468,12 +468,23 @@ export interface monacoEditorBox {
 
 export interface inputFieldMonaco {
     label: 'Input -' | 'Output -';
-    value: string;
-    setValue: React.Dispatch<React.SetStateAction<string>>;
+    value?: string;
+    valueRef?: React.RefObject<HTMLTextAreaElement>;
+    setValue?: React.Dispatch<React.SetStateAction<string>>;
     readonly: boolean;
 }
 
 export interface outputMonacoArea {
     resetCode: () => void;
     formatCode: () => void;
+    executeCode: () => void;
+    inputContent: string;
+    setInputContent: React.Dispatch<React.SetStateAction<string>>;
+    outputContent: React.RefObject<HTMLTextAreaElement>;
+    isExecutingCode: boolean;
+}
+
+export interface runCodeResponse {
+    success: boolean;
+    message: string;
 }

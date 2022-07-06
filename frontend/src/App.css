@@ -8,6 +8,9 @@
     display: flex;
     margin: 0px;
     min-width: 0px;
+    scroll-behavior: smooth;
+    scrollbar-width: 15px;
+    scrollbar-color: #5a5a5a #efefef;
 }
 
 ::selection {
@@ -70,4 +73,23 @@
     font-family: 'League Mono';
     font-weight: 400;
     src: local('League Mono Regular'), url(../public/font/LeagueMono-Regular.woff2), local('League Mono SemiBold'), url(../public/font//LeagueMono-SemiBold.woff2), local('League Mono Bold'), url(../public/font/LeagueMono-Bold.woff2);
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+    background: #eff1f5;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #5a6072;
+    border: 2px solid #eff1f5;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background-color: transparent;
+    cursor: pointer;
 }

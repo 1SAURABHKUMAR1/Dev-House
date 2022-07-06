@@ -10,4 +10,15 @@ const createCodebox = (codeboxName: string, language: codeBoxType) =>
 const joinCodebox = (codeboxId: string) =>
     Axios.get(`/codebox/join/${codeboxId}`);
 
-export { createCodebox, joinCodebox };
+const executeCodebox = (
+    language: 'CPP' | 'JAVA' | 'JAVASCRIPT' | 'PYTHON',
+    code: string,
+    input: string,
+) =>
+    Axios.post(`/codebox/run`, {
+        input,
+        code,
+        language,
+    });
+
+export { createCodebox, joinCodebox, executeCodebox };

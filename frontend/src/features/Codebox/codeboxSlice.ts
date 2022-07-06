@@ -27,7 +27,7 @@ const initialState: intialCodebox = {
 };
 
 const codeSlice = createSlice({
-    name: 'code',
+    name: 'codebox',
     initialState,
     reducers: {
         setLanguage: (
@@ -72,7 +72,28 @@ const codeSlice = createSlice({
             state._id = action.payload._id;
         },
         resetState: (state: intialCodebox) => {
-            return initialState;
+            state.codeBoxType = 'LIBRARY';
+            state.language = 'REACT';
+
+            state.authenticated = 'IDLE';
+            state.qrcode = {
+                id: '',
+                secure_url: '',
+            };
+            state._id = '';
+            state.name = '';
+            state.codebox_id = '';
+            state.creator = {
+                name: '',
+                _id: '',
+                email: '',
+                profile_photo: {
+                    id: '',
+                    secure_url: '',
+                },
+                user_id: '',
+                username: '',
+            };
         },
     },
     extraReducers: (builder) => {

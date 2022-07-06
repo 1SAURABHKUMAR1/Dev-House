@@ -6,7 +6,7 @@ import { Container as MainContainer } from 'Components';
 
 import { CreateCodeBox, JoinCodeBox } from 'features';
 
-const Codebox = () => {
+const CodeboxCreate = () => {
     const [cardType, setCardType] = useState<'CREATE' | 'JOIN'>('CREATE');
 
     const toggleCardType = (type: 'CREATE' | 'JOIN') => {
@@ -106,4 +106,4 @@ const Codebox = () => {
     );
 };
 
-export default Codebox;
+export default CodeboxCreate;

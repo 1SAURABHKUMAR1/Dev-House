@@ -45,7 +45,7 @@ import InputField from './codebox/LanguageCodebox/Components/InputField';
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
 export * from './meetp/roomsSlice';
-export * from './codebox/codeSlice';
+export * from './codebox/codeboxSlice';
 
 export {
     Home,

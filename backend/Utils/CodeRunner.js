@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { PythonShell } = require('python-shell');
-const BigPromise = require('../Middleware/bigPromise');
-const CustomError = require('./CustomError');
 const uuid = require('uuid').v4;
+const { exec } = require('child_process');
 
 const dirCodes = path.join(__dirname, 'codes');
 
@@ -17,9 +16,7 @@ const executePythonCode = async (code, input) => {
     const filePath = path.join(dirCodes, fileName);
 
     return new Promise(async (resolve) => {
-        await fs.writeFileSync(filePath, code);
-
-        console.log(gcc);
+        fs.writeFileSync(filePath, code);
 
         let options = {
             mode: 'text',
@@ -41,4 +38,34 @@ const executePythonCode = async (code, input) => {
     });
 };
 
+const executeCppCode = async (code, input) => {
+    const uniq = uuid();
+    const fileName = `${uniq}.cpp`;
+    const filePath = path.join(dirCodes, fileName);
+    const inputPath = path.join(dirCodes, `${uniq}.txt`);
+    const outPath = path.join(dirCodes, `${uniq}.out`);
+
+    return new Promise(async (resolve, reject) => {
+        fs.writeFileSync(filePath, code);
+        fs.writeFileSync(inputPath, input);
+
+        exec(
+            `g++ "${filePath}" -o "${outPath}" && cd "${dirCodes}" && ./${uniq}.out < "${inputPath}"`,
+            (error, stdout, stderr) => {
+                if (stdout) {
+                    console.log('stdout', stdout);
+                    resolve(stdout);
+                }
+
+                if (stderr) {
+                    console.log(stderr);
+                    const errror = stderr.split(/(error: |error:)/);
+                    resolve(errror[errror.length - 1]);
+                }
+            },
+        );
+    });
+};
+
 exports.executePythonCode = executePythonCode;
+exports.executeCppCode = executeCppCode;

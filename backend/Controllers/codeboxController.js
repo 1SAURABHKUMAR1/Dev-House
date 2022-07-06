@@ -5,7 +5,11 @@ const uuid = require('uuid').v4;
 const { toDataURL } = require('qrcode');
 const cloudinary = require('cloudinary').v2;
 
-const { executePythonCode, executeCppCode } = require('../Utils/CodeRunner');
+const {
+    executePythonCode,
+    executeCppCode,
+    executeJSCode,
+} = require('../Utils/CodeRunner');
 
 exports.createBox = BigPromise(async (req, res, next) => {
     const { room_name, language } = req.body;
@@ -117,8 +121,8 @@ exports.runCode = BigPromise(async (req, res, next) => {
 
     if (language === 'PYTHON') {
         message = await executePythonCode(code, input);
-    } else if (language === 'CPP') {
-        message = await executeCppCode(code, input);
+    } else if (language === 'JAVASCRIPT') {
+        message = await executeJSCode(code, input);
     } else {
         message = 'Language not supported';
     }

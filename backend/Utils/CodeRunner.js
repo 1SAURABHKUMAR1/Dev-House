@@ -50,15 +50,14 @@ const executeCppCode = async (code, input) => {
         fs.writeFileSync(inputPath, input);
 
         exec(
-            `g++ "${filePath}" -o "${outPath}" && cd "${dirCodes}" && ./${uniq}.out < "${inputPath}"`,
+            // `g++ "${filePath}" -o "${outPath}" && cd "${dirCodes}" && ./${uniq}.out < "${inputPath}"`,
+            `gcc "${filePath}" -lstdc++ -o "${outPath}" && cd "${dirCodes}" && ./${uniq}.out < "${inputPath}"`,
             (error, stdout, stderr) => {
                 if (stdout) {
-                    console.log('stdout', stdout);
                     resolve(stdout);
                 }
 
                 if (stderr) {
-                    console.log(stderr);
                     const errror = stderr.split(/(error: |error:)/);
                     resolve(errror[errror.length - 1]);
                 }
@@ -67,5 +66,37 @@ const executeCppCode = async (code, input) => {
     });
 };
 
+const executeJSCode = async (code, input) => {
+    const uniq = uuid();
+    const fileName = `${uniq}.js`;
+    const filePath = path.join(dirCodes, fileName);
+    const inputPath = path.join(dirCodes, `${uniq}.txt`);
+
+    return new Promise(async (resolve, reject) => {
+        fs.writeFileSync(filePath, code);
+        fs.writeFileSync(inputPath, input);
+
+        exec(`node "${filePath}" < "${inputPath}"`, (error, stdout, stderr) => {
+            if (error) {
+                console.log(error);
+                const errror = error.split(/(error: |error:)/);
+                resolve(errror[errror.length - 1]);
+            }
+
+            if (stdout) {
+                console.log(stdout);
+                resolve(stdout);
+            }
+
+            if (stderr) {
+                console.log(stderr);
+                const errror = stderr.split(/(error: |error:)/);
+                resolve(errror[errror.length - 1]);
+            }
+        });
+    });
+};
+
 exports.executePythonCode = executePythonCode;
 exports.executeCppCode = executeCppCode;
+exports.executeJSCode = executeJSCode;

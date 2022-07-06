@@ -420,6 +420,7 @@ export interface codeBoxSingleIcon {
     type: codeBoxType;
     setCodeboxType: () => void;
     langauage: codeBoxType;
+    disabled: boolean;
 }
 
 export interface intialCodebox {

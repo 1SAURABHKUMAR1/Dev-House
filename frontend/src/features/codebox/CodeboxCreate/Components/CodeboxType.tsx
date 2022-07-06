@@ -83,6 +83,9 @@ const CodeboxType = ({ isOpen, onClose }: CreateCodeboxProps) => {
 
                                 return (
                                     <CodeboxSingleIcon
+                                        disabled={
+                                            language === 'CPP' ? true : false
+                                        }
                                         type={language}
                                         setCodeboxType={handleLanguageClick}
                                         langauage={centralLanguage}

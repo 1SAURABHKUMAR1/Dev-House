@@ -8,6 +8,7 @@ const CodeboxSingleIcon = ({
     type,
     setCodeboxType,
     langauage,
+    disabled,
 }: codeBoxSingleIcon) => {
     return (
         <>
@@ -38,7 +39,7 @@ const CodeboxSingleIcon = ({
                             : ''
                     }
                     objectFit="contain"
-                    onClick={setCodeboxType}
+                    onClick={() => (disabled ? null : setCodeboxType())}
                 />
             </Tooltip>
         </>

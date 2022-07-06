@@ -11,7 +11,7 @@ import {
     Activate,
     Rooms,
     SingleRoom,
-    Codebox,
+    CodeboxCreate,
     SingleCodebox,
 } from 'features';
 import { MainLoader, PageNotFound } from 'Components';
@@ -57,7 +57,7 @@ const App = () => {
                 />
                 <Route
                     path="/code-box"
-                    element={<PrivateRoute element={<Codebox />} />}
+                    element={<PrivateRoute element={<CodeboxCreate />} />}
                 />
                 <Route
                     path="/code-box/:codeboxId"

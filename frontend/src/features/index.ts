@@ -29,7 +29,7 @@ import Tile from './home/Components/Tile';
 import Header from './home/Components/Header';
 import HeaderTiles from './home/Components/HeaderTiles';
 import RoomSection from './home/Components/RoomSection';
-import Codebox from './codebox/Codebox/Codebox';
+import CodeboxCreate from './codebox/Codebox/CodeboxCreate';
 import CreateCodeBox from './codebox/Codebox/Components/CreateCodebox';
 import JoinCodeBox from './codebox/Codebox/Components/JoinCodeBox';
 import CodeboxType from './codebox/Codebox/Components/CodeboxType';
@@ -79,7 +79,7 @@ export {
     Header,
     HeaderTiles,
     RoomSection,
-    Codebox,
+    CodeboxCreate,
     CreateCodeBox,
     JoinCodeBox,
     CodeboxType,

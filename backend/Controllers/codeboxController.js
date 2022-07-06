@@ -5,6 +5,8 @@ const uuid = require('uuid').v4;
 const { toDataURL } = require('qrcode');
 const cloudinary = require('cloudinary').v2;
 
+const { executePythonCode } = require('../Utils/CodeRunner');
+
 exports.createBox = BigPromise(async (req, res, next) => {
     const { room_name, language } = req.body;
     const { _id } = req.user;
@@ -66,7 +68,7 @@ exports.createBox = BigPromise(async (req, res, next) => {
         qrcode: qrLink,
     });
 
-    codeboxRoom = await CodeBox.findById(codeboxRoom._id).populate(
+    codeboxRoom = await codeboxRoom.populate(
         'creator',
         'email mobile user_id _id name username profile_photo',
     );
@@ -93,5 +95,34 @@ exports.joinBox = BigPromise(async (req, res, next) => {
     res.status(200).json({
         success: true,
         room: codeBoxRoom,
+    });
+});
+
+exports.runCode = BigPromise(async (req, res, next) => {
+    // const {} = req.user;
+    const { language, code, input } = req.body;
+
+    if (!language || !code)
+        return next(CustomError(res, 'All fields are required', 400));
+
+    if (
+        language !== 'JAVA' &&
+        language !== 'CPP' &&
+        language !== 'JAVASCRIPT' &&
+        language !== 'PYTHON'
+    )
+        return next(CustomError(res, 'Language not supported', 400));
+
+    let message;
+
+    if (language === 'PYTHON') {
+        message = await executePythonCode(code, input);
+    } else {
+        message = 'Language not supported';
+    }
+
+    res.status(200).json({
+        success: true,
+        message,
     });
 });

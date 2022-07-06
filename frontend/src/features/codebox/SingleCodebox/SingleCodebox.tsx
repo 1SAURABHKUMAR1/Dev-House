@@ -32,11 +32,11 @@ const SingleCodebox = () => {
         AxiosResponse<codeBoxCreateResponse>,
         Error
     >(
-        'codebox/singleRoom',
+        '/codebox/singleRoom',
         // @ts-ignore
         async () => await joinCodebox(codeboxId),
         {
-            retry: 1,
+            retry: 3,
             refetchOnWindowFocus: false,
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));

@@ -31,7 +31,7 @@ const CodeboxSingleIcon = ({
                     width="4rem"
                     bg="main.codeBox"
                     boxShadow="0 1px 6px 0 rgb(0 0 0 / 10%), 0 1px 3px -1px rgb(0 0 0 / 10%)"
-                    src={`/images/${type}.svg`}
+                    src={`/images/${type.toLowerCase()}.svg`}
                     outline={
                         langauage === type
                             ? '2px solid rgba(66, 153, 225, 0.6)'

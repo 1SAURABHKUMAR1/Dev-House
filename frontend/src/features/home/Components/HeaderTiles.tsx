@@ -55,7 +55,7 @@ const HeaderTiles = () => {
                         <Tile
                             iconName="flash"
                             headingTitle="Optimized for React"
-                            comment="Custom environments built specifically for React, HTML/CSS, Javascript, CPP, Java and many more."
+                            comment="Custom environments built specifically for React, HTML/CSS, Javascript, CPP, TSX and many more."
                             key="flash card" //FIXME:
                         />
                     </Flex>

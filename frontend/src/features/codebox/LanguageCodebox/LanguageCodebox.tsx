@@ -18,10 +18,7 @@ import ErrorToast from 'Utils/Toast/Error';
 const LanguageCodebox = () => {
     const { language } = useAppSelector((state) => state.codebox);
     const [code, setCode] = useState(() =>
-        language === 'JAVASCRIPT' ||
-        language === 'CPP' ||
-        language === 'JAVA' ||
-        language === 'PYTHON'
+        language === 'JAVASCRIPT' || language === 'CPP' || language === 'PYTHON'
             ? codes[language]
             : '',
     );
@@ -32,7 +29,6 @@ const LanguageCodebox = () => {
         setCode(() =>
             language === 'JAVASCRIPT' ||
             language === 'CPP' ||
-            language === 'JAVA' ||
             language === 'PYTHON'
                 ? codes[language]
                 : '',
@@ -99,7 +95,6 @@ const LanguageCodebox = () => {
                     language={
                         language === 'JAVASCRIPT' ||
                         language === 'CPP' ||
-                        language === 'JAVA' ||
                         language === 'PYTHON'
                             ? language
                             : 'JAVASCRIPT'

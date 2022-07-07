@@ -22,16 +22,10 @@ import { codeBoxType, CreateCodeboxProps } from 'Types';
 const languageList: Array<codeBoxType> = [
     'JAVASCRIPT',
     'CPP',
-    'JAVA',
     'PYTHON',
     'VANILLA',
-    'VANILLA TYPESCRIPT',
     'REACT',
     'REACT TYPESCRIPT',
-    'NEXTJS',
-    'REMIX',
-    'NODEJS',
-    'ANGULAR',
 ];
 
 const CodeboxType = ({ isOpen, onClose }: CreateCodeboxProps) => {

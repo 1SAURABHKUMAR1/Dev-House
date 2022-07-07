@@ -37,7 +37,6 @@ const codeSlice = createSlice({
             if (
                 action.payload.language === 'JAVASCRIPT' ||
                 action.payload.language === 'CPP' ||
-                action.payload.language === 'JAVA' ||
                 action.payload.language === 'PYTHON'
             ) {
                 state.codeBoxType = 'LANGUAGE';
@@ -54,7 +53,6 @@ const codeSlice = createSlice({
             if (
                 action.payload.language === 'JAVASCRIPT' ||
                 action.payload.language === 'CPP' ||
-                action.payload.language === 'JAVA' ||
                 action.payload.language === 'PYTHON'
             ) {
                 state.codeBoxType = 'LANGUAGE';

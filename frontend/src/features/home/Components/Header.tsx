@@ -82,7 +82,7 @@ const Header = () => {
                         <SingleIcon iconName="cpp" />
                         <SingleIcon iconName="javascript" />
                         <SingleIcon iconName="react" />
-                        <SingleIcon iconName="java" />
+                        <SingleIcon iconName={'PYTHON'.toLowerCase()} />
                     </Flex>
 
                     <Box width="100%" marginTop="2rem">

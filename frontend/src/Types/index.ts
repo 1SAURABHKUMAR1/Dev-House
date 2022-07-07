@@ -405,16 +405,10 @@ export interface CreateCodeboxProps {
 export type codeBoxType =
     | 'JAVASCRIPT'
     | 'CPP'
-    | 'JAVA'
     | 'PYTHON'
     | 'VANILLA'
-    | 'VANILLA TYPESCRIPT'
     | 'REACT'
-    | 'REACT TYPESCRIPT'
-    | 'NEXTJS'
-    | 'REMIX'
-    | 'NODEJS'
-    | 'ANGULAR';
+    | 'REACT TYPESCRIPT';
 
 export interface codeBoxSingleIcon {
     type: codeBoxType;
@@ -462,7 +456,7 @@ export interface codeBoxCreateResponse {
 }
 
 export interface monacoEditorBox {
-    language: 'CPP' | 'JAVA' | 'JAVASCRIPT' | 'PYTHON';
+    language: 'CPP' | 'JAVASCRIPT' | 'PYTHON';
     codeMonaco: string;
     setCodeMonaco: React.Dispatch<React.SetStateAction<string>>;
 }

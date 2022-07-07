@@ -77,19 +77,11 @@ const executeJSCode = async (code, input) => {
         fs.writeFileSync(inputPath, input);
 
         exec(`node "${filePath}" < "${inputPath}"`, (error, stdout, stderr) => {
-            if (error) {
-                console.log(error);
-                const errror = error.split(/(error: |error:)/);
-                resolve(errror[errror.length - 1]);
-            }
+            error && resolve(error.message);
 
-            if (stdout) {
-                console.log(stdout);
-                resolve(stdout);
-            }
+            stdout && resolve(stdout);
 
             if (stderr) {
-                console.log(stderr);
                 const errror = stderr.split(/(error: |error:)/);
                 resolve(errror[errror.length - 1]);
             }

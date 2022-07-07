@@ -11,7 +11,7 @@ const joinCodebox = (codeboxId: string) =>
     Axios.get(`/codebox/join/${codeboxId}`);
 
 const executeCodebox = (
-    language: 'CPP' | 'JAVA' | 'JAVASCRIPT' | 'PYTHON',
+    language: 'CPP' | 'JAVASCRIPT' | 'PYTHON',
     code: string,
     input: string,
 ) =>

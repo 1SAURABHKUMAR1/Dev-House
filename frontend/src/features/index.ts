@@ -41,6 +41,7 @@ import MonacoEditor from './codebox/LanguageCodebox/Components/MonacoEditor';
 import SideDock from './codebox/LanguageCodebox/Components/SideDock';
 import OutputArea from './codebox/LanguageCodebox/Components/OutputArea';
 import InputField from './codebox/LanguageCodebox/Components/InputField';
+import Resizable from './codebox/LanguageCodebox/Components/Resizable';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -91,4 +92,5 @@ export {
     MonacoEditor,
     OutputArea,
     InputField,
+    Resizable,
 };

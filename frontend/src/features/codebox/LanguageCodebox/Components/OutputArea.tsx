@@ -17,14 +17,7 @@ const OutputArea = ({
     const { language } = useAppSelector((state) => state.codebox);
 
     return (
-        <Box
-            display="flex"
-            flexDir="column"
-            flex="1 1 0px"
-            minWidth="25%"
-            maxWidth="25%"
-            pr="0.5rem"
-        >
+        <Box display="flex" flexDir="column" flex="1 1 0px" px="0.5rem">
             <Box
                 p="0.5rem"
                 minHeight="3rem"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
 export interface Children {
@@ -482,4 +482,9 @@ export interface outputMonacoArea {
 export interface runCodeResponse {
     success: boolean;
     message: string;
+}
+
+export interface reactResizableProps {
+    minWidthPercent: number;
+    children: ReactNode;
 }

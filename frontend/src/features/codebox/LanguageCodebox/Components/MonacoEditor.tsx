@@ -13,7 +13,7 @@ const MonacoEditorBox = ({
     setCodeMonaco,
 }: monacoEditorBox) => {
     return (
-        <Box flexGrow="1" minWidth="60%" maxW="75%" width="auto">
+        <Box flex="1 1 0px" width="100%" height="100%">
             <Editor
                 language={language.toLowerCase()}
                 value={codeMonaco}

@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -7,7 +7,7 @@ import Prettier from 'prettier';
 import prettierParser from 'prettier/parser-babel';
 import { useAppSelector } from 'store/hooks';
 
-import { SideDock, MonacoEditor, OutputArea } from 'features';
+import { SideDock, MonacoEditor, OutputArea, Resizable } from 'features';
 
 import { AxiosResponse } from 'axios';
 import { runCodeResponse } from 'Types';
@@ -90,17 +90,21 @@ const LanguageCodebox = () => {
             <Flex flex="1 1 0" flexBasis="0" height="calc(100vh - 3.8rem)">
                 {/* <SideDock />  FIXME:*/}
 
-                <MonacoEditor
-                    codeMonaco={code}
-                    language={
-                        language === 'JAVASCRIPT' ||
-                        language === 'CPP' ||
-                        language === 'PYTHON'
-                            ? language
-                            : 'JAVASCRIPT'
-                    }
-                    setCodeMonaco={setCode}
-                />
+                <Box pos="relative">
+                    <Resizable minWidthPercent={50}>
+                        <MonacoEditor
+                            codeMonaco={code}
+                            language={
+                                language === 'JAVASCRIPT' ||
+                                language === 'CPP' ||
+                                language === 'PYTHON'
+                                    ? language
+                                    : 'JAVASCRIPT'
+                            }
+                            setCodeMonaco={setCode}
+                        />
+                    </Resizable>
+                </Box>
                 <OutputArea
                     resetCode={resetCode}
                     formatCode={formatCode}

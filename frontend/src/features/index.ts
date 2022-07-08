@@ -37,11 +37,15 @@ import CodeboxSingleIcon from './codebox/CodeboxCreate/Components/CodeboxSingleI
 import SingleCodebox from './codebox/SingleCodebox/SingleCodebox';
 import LanguageCodebox from './codebox/LanguageCodebox/LanguageCodebox';
 import LibraryCodebox from './codebox/LibraryCodebox/LibraryCodebox';
-import MonacoEditor from './codebox/LanguageCodebox/Components/MonacoEditor';
-import SideDock from './codebox/LanguageCodebox/Components/SideDock';
+import MonacoEditor from './codebox/SingleCodebox/Components/MonacoEditor';
+import SideDock from './codebox/SingleCodebox/Components/SideDock';
 import OutputArea from './codebox/LanguageCodebox/Components/OutputArea';
 import InputField from './codebox/LanguageCodebox/Components/InputField';
-import Resizable from './codebox/LanguageCodebox/Components/Resizable';
+import Resizable from './codebox/SingleCodebox/Components/Resizable';
+import ChatSide from './codebox/SingleCodebox/Components/ChatSide';
+import FileSide from './codebox/SingleCodebox/Components/FileSide';
+import UserSide from './codebox/SingleCodebox/Components/UserSide';
+import ShareSide from './codebox/SingleCodebox/Components/ShareSide';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -93,4 +97,8 @@ export {
     OutputArea,
     InputField,
     Resizable,
+    ShareSide,
+    ChatSide,
+    UserSide,
+    FileSide,
 };

@@ -46,6 +46,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                     marginTop="0rem"
                     fieldType="ROOM_URL"
                     key={'room link'}
+                    type="meetp"
                 />
 
                 {roomPassword && (
@@ -55,6 +56,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                         marginTop="0.7rem"
                         fieldType="ROOM_PASSWORD"
                         key={'room password'}
+                        type="meetp"
                     />
                 )}
             </ModalBody>

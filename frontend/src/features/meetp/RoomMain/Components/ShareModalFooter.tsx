@@ -41,6 +41,8 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 roomPassword={roomPassword}
                 key={'share on whatsapp'}
                 shareType={'WHATSAPP'}
+                toolTipAlign="bottom"
+                type="meetp"
             />
 
             <ShareButton
@@ -51,6 +53,8 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 roomPassword={roomPassword}
                 key={'share on twitter'}
                 shareType={'TWITTER'}
+                toolTipAlign="bottom"
+                type="meetp"
             />
 
             <ShareButton
@@ -61,6 +65,8 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 roomPassword={roomPassword}
                 key={'share on telegram'}
                 shareType={'TELEGRAM'}
+                toolTipAlign="bottom"
+                type="meetp"
             />
         </>
     );

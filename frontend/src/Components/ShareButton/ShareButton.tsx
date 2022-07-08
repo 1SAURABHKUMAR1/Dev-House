@@ -12,15 +12,22 @@ const ShareButton = ({
     roomId,
     roomPassword,
     shareType,
+    type,
+    toolTipAlign,
 }: shareButtonProps) => {
     const [shareLink] = useState(() =>
-        createShareLink(roomId, roomPassword, shareType),
+        createShareLink(roomId, roomPassword, shareType, type),
     );
 
     return (
         <>
-            <Tooltip label={ToolTipText}>
-                <a href={shareLink} target="_blank" rel="noreferrer">
+            <Tooltip label={ToolTipText} placement={toolTipAlign}>
+                <a
+                    href={shareLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ height: 'max-content' }}
+                >
                     <Box
                         bg={ButtonColor}
                         textColor="white"
@@ -32,6 +39,7 @@ const ShareButton = ({
                         padding="0.4rem"
                         _hover={{ opacity: '0.8' }}
                         cursor="pointer"
+                        width="max-content"
                     >
                         <Icon />
                     </Box>

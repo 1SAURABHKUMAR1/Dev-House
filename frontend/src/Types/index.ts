@@ -204,15 +204,18 @@ export interface copyFieldProps {
     inputCopyValue: string;
     marginTop: string;
     fieldType: 'ROOM_URL' | 'ROOM_PASSWORD';
+    type: 'meetp' | 'code-box';
 }
 
 export interface shareButtonProps {
     ToolTipText: string;
+    toolTipAlign: 'right' | 'bottom';
     Icon: IconType;
     ButtonColor: string;
     roomId: string;
     roomPassword: string;
     shareType: 'WHATSAPP' | 'TWITTER' | 'TELEGRAM';
+    type: 'meetp' | 'code-box';
 }
 
 export interface qrModalProps {
@@ -488,3 +491,164 @@ export interface reactResizableProps {
     minWidthPercent: number;
     children: ReactNode;
 }
+
+export interface sideBarIconProps {
+    tooltipLabel: 'Chat' | 'Share' | 'Files' | 'Users';
+    icon: 'chat' | 'share' | 'users' | 'files';
+}
+
+export type sidebarIcons = Array<
+    | {
+          type: 'CHAT';
+          icon: 'chat';
+          tooltipLabel: 'Chat';
+      }
+    | {
+          type: 'SHARE';
+          icon: 'share';
+          tooltipLabel: 'Collaborate';
+      }
+    | {
+          type: 'USERS';
+          icon: 'users';
+          tooltipLabel: 'Users';
+      }
+    | {
+          type: 'FILES';
+          icon: 'files';
+          tooltipLabel: 'Files';
+      }
+>;
+
+export interface sidebarProps {
+    buttonsArray: sidebarIcons;
+}
+
+export interface iconBoxProps {
+    bgColor: string;
+    outline: string;
+    color: string;
+    buttonText: 'Share Link' | 'Share Id' | 'Exit Room';
+    onClick?: () => void;
+    toolTipLabel: 'Share Room Link' | 'Share Room Id' | 'Exit Room';
+    clipboardValue?: string;
+}
+
+export type useSocketCodebox = (
+    codeboxId: string,
+    user: socketUser,
+) => {
+    // users: Array<socketUser>;
+    // chats: Array<chatType>;
+    // code: string;
+    // handleCodeChange: handleCodeChange;
+    // handleNewChat: handleNewChatFunction;
+};
+
+// export type socketUser = {
+//     userId: string;
+//     username: string;
+//     photo: string;
+//     muted: boolean;
+// };
+
+// export type cbRefType = {
+//     stateFunction: cbType | null;
+// };
+
+// export type addAudioRefType = (
+//     userId: string,
+//     instance: HTMLAudioElement,
+// ) => void;
+
+// export interface singleRoomUsersProps {
+//     users: Array<socketUser>;
+//     addAudioRef: addAudioRefType;
+// }
+
+// export type currentUserAudioInput = {
+//     media: MediaStream | null;
+// };
+
+// export type roomUserType = {
+//     rtc: {
+//         [socketId: string]: RTCPeerConnection;
+//     };
+//     audio: {
+//         [userId: string]: HTMLAudioElement;
+//     };
+// };
+
+// export interface socketAddUserProps {
+//     addUser: addUserType;
+//     currentUserAudioInput: React.MutableRefObject<currentUserAudioInput>;
+//     roomUsers: React.MutableRefObject<roomUserType>;
+// }
+
+// export interface socketGetIceCandidateProps {
+//     roomUsers: React.MutableRefObject<roomUserType>;
+// }
+
+// export interface socketGetOfferAnsProps {
+//     roomUsers: React.MutableRefObject<roomUserType>;
+// }
+
+// export interface socketRemoveUserProps {
+//     addUser: addUserType;
+//     roomUsers: React.MutableRefObject<roomUserType>;
+// }
+
+// export interface socketADDUSERPROPS {
+//     socketId: string;
+//     createOffer: boolean;
+//     user: socketUser;
+// }
+
+// export interface socketICECANDIDATEPROPS {
+//     socketId: string;
+//     icecandidate: RTCIceCandidate;
+// }
+
+// export interface socketGETOFFERANSPROPS {
+//     socketId: string;
+//     offerOrAns: RTCSessionDescriptionInit;
+// }
+
+// export interface socketREMOVEUSERPROPS {
+//     userId: string;
+//     socketId: string;
+// }
+
+// export interface SingleRoomButton {
+//     tooltipLabel: string;
+//     buttonText: string;
+//     onClick?: () => void;
+//     btnRef?: React.RefObject<HTMLButtonElement>;
+// }
+
+// export type mutedFunction = (userId: string) => void;
+
+// export interface socketMuteUnmuteProps {
+//     addUser: addUserType;
+// }
+
+// export interface socketMUTEUNMUTEPROPS {
+//     userId: string;
+//     mute: boolean;
+// }
+
+// export interface chatType {
+//     username: string;
+//     messageBody: string;
+//     messageId: string;
+// }
+
+// export type initialChatType = Array<chatType>;
+
+// export type addChatType = (
+//     newChat: chatType | ((chat: initialChatType) => initialChatType),
+// ) => void;
+
+// export interface socketChatProps {
+//     addChats: addChatType;
+// }

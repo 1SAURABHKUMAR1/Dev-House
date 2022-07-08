@@ -15,10 +15,11 @@ const CopyField = ({
     labelText,
     marginTop,
     fieldType,
+    type,
 }: copyFieldProps) => {
     const { onCopy, hasCopied } = useClipboard(
         fieldType === 'ROOM_URL'
-            ? `${process.env.REACT_APP_FRONTEND_URL}/meetp/${inputCopyValue}`
+            ? `${process.env.REACT_APP_FRONTEND_URL}/${type}/${inputCopyValue}`
             : `${inputCopyValue}`,
     );
 
@@ -45,7 +46,7 @@ const CopyField = ({
                         fontWeight="600"
                         value={
                             fieldType === 'ROOM_URL'
-                                ? `${process.env.REACT_APP_FRONTEND_URL}/meetp/${inputCopyValue}`
+                                ? `${process.env.REACT_APP_FRONTEND_URL}/${type}/${inputCopyValue}`
                                 : `${inputCopyValue}`
                         }
                         _focus={{}}

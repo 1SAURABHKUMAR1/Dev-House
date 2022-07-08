@@ -9,6 +9,11 @@ export const editorConfig: editor.IStandaloneEditorConstructionOptions = {
     codeLens: true,
     colorDecorators: true,
     contextmenu: true,
+    autoClosingDelete: 'always',
+    comments: {
+        ignoreEmptyLines: true,
+        insertSpace: true,
+    },
     cursorBlinking: 'blink',
     cursorSmoothCaretAnimation: false,
     cursorStyle: 'line',

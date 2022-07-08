@@ -1,21 +1,24 @@
 import { ResizableBox, ResizeCallbackData } from 'react-resizable';
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { reactResizableProps } from 'Types';
 
 const Resizable = ({ minWidthPercent, children }: reactResizableProps) => {
     const [innerWidth, setInnerWidth] = useState(() => window.innerWidth);
-    const [width, setWidth] = useState(() => window.innerWidth * 0.75);
+    const [width, setWidth] = useState(() => window.innerWidth * 0.5);
     const [minWidth, setMinWidth] = useState(
         () => (window.innerWidth * minWidthPercent) / 100,
     );
+    const [innerHeight, setInnerHeight] = useState(
+        () => window.innerHeight - 62,
+    );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const listener = () => {
             setInnerWidth(window.innerWidth);
-            if (window.innerWidth * 0.75 < width) {
-                setWidth(window.innerWidth * 0.75);
+            if (width > window.innerWidth * 0.55) {
+                setWidth(window.innerWidth * 0.55);
+                setMinWidth((window.innerHeight * minWidthPercent) / 100);
             }
-            setMinWidth((window.innerHeight * minWidthPercent) / 100);
         };
         window.addEventListener('resize', listener);
 
@@ -24,6 +27,18 @@ const Resizable = ({ minWidthPercent, children }: reactResizableProps) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [width]);
+
+    useLayoutEffect(() => {
+        setWidth(window.innerWidth * 0.55);
+        setMinWidth((window.innerWidth * minWidthPercent) / 100);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.innerWidth]);
+
+    useLayoutEffect(() => {
+        setInnerHeight(window.innerHeight - 62);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.innerHeight, width]);
 
     const handleResize = (
         event: React.SyntheticEvent<Element, Event>,
@@ -37,9 +52,9 @@ const Resizable = ({ minWidthPercent, children }: reactResizableProps) => {
             <ResizableBox
                 className="resize-box"
                 minConstraints={[minWidth, Infinity]}
-                maxConstraints={[innerWidth * 0.75, Infinity]}
+                maxConstraints={[innerWidth * 0.55, Infinity]}
                 width={width}
-                height={Infinity}
+                height={innerHeight}
                 resizeHandles={['e']}
                 axis="x"
                 onResizeStop={handleResize}

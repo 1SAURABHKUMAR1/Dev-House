@@ -3,7 +3,6 @@ import {
     Button,
     Container,
     Flex,
-    Input,
     Text,
     useDisclosure,
 } from '@chakra-ui/react';
@@ -25,8 +24,6 @@ const Rooms = () => {
     } = useDisclosure();
     const joinRoomRef = useRef<HTMLInputElement>(null);
 
-    // TODO:  rooms filter
-
     return (
         <>
             <MainContainer marginBottom="0">
@@ -44,19 +41,6 @@ const Rooms = () => {
                                     borderRadius="1.4rem"
                                 ></Box>
                             </Box>
-
-                            <Input
-                                px="2rem"
-                                maxWidth="17rem"
-                                bg="main.input-bg"
-                                color="main.text.white"
-                                type="text"
-                                borderRadius="1.4rem"
-                                display={{ ssm: 'none', md: 'block' }}
-                                _focus={{}}
-                                _active={{}}
-                                placeholder="Room Name....."
-                            />
                         </Flex>
                         <Box>
                             <Button

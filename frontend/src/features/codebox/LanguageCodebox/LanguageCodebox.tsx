@@ -10,10 +10,28 @@ import { useAppSelector } from 'store/hooks';
 import { SideDock, MonacoEditor, OutputArea, Resizable } from 'features';
 
 import { AxiosResponse } from 'axios';
-import { runCodeResponse } from 'Types';
+import { runCodeResponse, sidebarIcons } from 'Types';
 
 import { codes } from 'Utils/Code';
 import ErrorToast from 'Utils/Toast/Error';
+
+const sideBarIcons: sidebarIcons = [
+    {
+        type: 'USERS',
+        tooltipLabel: 'Users',
+        icon: 'users',
+    },
+    {
+        type: 'CHAT',
+        icon: 'chat',
+        tooltipLabel: 'Chat',
+    },
+    {
+        type: 'SHARE',
+        tooltipLabel: 'Collaborate',
+        icon: 'share',
+    },
+];
 
 const LanguageCodebox = () => {
     const { language } = useAppSelector((state) => state.codebox);
@@ -87,11 +105,17 @@ const LanguageCodebox = () => {
 
     return (
         <>
-            <Flex flex="1 1 0" flexBasis="0" height="calc(100vh - 3.8rem)">
-                {/* <SideDock />  FIXME:*/}
+            <Flex
+                pos="relative"
+                display="flex"
+                flex="1 1 0px"
+                width="100%"
+                height="100%"
+            >
+                <SideDock buttonsArray={sideBarIcons} />
 
-                <Box pos="relative">
-                    <Resizable minWidthPercent={50}>
+                <Box pos="relative" width="auto" height="100%">
+                    <Resizable minWidthPercent={45}>
                         <MonacoEditor
                             codeMonaco={code}
                             language={

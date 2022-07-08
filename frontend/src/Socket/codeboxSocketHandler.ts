@@ -55,6 +55,8 @@ export const socketChat = ({
     socket.on(
         ACTIONS_CODE_CHAT,
         ({ chats }: { chats: chatType[] | chatType }) => {
+            console.log(chats);
+
             if (Array.isArray(chats)) {
                 setChats(() => chats);
             } else {

@@ -525,6 +525,7 @@ export type sidebarIcons = Array<
 export interface sidebarProps {
     buttonsArray: sidebarIcons;
     users: socketCodeboxUser[];
+    chats: initialChatType;
 }
 
 export interface iconBoxProps {

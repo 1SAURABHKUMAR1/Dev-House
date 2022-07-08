@@ -123,7 +123,11 @@ const LanguageCodebox = ({
                 width="100%"
                 height="100%"
             >
-                <SideDock buttonsArray={sideBarIcons} users={users} />
+                <SideDock
+                    buttonsArray={sideBarIcons}
+                    users={users}
+                    chats={chats}
+                />
 
                 <Box pos="relative" width="auto" height="100%">
                     <Resizable minWidthPercent={45}>

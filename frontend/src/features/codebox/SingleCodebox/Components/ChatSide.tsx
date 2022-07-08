@@ -1,12 +1,29 @@
 import { Box, Button, Textarea } from '@chakra-ui/react';
+
 import { SingleChat } from 'Components';
+import { useRef } from 'react';
 import { BiSend } from 'react-icons/bi';
 
-const chats: any = [];
+import { ACTIONS_SEND_CODE_CHAT } from 'Socket/actions';
+import { socket } from 'Socket/socket';
 
-const ChatSide = () => {
-    const handleNewChat = () => {
-        //
+import { useAppSelector } from 'store/hooks';
+
+import { initialChatType } from 'Types';
+
+const ChatSide = ({ chats }: { chats: initialChatType }) => {
+    const { codebox_id } = useAppSelector((state) => state.codebox);
+    const { username } = useAppSelector((state) => state.auth);
+    const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const handleNewChat: () => void = () => {
+        socket.emit(ACTIONS_SEND_CODE_CHAT, {
+            codeboxId: codebox_id,
+            messageBody: textAreaRef.current?.value ?? '',
+            username,
+        });
+
+        textAreaRef.current && (textAreaRef.current.value = '');
     };
 
     return (
@@ -71,6 +88,7 @@ const ChatSide = () => {
                     minH="2.6rem"
                     maxH="2.6rem"
                     className="hide-scrollbar"
+                    ref={textAreaRef}
                 />
                 <Button padding="1rem 0rem" onClick={handleNewChat}>
                     <BiSend fontSize="1.4rem" cursor="pointer" />

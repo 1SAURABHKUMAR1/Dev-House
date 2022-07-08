@@ -30,14 +30,6 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
     //     //
     // };
 
-    // const handleNewChat: handleNewChatFunction = (messageBody) => {
-    //     socket.emit(ACTIONS_SEND_CODE_CHAT, {
-    //         codeboxId,
-    //         messageBody,
-    //         username: user.username,
-    //     });
-    // };
-
     const addUsers = (newUser: socketCodeboxUser) => {
         !users.find(
             (singleUser) =>
@@ -73,10 +65,6 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
 
         initalize();
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [codeboxId]);
-
-    useEffect(() => {
         return () => {
             socket.emit(ACTIONS_CODE_LEAVE, { codeboxId });
             socket.off(ACTIONS_ADD_CODE_USER);

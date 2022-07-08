@@ -156,7 +156,7 @@ const socketRoom = (io) => {
             });
 
             socket.emit(ACTIONS_CODE_CHAT, {
-                chats: chats.codebox_id ?? [],
+                chats: chats[codebox_id] ?? [],
             });
 
             socket.join(codebox_id);
@@ -188,10 +188,12 @@ const socketRoom = (io) => {
                     });
                 });
 
-                chats.roomId = [
+                chats[codeboxId] = [
                     ...(chats.codeboxId ?? []),
                     { messageBody, username, messageId },
                 ];
+
+                console.log(chats);
             },
         );
     });

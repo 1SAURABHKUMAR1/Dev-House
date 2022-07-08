@@ -1,6 +1,7 @@
 import { Avatar, Box, Flex, Text, Tooltip } from '@chakra-ui/react';
+import { userSideProps } from 'Types';
 
-const UserSide = () => {
+const UserSide = ({ users }: userSideProps) => {
     return (
         <>
             <Box
@@ -20,34 +21,50 @@ const UserSide = () => {
                 marginTop="1rem"
             >
                 <Flex
-                    // gridTemplateColumns="repeat(auto-fill, 5.5rem)"
                     gap="1rem"
                     width="100%"
                     alignItems="center"
                     flexWrap="wrap"
                     columnGap="0.5rem"
                 >
-                    <Box width="max-content" textAlign="center" margin="auto">
-                        <Tooltip label="name" placement="right">
-                            <Avatar
-                                height="3rem"
-                                width="3rem"
-                                showBorder
-                                name="user avatar"
-                                borderColor="main.blue"
-                                borderWidth="0.14rem"
+                    {users.map((user) => (
+                        <Box
+                            width="max-content"
+                            textAlign="center"
+                            margin="auto"
+                            key={`codebox ${user.userId}`}
+                        >
+                            <Tooltip label={user.username} placement="right">
+                                <Avatar
+                                    height="3rem"
+                                    width="3rem"
+                                    showBorder
+                                    name="user avatar"
+                                    borderColor="main.blue"
+                                    borderWidth="0.14rem"
+                                    overflow="hidden"
+                                    src={user.photo}
+                                    mb="0.2rem"
+                                    bg="transparent"
+                                    borderRadius="0.4rem"
+                                    p="0.4rem"
+                                />
+                            </Tooltip>
+                            <Text
+                                fontSize="0.9rem"
+                                fontWeight="700"
                                 overflow="hidden"
-                                src="/images/share.svg"
-                                mb="0.2rem"
-                                bg="transparent"
-                                borderRadius="0.4rem"
-                                p="0.4rem"
-                            />
-                        </Tooltip>
-                        <Text fontSize="0.9rem" fontWeight="700">
-                            Name
-                        </Text>
-                    </Box>
+                                display="-webkit-box"
+                                maxW="4.5rem"
+                                style={{
+                                    WebkitLineClamp: '1',
+                                    WebkitBoxOrient: 'vertical',
+                                }}
+                            >
+                                @{user.username}
+                            </Text>
+                        </Box>
+                    ))}
                 </Flex>
             </Box>
         </>

@@ -6,6 +6,7 @@ import {
     Tooltip,
     useClipboard,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 
 import { ShareButton } from 'Components';
@@ -17,8 +18,19 @@ import { iconBoxProps } from 'Types';
 
 import SuccessToast from 'Utils/Toast/Success';
 
+import { socket } from 'Socket/socket';
+import { ACTIONS_CODE_LEAVE } from 'Socket/actions';
+
 const ShareSide = () => {
     const { qrcode, codebox_id } = useAppSelector((state) => state.codebox);
+    const navigate = useNavigate();
+
+    const handleUserExit = () => {
+        socket.emit(ACTIONS_CODE_LEAVE, {
+            codeboxId: codebox_id,
+        });
+        navigate('/code-box');
+    };
 
     return (
         <>
@@ -127,7 +139,7 @@ const ShareSide = () => {
                     buttonText="Exit Room"
                     color="hsl(333deg 100% 45%)"
                     outline="2px solid hsl(333deg 100% 45%)"
-                    onClick={() => console.log('')}
+                    onClick={() => handleUserExit()}
                     key="Exit Room"
                     toolTipLabel="Exit Room"
                 />

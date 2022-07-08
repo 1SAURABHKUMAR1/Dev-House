@@ -381,6 +381,8 @@ export interface socketCHATSPROPS {
 
 export type handleNewChatFunction = (messageBody: string) => void;
 
+export type handleUserLeave = (codebox_id: string) => void;
+
 export interface typewriterProps {
     nonTypewriterText: string;
     typewriterText: Array<string>;
@@ -522,6 +524,7 @@ export type sidebarIcons = Array<
 
 export interface sidebarProps {
     buttonsArray: sidebarIcons;
+    users: socketCodeboxUser[];
 }
 
 export interface iconBoxProps {
@@ -536,119 +539,19 @@ export interface iconBoxProps {
 
 export type useSocketCodebox = (
     codeboxId: string,
-    user: socketUser,
+    user: socketCodeboxUser,
 ) => {
-    // users: Array<socketUser>;
-    // chats: Array<chatType>;
+    users: Array<socketCodeboxUser>;
+    chats: Array<chatType>;
     // code: string;
-    // handleCodeChange: handleCodeChange;
-    // handleNewChat: handleNewChatFunction;
 };
 
-// export type socketUser = {
-//     userId: string;
-//     username: string;
-//     photo: string;
-//     muted: boolean;
-// };
+export type socketCodeboxUser = {
+    userId: string;
+    username: string;
+    photo: string;
+};
 
-// export type cbRefType = {
-//     stateFunction: cbType | null;
-// };
-
-// export type addAudioRefType = (
-//     userId: string,
-//     instance: HTMLAudioElement,
-// ) => void;
-
-// export interface singleRoomUsersProps {
-//     users: Array<socketUser>;
-//     addAudioRef: addAudioRefType;
-// }
-
-// export type currentUserAudioInput = {
-//     media: MediaStream | null;
-// };
-
-// export type roomUserType = {
-//     rtc: {
-//         [socketId: string]: RTCPeerConnection;
-//     };
-//     audio: {
-//         [userId: string]: HTMLAudioElement;
-//     };
-// };
-
-// export interface socketAddUserProps {
-//     addUser: addUserType;
-//     currentUserAudioInput: React.MutableRefObject<currentUserAudioInput>;
-//     roomUsers: React.MutableRefObject<roomUserType>;
-// }
-
-// export interface socketGetIceCandidateProps {
-//     roomUsers: React.MutableRefObject<roomUserType>;
-// }
-
-// export interface socketGetOfferAnsProps {
-//     roomUsers: React.MutableRefObject<roomUserType>;
-// }
-
-// export interface socketRemoveUserProps {
-//     addUser: addUserType;
-//     roomUsers: React.MutableRefObject<roomUserType>;
-// }
-
-// export interface socketADDUSERPROPS {
-//     socketId: string;
-//     createOffer: boolean;
-//     user: socketUser;
-// }
-
-// export interface socketICECANDIDATEPROPS {
-//     socketId: string;
-//     icecandidate: RTCIceCandidate;
-// }
-
-// export interface socketGETOFFERANSPROPS {
-//     socketId: string;
-//     offerOrAns: RTCSessionDescriptionInit;
-// }
-
-// export interface socketREMOVEUSERPROPS {
-//     userId: string;
-//     socketId: string;
-// }
-
-// export interface SingleRoomButton {
-//     tooltipLabel: string;
-//     buttonText: string;
-//     onClick?: () => void;
-//     btnRef?: React.RefObject<HTMLButtonElement>;
-// }
-
-// export type mutedFunction = (userId: string) => void;
-
-// export interface socketMuteUnmuteProps {
-//     addUser: addUserType;
-// }
-
-// export interface socketMUTEUNMUTEPROPS {
-//     userId: string;
-//     mute: boolean;
-// }
-
-// export interface chatType {
-//     username: string;
-//     messageBody: string;
-//     messageId: string;
-// }
-
-// export type initialChatType = Array<chatType>;
-
-// export type addChatType = (
-//     newChat: chatType | ((chat: initialChatType) => initialChatType),
-// ) => void;
-
-// export interface socketChatProps {
-//     addChats: addChatType;
-// }
+export interface userSideProps {
+    users: socketCodeboxUser[];
+}

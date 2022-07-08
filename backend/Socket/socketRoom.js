@@ -11,9 +11,16 @@ const {
     ACTIONS_MUTE_UNMUTE,
     ACTIONS_CHAT,
     ACTIONS_SEND_CHAT,
+    ACTIONS_CODE_JOIN,
+    ACTIONS_ADD_CODE_USER,
+    ACTIONS_CODE_CHAT,
+    ACTIONS_CODE_LEAVE,
+    ACTIONS_REMOVE_CODE_USER,
+    ACTIONS_SEND_CODE_CHAT,
 } = require('./actions');
 const uuid = require('uuid').v4;
 
+// BESTWAY use redis
 const connectedUsers = {}; // object with socketId as key and value as user which contains username , photo and userId
 const chats = {}; // object with roomId as key and value as single chat which contains messageBody and username
 
@@ -21,7 +28,7 @@ const getRoom = (roomId, io) => {
     return [...(io.sockets.adapter.rooms.get(roomId) || [])];
 };
 
-const socketHandler = (io) => {
+const socketRoom = (io) => {
     return io.on('connection', (socket) => {
         console.log('Socket is connected', socket.id);
 
@@ -90,6 +97,10 @@ const socketHandler = (io) => {
                         userId: connectedUsers[socket.id]?.userId,
                         socketId: socket.id,
                     });
+                    io.to(socketId).emit(ACTIONS_REMOVE_CODE_USER, {
+                        userId: connectedUsers[socket.id]?.userId,
+                        username: connectedUsers[socket.id]?.username,
+                    });
                 });
 
                 socket.leave(roomId);
@@ -128,7 +139,62 @@ const socketHandler = (io) => {
                 { messageBody, username, messageId },
             ];
         });
+
+        // code box <!-- -->
+        socket.on(ACTIONS_CODE_JOIN, ({ codebox_id, user }) => {
+            connectedUsers[socket.id] = user;
+
+            const allUsers = getRoom(codebox_id, io);
+
+            allUsers.forEach((socketId) => {
+                io.to(socketId).emit(ACTIONS_ADD_CODE_USER, {
+                    user,
+                });
+                socket.emit(ACTIONS_ADD_CODE_USER, {
+                    user: connectedUsers[socketId],
+                });
+            });
+
+            socket.emit(ACTIONS_CODE_CHAT, {
+                chats: chats.codebox_id ?? [],
+            });
+
+            socket.join(codebox_id);
+        });
+
+        socket.on(ACTIONS_CODE_LEAVE, ({ codeboxId }) => {
+            const allUsers = getRoom(codeboxId, io);
+
+            allUsers.findIndex((user) => user === socket.id) !== -1 &&
+                allUsers.forEach((socketId) => {
+                    io.to(socketId).emit(ACTIONS_REMOVE_CODE_USER, {
+                        userId: connectedUsers[socket.id]?.userId,
+                        username: connectedUsers[socket.id]?.username,
+                    });
+                });
+
+            socket.leave(codeboxId);
+        });
+
+        socket.on(
+            ACTIONS_SEND_CODE_CHAT,
+            ({ codeboxId, messageBody, username }) => {
+                const allUsers = getRoom(codeboxId, io);
+                const messageId = uuid();
+
+                allUsers.forEach((socketId) => {
+                    io.to(socketId).emit(ACTIONS_CODE_CHAT, {
+                        chats: { messageBody, username, messageId },
+                    });
+                });
+
+                chats.roomId = [
+                    ...(chats.codeboxId ?? []),
+                    { messageBody, username, messageId },
+                ];
+            },
+        );
     });
 };
 
-module.exports = socketHandler;
+module.exports = socketRoom;

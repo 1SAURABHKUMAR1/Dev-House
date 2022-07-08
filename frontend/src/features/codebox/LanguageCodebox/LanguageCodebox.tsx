@@ -10,7 +10,12 @@ import { useAppSelector } from 'store/hooks';
 import { SideDock, MonacoEditor, OutputArea, Resizable } from 'features';
 
 import { AxiosResponse } from 'axios';
-import { runCodeResponse, sidebarIcons } from 'Types';
+import {
+    initialChatType,
+    runCodeResponse,
+    sidebarIcons,
+    socketCodeboxUser,
+} from 'Types';
 
 import { codes } from 'Utils/Code';
 import ErrorToast from 'Utils/Toast/Error';
@@ -33,7 +38,13 @@ const sideBarIcons: sidebarIcons = [
     },
 ];
 
-const LanguageCodebox = () => {
+const LanguageCodebox = ({
+    users,
+    chats,
+}: {
+    users: socketCodeboxUser[];
+    chats: initialChatType;
+}) => {
     const { language } = useAppSelector((state) => state.codebox);
     const [code, setCode] = useState(() =>
         language === 'JAVASCRIPT' || language === 'CPP' || language === 'PYTHON'
@@ -112,7 +123,7 @@ const LanguageCodebox = () => {
                 width="100%"
                 height="100%"
             >
-                <SideDock buttonsArray={sideBarIcons} />
+                <SideDock buttonsArray={sideBarIcons} users={users} />
 
                 <Box pos="relative" width="auto" height="100%">
                     <Resizable minWidthPercent={45}>

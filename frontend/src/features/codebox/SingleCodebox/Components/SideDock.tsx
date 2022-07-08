@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ChatSide, UserSide, ShareSide, FileSide } from 'features';
 import { sidebarProps } from 'Types';
 
-const SideDock = ({ buttonsArray }: sidebarProps) => {
+const SideDock = ({ buttonsArray, users }: sidebarProps) => {
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
     const [boxComponent, setBoxComponent] = useState<
         'Chat' | 'Collaborate' | 'Files' | 'Users'
@@ -92,7 +92,7 @@ const SideDock = ({ buttonsArray }: sidebarProps) => {
                         >
                             <Text textAlign="center">All Users</Text>
                         </Box>
-                        <UserSide />
+                        <UserSide users={users} />
                     </>
                 )}
                 {boxComponent === 'Chat' && (

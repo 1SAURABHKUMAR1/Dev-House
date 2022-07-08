@@ -8,7 +8,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { Server } = require('socket.io');
 const httpsServer = require('http').createServer(app);
-const socketHandler = require('./Socket/socket');
+const socketRoom = require('./Socket/socketRoom');
 const compression = require('compression');
 
 app.use(morgan('tiny'));
@@ -51,7 +51,7 @@ const io = new Server(httpsServer, {
         credentials: true,
     },
 });
-socketHandler(io);
+socketRoom(io);
 
 exports.app = app;
 exports.httpsServer = httpsServer;

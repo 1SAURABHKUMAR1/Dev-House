@@ -28,7 +28,7 @@ import {
     NotFoundTemplate,
 } from 'Components';
 
-// import useSocketCodebox from 'Hooks/useSocketCodebox';
+import useSocketCodebox from 'Hooks/useSocketCodebox';
 
 import { codeBoxCreateResponse } from 'Types';
 import { AxiosResponse } from 'axios';
@@ -40,9 +40,15 @@ const SingleCodebox = () => {
     const { codeBoxType, codebox_id } = useAppSelector(
         (state) => state.codebox,
     );
+    const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
-    // const ab = useSocketCodebox();
+    // @ts-ignore
+    const { users, chats } = useSocketCodebox(codeboxId, {
+        photo,
+        userId,
+        username,
+    });
 
     const { isLoading, isError } = useQuery<
         AxiosResponse<codeBoxCreateResponse>,
@@ -89,7 +95,7 @@ const SingleCodebox = () => {
                 {codeBoxType === 'LIBRARY' ? (
                     <LibraryCodebox />
                 ) : (
-                    <LanguageCodebox />
+                    <LanguageCodebox users={users} chats={chats} />
                 )}
 
                 {/* share modal on page load */}

@@ -192,8 +192,6 @@ const socketRoom = (io) => {
                     ...(chats.codeboxId ?? []),
                     { messageBody, username, messageId },
                 ];
-
-                console.log(chats);
             },
         );
     });

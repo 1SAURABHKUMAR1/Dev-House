@@ -71,27 +71,23 @@ const ChatBox = ({
                         ref={chatRef}
                     >
                         {chats.length === 0 && (
-                            <>
-                                <Box
-                                    height="100%"
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent={'center'}
-                                >
-                                    Start a conversation
-                                </Box>
-                            </>
+                            <Box
+                                height="100%"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent={'center'}
+                            >
+                                Start a conversation
+                            </Box>
                         )}
 
                         {chats.length > 0 &&
                             chats?.map((chat) => (
-                                <>
-                                    <SingleChat
-                                        username={chat.username}
-                                        chatContent={chat.messageBody}
-                                        key={chat.messageId}
-                                    />
-                                </>
+                                <SingleChat
+                                    username={chat.username}
+                                    chatContent={chat.messageBody}
+                                    key={chat.messageId}
+                                />
                             ))}
                     </DrawerBody>
 

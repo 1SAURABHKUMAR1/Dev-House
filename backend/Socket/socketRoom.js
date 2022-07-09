@@ -24,6 +24,7 @@ const uuid = require('uuid').v4;
 
 // BESTWAY use redis
 const connectedUsers = {}; // object with socketId as key and value as user which contains username , photo and userId
+const codeboxUsers = {}; // object with socketId as key and value as user which contains username , photo and userId
 const chats = {}; // object with roomId as key and value as single chat which contains messageBody and username
 
 const getRoom = (roomId, io) => {
@@ -112,14 +113,9 @@ const socketRoom = (io) => {
 
         // handle mute and unmute
         socket.on(ACTIONS_SEND_MUTE_UNMUTE, ({ roomId, userId, mute }) => {
-            const allUsers = getRoom(roomId, io);
-
-            allUsers.forEach((socketId) => {
-                socket.id !== socketId &&
-                    io.to(socketId).emit(ACTIONS_MUTE_UNMUTE, {
-                        userId,
-                        mute,
-                    });
+            socket.in(roomId).emit(ACTIONS_MUTE_UNMUTE, {
+                userId,
+                mute,
             });
 
             connectedUsers[socket.id].muted = mute;
@@ -143,24 +139,18 @@ const socketRoom = (io) => {
 
         // code box <!-- -->
         socket.on(ACTIONS_CODE_JOIN, ({ codebox_id, user }) => {
-            connectedUsers[socket.id] = user;
+            codeboxUsers[socket.id] = user;
 
             socket.join(codebox_id);
 
             const allUsers = getRoom(codebox_id, io);
-
-            // allUsers.forEach((socketId) => {
-            //     io.to(socketId).emit(ACTIONS_ADD_CODE_USER, {
-            //         user,
-            //     });
-            // });
 
             socket.in(codebox_id).emit(ACTIONS_ADD_CODE_USER, {
                 user,
             });
 
             socket.emit(ACTIONS_ADD_CODE_USER, {
-                user: allUsers.map((singleUser) => connectedUsers[singleUser]),
+                user: allUsers.map((singleUser) => codeboxUsers[singleUser]),
             });
 
             socket.emit(ACTIONS_CODE_CHAT, {
@@ -173,8 +163,8 @@ const socketRoom = (io) => {
 
             allUsers.findIndex((user) => user === socket.id) !== -1 &&
                 socket.in(codeboxId).emit(ACTIONS_REMOVE_CODE_USER, {
-                    userId: connectedUsers[socket.id]?.userId,
-                    username: connectedUsers[socket.id]?.username,
+                    userId: codeboxUsers[socket.id]?.userId,
+                    username: codeboxUsers[socket.id]?.username,
                 });
 
             socket.leave(codeboxId);

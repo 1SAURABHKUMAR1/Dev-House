@@ -60,13 +60,11 @@ const ChatSide = ({ chats }: { chats: initialChatType }) => {
 
                 {chats.length > 0 &&
                     chats?.map((chat) => (
-                        <>
-                            <SingleChat
-                                username={chat.username}
-                                chatContent={chat.messageBody}
-                                key={chat.messageId}
-                            />
-                        </>
+                        <SingleChat
+                            username={chat.username}
+                            chatContent={chat.messageBody}
+                            key={chat.messageId}
+                        />
                     ))}
             </Box>
 

@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
 export interface Children {

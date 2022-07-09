@@ -46,6 +46,7 @@ import ChatSide from './codebox/SingleCodebox/Components/ChatSide';
 import FileSide from './codebox/SingleCodebox/Components/FileSide';
 import UserSide from './codebox/SingleCodebox/Components/UserSide';
 import ShareSide from './codebox/SingleCodebox/Components/ShareSide';
+import ShareModal from './codebox/SingleCodebox/Components/ShareModal';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -101,4 +102,5 @@ export {
     ChatSide,
     UserSide,
     FileSide,
+    ShareModal,
 };

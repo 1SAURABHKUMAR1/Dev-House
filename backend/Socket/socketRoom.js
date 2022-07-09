@@ -101,14 +101,15 @@ const socketRoom = (io) => {
                         socketId: socket.id,
                     });
                     io.to(socketId).emit(ACTIONS_REMOVE_CODE_USER, {
-                        userId: connectedUsers[socket.id]?.userId,
-                        username: connectedUsers[socket.id]?.username,
+                        userId: codeboxUsers[socket.id]?.userId,
+                        username: codeboxUsers[socket.id]?.username,
                     });
                 });
             });
 
             socket.leave();
             delete connectedUsers[socket.id];
+            delete codeboxUsers[socket.id];
         });
 
         // handle mute and unmute

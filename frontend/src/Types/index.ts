@@ -557,3 +557,12 @@ export type socketCodeboxUser = {
 export interface userSideProps {
     users: socketCodeboxUser[];
 }
+
+export interface languageCodeboxProps {
+    users: socketCodeboxUser[];
+    chats: initialChatType;
+    monacoEditorCode: string;
+    handleCodeChange: (event: string | undefined) => void;
+    resetCode: () => void;
+    formatCode: () => void;
+}

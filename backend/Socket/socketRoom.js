@@ -17,6 +17,8 @@ const {
     ACTIONS_CODE_LEAVE,
     ACTIONS_REMOVE_CODE_USER,
     ACTIONS_SEND_CODE_CHAT,
+    ACTIONS_SEND_CODE_SERVER_CODE,
+    ACTIONS_CODE_CLIENT_CODE,
 } = require('./actions');
 const uuid = require('uuid').v4;
 
@@ -194,6 +196,16 @@ const socketRoom = (io) => {
                 ];
             },
         );
+
+        socket.on(ACTIONS_CODE_CLIENT_CODE, ({ codebox_id, code }) => {
+            const allUsers = getRoom(codebox_id, io);
+
+            allUsers.forEach((socketId) => {
+                io.to(socketId).emit(ACTIONS_SEND_CODE_SERVER_CODE, {
+                    code: code,
+                });
+            });
+        });
     });
 };
 

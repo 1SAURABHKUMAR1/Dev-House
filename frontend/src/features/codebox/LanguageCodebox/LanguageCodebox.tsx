@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { executeCodebox } from 'Services';
 import Prettier from 'prettier';
@@ -19,6 +19,9 @@ import {
 
 import { codes } from 'Utils/Code';
 import ErrorToast from 'Utils/Toast/Error';
+
+import { socket } from 'Socket/socket';
+import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
 
 const sideBarIcons: sidebarIcons = [
     {
@@ -41,21 +44,21 @@ const sideBarIcons: sidebarIcons = [
 const LanguageCodebox = ({
     users,
     chats,
+    monacoEditorCode,
+    setMonacoCode,
 }: {
     users: socketCodeboxUser[];
     chats: initialChatType;
+    monacoEditorCode: string;
+    setMonacoCode: React.Dispatch<React.SetStateAction<string>>;
 }) => {
     const { language } = useAppSelector((state) => state.codebox);
-    const [code, setCode] = useState(() =>
-        language === 'JAVASCRIPT' || language === 'CPP' || language === 'PYTHON'
-            ? codes[language]
-            : '',
-    );
     const [inputContent, setInputContent] = useState('');
     const outputContent = useRef<HTMLTextAreaElement | null>(null);
+    const { codebox_id } = useAppSelector((state) => state.codebox);
 
     const resetCode = () => {
-        setCode(() =>
+        setMonacoCode(() =>
             language === 'JAVASCRIPT' ||
             language === 'CPP' ||
             language === 'PYTHON'
@@ -66,7 +69,7 @@ const LanguageCodebox = ({
 
     const formatCode = () => {
         if (language === 'JAVASCRIPT') {
-            const prettifiedCode = Prettier.format(code, {
+            const prettifiedCode = Prettier.format(monacoEditorCode, {
                 parser: 'babel',
                 plugins: [prettierParser],
                 arrowParens: 'always',
@@ -86,18 +89,27 @@ const LanguageCodebox = ({
                 useTabs: false,
             });
 
-            setCode(() => prettifiedCode);
+            setMonacoCode(() => prettifiedCode);
         } else {
             ErrorToast('Failed');
         }
+    };
+
+    const handleCodeChange = (event: string | undefined) => {
+        setMonacoCode(() => event ?? '');
+        socket.emit(ACTIONS_CODE_CLIENT_CODE, {
+            codebox_id,
+            code: event ?? '',
+        });
     };
 
     const { mutateAsync, isLoading } = useMutation<
         AxiosResponse<runCodeResponse>,
         Error
     >(
-        // @ts-ignore
-        async () => await executeCodebox(language, code, inputContent),
+        async () =>
+            // @ts-ignore
+            await executeCodebox(language, monacoEditorCode, inputContent),
         {
             onSuccess(data: AxiosResponse<runCodeResponse>) {
                 outputContent.current &&
@@ -132,7 +144,7 @@ const LanguageCodebox = ({
                 <Box pos="relative" width="auto" height="100%">
                     <Resizable minWidthPercent={45}>
                         <MonacoEditor
-                            codeMonaco={code}
+                            codeMonaco={monacoEditorCode}
                             language={
                                 language === 'JAVASCRIPT' ||
                                 language === 'CPP' ||
@@ -140,7 +152,7 @@ const LanguageCodebox = ({
                                     ? language
                                     : 'JAVASCRIPT'
                             }
-                            setCodeMonaco={setCode}
+                            handleCodeChange={handleCodeChange}
                         />
                     </Resizable>
                 </Box>

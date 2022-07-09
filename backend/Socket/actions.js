@@ -17,4 +17,5 @@ exports.ACTIONS_REMOVE_CODE_USER = 'code_remove_user';
 exports.ACTIONS_CODE_LEAVE = 'code_leave';
 exports.ACTIONS_CODE_CHAT = 'code_chat';
 exports.ACTIONS_SEND_CODE_CHAT = 'code_send_chat';
-// code
+exports.ACTIONS_CODE_CLIENT_CODE = 'code_client_event';
+exports.ACTIONS_SEND_CODE_SERVER_CODE = 'code_server_code';

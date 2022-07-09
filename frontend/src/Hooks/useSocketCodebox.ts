@@ -4,10 +4,12 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_LEAVE,
     ACTIONS_REMOVE_CODE_USER,
+    ACTIONS_SEND_CODE_SERVER_CODE,
 } from 'Socket/actions';
 import {
     socketAddUser,
     socketChat,
+    socketCode,
     socketEmit,
     socketRemoveUser,
 } from 'Socket/codeboxSocketHandler';
@@ -23,12 +25,8 @@ import {
 
 const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
     const [users, setUsers] = useState<Array<socketCodeboxUser>>([]);
-
     const [chats, setChats] = useState<initialChatType>([]);
-
-    // const handleCodeChange = () => {
-    //     //
-    // };
+    const [monacoEditorCode, setMonacoCode] = useState<string>('');
 
     const addUsers = (newUser: socketCodeboxUser) => {
         !users.find(
@@ -61,6 +59,10 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
                 setChats,
                 addChats,
             });
+
+            socketCode({
+                setMonacoCode,
+            });
         };
 
         initalize();
@@ -70,11 +72,17 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
             socket.off(ACTIONS_ADD_CODE_USER);
             socket.off(ACTIONS_REMOVE_CODE_USER);
             socket.off(ACTIONS_CODE_CHAT);
+            socket.off(ACTIONS_SEND_CODE_SERVER_CODE);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { users, chats };
+    return {
+        users,
+        chats,
+        monacoEditorCode,
+        setMonacoCode,
+    };
 };
 
 export default useSocketCodebox;

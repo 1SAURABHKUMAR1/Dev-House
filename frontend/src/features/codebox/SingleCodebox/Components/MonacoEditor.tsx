@@ -10,7 +10,7 @@ import { editorConfig } from 'Utils/Editor';
 const MonacoEditorBox = ({
     language,
     codeMonaco,
-    setCodeMonaco,
+    handleCodeChange,
 }: monacoEditorBox) => {
     return (
         <Box flex="1 1 0px" width="100%" height="100%">
@@ -19,7 +19,7 @@ const MonacoEditorBox = ({
                 value={codeMonaco}
                 height="100%"
                 loading={<ContainerLoader />}
-                onChange={(event) => setCodeMonaco(event ?? '')}
+                onChange={handleCodeChange}
                 options={editorConfig}
                 beforeMount={(monaco) => {
                     language === 'JAVASCRIPT' &&

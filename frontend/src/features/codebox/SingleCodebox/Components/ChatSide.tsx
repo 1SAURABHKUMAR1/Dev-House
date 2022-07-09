@@ -1,7 +1,7 @@
 import { Box, Button, Textarea } from '@chakra-ui/react';
 
 import { SingleChat } from 'Components';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { BiSend } from 'react-icons/bi';
 
 import { ACTIONS_SEND_CODE_CHAT } from 'Socket/actions';
@@ -59,7 +59,7 @@ const ChatSide = ({ chats }: { chats: initialChatType }) => {
                 )}
 
                 {chats.length > 0 &&
-                    chats?.map((chat: any) => (
+                    chats?.map((chat) => (
                         <>
                             <SingleChat
                                 username={chat.username}
@@ -98,4 +98,4 @@ const ChatSide = ({ chats }: { chats: initialChatType }) => {
     );
 };
 
-export default ChatSide;
+export default memo(ChatSide);

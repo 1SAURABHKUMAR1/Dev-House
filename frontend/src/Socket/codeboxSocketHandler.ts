@@ -6,6 +6,7 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_JOIN,
     ACTIONS_REMOVE_CODE_USER,
+    ACTIONS_SEND_CODE_SERVER_CODE,
 } from './actions';
 import { socket } from './socket';
 
@@ -61,4 +62,14 @@ export const socketChat = ({
             }
         },
     );
+};
+
+export const socketCode = ({
+    setMonacoCode,
+}: {
+    setMonacoCode: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+    socket.on(ACTIONS_SEND_CODE_SERVER_CODE, ({ code }: { code: string }) => {
+        setMonacoCode(code);
+    });
 };

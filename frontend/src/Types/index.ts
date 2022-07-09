@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactComponentElement, ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
 export interface Children {
@@ -463,7 +463,7 @@ export interface codeBoxCreateResponse {
 export interface monacoEditorBox {
     language: 'CPP' | 'JAVASCRIPT' | 'PYTHON';
     codeMonaco: string;
-    setCodeMonaco: React.Dispatch<React.SetStateAction<string>>;
+    handleCodeChange: (event: string | undefined) => void;
 }
 
 export interface inputFieldMonaco {
@@ -544,7 +544,8 @@ export type useSocketCodebox = (
 ) => {
     users: Array<socketCodeboxUser>;
     chats: Array<chatType>;
-    // code: string;
+    monacoEditorCode: string;
+    setMonacoCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type socketCodeboxUser = {

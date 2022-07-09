@@ -17,4 +17,5 @@ export const ACTIONS_REMOVE_CODE_USER = 'code_remove_user';
 export const ACTIONS_CODE_LEAVE = 'code_leave';
 export const ACTIONS_CODE_CHAT = 'code_chat';
 export const ACTIONS_SEND_CODE_CHAT = 'code_send_chat';
-// code
+export const ACTIONS_CODE_CLIENT_CODE = 'code_client_event';
+export const ACTIONS_SEND_CODE_SERVER_CODE = 'code_server_code';

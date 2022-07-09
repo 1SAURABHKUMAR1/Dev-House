@@ -34,6 +34,7 @@ import { codeBoxCreateResponse } from 'Types';
 import { AxiosResponse } from 'axios';
 
 import ErrorToast from 'Utils/Toast/Error';
+import { codes } from 'Utils/Code';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
@@ -43,12 +44,15 @@ const SingleCodebox = () => {
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
-    // @ts-ignore
-    const { users, chats } = useSocketCodebox(codeboxId, {
-        photo,
-        userId,
-        username,
-    });
+    const { users, chats, monacoEditorCode, setMonacoCode } = useSocketCodebox(
+        // @ts-ignore
+        codeboxId,
+        {
+            photo,
+            userId,
+            username,
+        },
+    );
 
     const { isLoading, isError } = useQuery<
         AxiosResponse<codeBoxCreateResponse>,
@@ -62,6 +66,13 @@ const SingleCodebox = () => {
             refetchOnWindowFocus: false,
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));
+                setMonacoCode(() =>
+                    data.data.room?.language === 'JAVASCRIPT' ||
+                    data.data.room?.language === 'CPP' ||
+                    data.data.room?.language === 'PYTHON'
+                        ? codes[data.data.room?.language]
+                        : '',
+                );
             },
             onError: (error: Error) => {
                 console.log(error);
@@ -95,7 +106,12 @@ const SingleCodebox = () => {
                 {codeBoxType === 'LIBRARY' ? (
                     <LibraryCodebox />
                 ) : (
-                    <LanguageCodebox users={users} chats={chats} />
+                    <LanguageCodebox
+                        users={users}
+                        chats={chats}
+                        monacoEditorCode={monacoEditorCode}
+                        setMonacoCode={setMonacoCode}
+                    />
                 )}
 
                 {/* share modal on page load */}

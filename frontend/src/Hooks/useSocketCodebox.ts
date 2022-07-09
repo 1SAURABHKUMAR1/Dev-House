@@ -49,6 +49,8 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
 
             socketAddUser({
                 addUsers,
+                setUsers,
+                currentUserId: user.userId,
             });
 
             socketRemoveUser({

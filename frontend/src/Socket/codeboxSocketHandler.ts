@@ -15,14 +15,24 @@ export const socketEmit = (codebox_id: string, user: socketCodeboxUser) =>
 
 export const socketAddUser = ({
     addUsers,
+    setUsers,
+    currentUserId,
 }: {
     addUsers: (user: socketCodeboxUser) => void;
+    setUsers: React.Dispatch<React.SetStateAction<socketCodeboxUser[]>>;
+    currentUserId: string;
 }) =>
     socket.on(
         ACTIONS_ADD_CODE_USER,
         async ({ user }: { user: socketCodeboxUser }) => {
-            addUsers(user);
-            SuccessToast(`${user.username} joined`);
+            if (Array.isArray(user)) {
+                setUsers(user);
+            } else {
+                if (user.userId !== currentUserId) {
+                    addUsers(user);
+                    SuccessToast(`${user.username} joined`);
+                }
+            }
         },
     );
 

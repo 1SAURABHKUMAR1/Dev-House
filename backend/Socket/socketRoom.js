@@ -104,10 +104,9 @@ const socketRoom = (io) => {
                         username: connectedUsers[socket.id]?.username,
                     });
                 });
-
-                socket.leave(roomId);
             });
 
+            socket.leave();
             delete connectedUsers[socket.id];
         });
 
@@ -146,33 +145,36 @@ const socketRoom = (io) => {
         socket.on(ACTIONS_CODE_JOIN, ({ codebox_id, user }) => {
             connectedUsers[socket.id] = user;
 
+            socket.join(codebox_id);
+
             const allUsers = getRoom(codebox_id, io);
 
-            allUsers.forEach((socketId) => {
-                io.to(socketId).emit(ACTIONS_ADD_CODE_USER, {
-                    user,
-                });
-                socket.emit(ACTIONS_ADD_CODE_USER, {
-                    user: connectedUsers[socketId],
-                });
+            // allUsers.forEach((socketId) => {
+            //     io.to(socketId).emit(ACTIONS_ADD_CODE_USER, {
+            //         user,
+            //     });
+            // });
+
+            socket.in(codebox_id).emit(ACTIONS_ADD_CODE_USER, {
+                user,
+            });
+
+            socket.emit(ACTIONS_ADD_CODE_USER, {
+                user: allUsers.map((singleUser) => connectedUsers[singleUser]),
             });
 
             socket.emit(ACTIONS_CODE_CHAT, {
                 chats: chats[codebox_id] ?? [],
             });
-
-            socket.join(codebox_id);
         });
 
         socket.on(ACTIONS_CODE_LEAVE, ({ codeboxId }) => {
             const allUsers = getRoom(codeboxId, io);
 
             allUsers.findIndex((user) => user === socket.id) !== -1 &&
-                allUsers.forEach((socketId) => {
-                    io.to(socketId).emit(ACTIONS_REMOVE_CODE_USER, {
-                        userId: connectedUsers[socket.id]?.userId,
-                        username: connectedUsers[socket.id]?.username,
-                    });
+                socket.in(codeboxId).emit(ACTIONS_REMOVE_CODE_USER, {
+                    userId: connectedUsers[socket.id]?.userId,
+                    username: connectedUsers[socket.id]?.username,
                 });
 
             socket.leave(codeboxId);
@@ -181,13 +183,10 @@ const socketRoom = (io) => {
         socket.on(
             ACTIONS_SEND_CODE_CHAT,
             ({ codeboxId, messageBody, username }) => {
-                const allUsers = getRoom(codeboxId, io);
                 const messageId = uuid();
 
-                allUsers.forEach((socketId) => {
-                    io.to(socketId).emit(ACTIONS_CODE_CHAT, {
-                        chats: { messageBody, username, messageId },
-                    });
+                io.to(codeboxId).emit(ACTIONS_CODE_CHAT, {
+                    chats: { messageBody, username, messageId },
                 });
 
                 chats[codeboxId] = [
@@ -198,12 +197,8 @@ const socketRoom = (io) => {
         );
 
         socket.on(ACTIONS_CODE_CLIENT_CODE, ({ codebox_id, code }) => {
-            const allUsers = getRoom(codebox_id, io);
-
-            allUsers.forEach((socketId) => {
-                io.to(socketId).emit(ACTIONS_SEND_CODE_SERVER_CODE, {
-                    code: code,
-                });
+            socket.in(codebox_id).emit(ACTIONS_SEND_CODE_SERVER_CODE, {
+                code: code,
             });
         });
     });

@@ -41,7 +41,7 @@ const ShareSide = () => {
                 paddingTop="6"
                 paddingBottom="2"
                 flex="1"
-                overflow="hidden"
+                overflowY="auto"
                 flexDir="column"
                 gap="1.5rem"
             >
@@ -50,6 +50,7 @@ const ShareSide = () => {
                     gap="0.5rem"
                     flexWrap="wrap"
                     justifyContent="space-evenly"
+                    overflowY="auto"
                 >
                     <ShareButton
                         Icon={AiOutlineWhatsApp}

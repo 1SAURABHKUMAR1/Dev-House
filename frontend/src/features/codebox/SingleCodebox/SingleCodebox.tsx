@@ -66,7 +66,7 @@ const SingleCodebox = () => {
     };
 
     const formatCode = () => {
-        if (language === 'JAVASCRIPT') {
+        if (language === 'JAVASCRIPT' || codeBoxType === 'LIBRARY') {
             const prettifiedCode = Prettier.format(monacoEditorCode, {
                 parser: 'babel',
                 plugins: [prettierParser],
@@ -85,7 +85,7 @@ const SingleCodebox = () => {
                 requirePragma: false,
                 trailingComma: 'all',
                 useTabs: false,
-            });
+            }).replace(/\n$/, '');
 
             setMonacoCode(() => prettifiedCode);
         } else {
@@ -158,7 +158,14 @@ const SingleCodebox = () => {
                     height="100%"
                 >
                     {codeBoxType === 'LIBRARY' ? (
-                        <LibraryCodebox />
+                        <LibraryCodebox
+                            users={users}
+                            chats={chats}
+                            monacoEditorCode={monacoEditorCode}
+                            formatCode={formatCode}
+                            handleCodeChange={handleCodeChange}
+                            resetCode={resetCode}
+                        />
                     ) : (
                         <LanguageCodebox
                             users={users}

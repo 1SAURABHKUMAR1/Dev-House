@@ -20,7 +20,7 @@ const MonacoEditorBox = ({
                 height="100%"
                 loading={<ContainerLoader />}
                 onChange={handleCodeChange}
-                options={editorConfig}
+                options={editorConfig(language)}
                 beforeMount={(monaco) => {
                     language === 'JAVASCRIPT' &&
                         monaco.languages.typescript.javascriptDefaults.setCompilerOptions(

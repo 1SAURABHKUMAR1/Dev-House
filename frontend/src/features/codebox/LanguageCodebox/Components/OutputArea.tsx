@@ -23,6 +23,7 @@ const OutputArea = ({
             flex="1 1 0px"
             px="0.5rem"
             minW="20%"
+            height="100%"
         >
             <Box
                 p="0.5rem"

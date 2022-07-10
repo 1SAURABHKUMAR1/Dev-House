@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
+import { Message } from 'console-feed/lib/definitions/Component';
 
 export interface Children {
     children: React.ReactNode;
@@ -435,6 +436,9 @@ export interface intialCodebox {
     name: string;
     codebox_id: string;
     creator: userMiniType;
+
+    compiling: boolean;
+    consoleLogs: Message[];
 }
 
 export interface setLanguageAction {
@@ -461,7 +465,15 @@ export interface codeBoxCreateResponse {
 }
 
 export interface monacoEditorBox {
-    language: 'CPP' | 'JAVASCRIPT' | 'PYTHON';
+    language:
+        | 'CPP'
+        | 'JAVASCRIPT'
+        | 'PYTHON'
+        | 'TYPESCRIPT'
+        | 'JSX'
+        | 'TSX'
+        | 'HTML'
+        | 'CSS';
     codeMonaco: string;
     handleCodeChange: (event: string | undefined) => void;
 }
@@ -491,6 +503,8 @@ export interface runCodeResponse {
 
 export interface reactResizableProps {
     minWidthPercent: number;
+    maxWidthPercent: number;
+    defaultPercent: number;
     children: ReactNode;
 }
 
@@ -523,6 +537,12 @@ export type sidebarIcons = Array<
 >;
 
 export interface sidebarProps {
+    defaultOpen:
+        | 'Files'
+        | 'Users'
+        | 'Chat'
+        | 'Collaborate'
+        | (() => 'Chat' | 'Files' | 'Users' | 'Collaborate');
     buttonsArray: sidebarIcons;
     users: socketCodeboxUser[];
     chats: initialChatType;
@@ -565,4 +585,13 @@ export interface languageCodeboxProps {
     handleCodeChange: (event: string | undefined) => void;
     resetCode: () => void;
     formatCode: () => void;
+}
+
+export interface libraryFooterProps {
+    handleConsoleVisiblity: () => void;
+}
+
+export interface previewScreenProps {
+    formatCode: () => void;
+    resetCode: () => void;
 }

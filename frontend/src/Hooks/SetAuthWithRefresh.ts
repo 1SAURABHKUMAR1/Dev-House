@@ -3,13 +3,13 @@ import { useAppDispatch } from '../store/hooks';
 import Axios from 'Services/Axios';
 
 import { setUserRefreshToken } from 'features';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const useSetAuthWithRefresh = () => {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         let unMounted = false;
         const controller = new AbortController();
 

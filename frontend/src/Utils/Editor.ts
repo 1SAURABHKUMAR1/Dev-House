@@ -1,6 +1,8 @@
 import { editor } from 'monaco-editor';
 
-export const editorConfig: editor.IStandaloneEditorConstructionOptions = {
+export const editorConfig = (
+    language: string,
+): editor.IStandaloneEditorConstructionOptions => ({
     acceptSuggestionOnCommitCharacter: true,
     acceptSuggestionOnEnter: 'on',
     accessibilitySupport: 'auto',
@@ -14,6 +16,10 @@ export const editorConfig: editor.IStandaloneEditorConstructionOptions = {
         ignoreEmptyLines: true,
         insertSpace: true,
     },
+    wordWrapOverride1: 'on',
+    wordWrapOverride2: 'on',
+    'semanticHighlighting.enabled': 'configuredByTheme',
+    language: language,
     cursorBlinking: 'blink',
     cursorSmoothCaretAnimation: false,
     cursorStyle: 'line',
@@ -71,4 +77,4 @@ export const editorConfig: editor.IStandaloneEditorConstructionOptions = {
     hover: {
         enabled: true,
     },
-};
+});

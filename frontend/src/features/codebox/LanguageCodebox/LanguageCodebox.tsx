@@ -1,11 +1,12 @@
-import { Box } from '@chakra-ui/react';
-
 import React, { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { executeCodebox } from 'Services';
 import { useAppSelector } from 'store/hooks';
 
-import { SideDock, MonacoEditor, OutputArea, Resizable } from 'features';
+import { SideDock, MonacoEditor, OutputArea } from 'features';
+
+import { Allotment } from 'allotment';
+import 'allotment/dist/style.css';
 
 import { AxiosResponse } from 'axios';
 import { languageCodeboxProps, runCodeResponse, sidebarIcons } from 'Types';
@@ -67,10 +68,15 @@ const LanguageCodebox = ({
 
     return (
         <>
-            <SideDock buttonsArray={sideBarIcons} users={users} chats={chats} />
+            <SideDock
+                buttonsArray={sideBarIcons}
+                users={users}
+                chats={chats}
+                defaultOpen="Users"
+            />
 
-            <Box pos="relative" width="auto" height="100%">
-                <Resizable minWidthPercent={45}>
+            <Allotment maxSize={Infinity}>
+                <Allotment.Pane minSize={200} preferredSize={'70%'}>
                     <MonacoEditor
                         codeMonaco={monacoEditorCode}
                         language={
@@ -82,18 +88,20 @@ const LanguageCodebox = ({
                         }
                         handleCodeChange={handleCodeChange}
                     />
-                </Resizable>
-            </Box>
+                </Allotment.Pane>
 
-            <OutputArea
-                resetCode={resetCode}
-                formatCode={formatCode}
-                executeCode={executeCode}
-                inputContent={inputContent}
-                setInputContent={setInputContent}
-                outputContent={outputContent}
-                isExecutingCode={isLoading}
-            />
+                <Allotment.Pane minSize={200} preferredSize={'30%'}>
+                    <OutputArea
+                        resetCode={resetCode}
+                        formatCode={formatCode}
+                        executeCode={executeCode}
+                        inputContent={inputContent}
+                        setInputContent={setInputContent}
+                        outputContent={outputContent}
+                        isExecutingCode={isLoading}
+                    />
+                </Allotment.Pane>
+            </Allotment>
         </>
     );
 };

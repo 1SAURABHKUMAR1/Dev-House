@@ -26,6 +26,7 @@ const UserSide = ({ users }: userSideProps) => {
                     alignItems="center"
                     flexWrap="wrap"
                     columnGap="0.5rem"
+                    overflowY="auto"
                 >
                     {users.map((user) => (
                         <Box

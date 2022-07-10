@@ -4,11 +4,16 @@ import React, { useState } from 'react';
 import { ChatSide, UserSide, ShareSide, FileSide } from 'features';
 import { sidebarProps } from 'Types';
 
-const SideDock = ({ buttonsArray, users, chats }: sidebarProps) => {
+const SideDock = ({
+    defaultOpen,
+    buttonsArray,
+    users,
+    chats,
+}: sidebarProps) => {
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
     const [boxComponent, setBoxComponent] = useState<
         'Chat' | 'Collaborate' | 'Files' | 'Users'
-    >('Users');
+    >(defaultOpen);
 
     const handleSidebarOpen = (
         buttonType: 'Chat' | 'Collaborate' | 'Files' | 'Users',
@@ -58,6 +63,10 @@ const SideDock = ({ buttonsArray, users, chats }: sidebarProps) => {
                                 handleSidebarOpen(button.tooltipLabel)
                             }
                             key={button.type}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            p="0.35rem"
                         >
                             <Image
                                 src={`/images/${button.icon}.svg`}
@@ -68,12 +77,14 @@ const SideDock = ({ buttonsArray, users, chats }: sidebarProps) => {
                 ))}
             </Box>
             <Box
-                w="15%"
-                maxW="15rem"
+                minW="9rem"
+                maxW="11rem"
                 flexDir="column"
+                flex="1"
                 display={sidebarOpen ? 'inline-flex' : 'none'}
                 borderRight="2px solid"
                 borderColor={useColorModeValue('gray.200', 'gray.900')}
+                maxH={`calc(100vh - 3.8rem)`}
             >
                 {boxComponent === 'Files' && <FileSide />}
                 {boxComponent === 'Users' && (

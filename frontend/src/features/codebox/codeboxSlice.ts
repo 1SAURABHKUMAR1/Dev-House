@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Message } from 'console-feed/lib/definitions/Component';
 import { codeBoxResponseType, intialCodebox, setLanguageAction } from 'Types';
 
 const initialState: intialCodebox = {
@@ -24,6 +25,9 @@ const initialState: intialCodebox = {
         user_id: '',
         username: '',
     },
+
+    compiling: false,
+    consoleLogs: [],
 };
 
 const codeSlice = createSlice({
@@ -93,6 +97,16 @@ const codeSlice = createSlice({
                 username: '',
             };
         },
+
+        setConsoleLogs: (
+            state: intialCodebox,
+            action: PayloadAction<Message>,
+        ) => {
+            state.consoleLogs = [...state.consoleLogs, action.payload];
+        },
+        clearConsoleLogs: (state: intialCodebox) => {
+            state.consoleLogs = [];
+        },
     },
     extraReducers: (builder) => {
         //
@@ -104,4 +118,6 @@ export const {
     setLanguage,
     setUserJoined: setUserJoinedCodebox,
     resetState: resetCodeboxState,
+    setConsoleLogs,
+    clearConsoleLogs,
 } = codeSlice.actions;

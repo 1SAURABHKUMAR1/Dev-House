@@ -42,6 +42,7 @@ const ChatSide = ({ chats }: { chats: initialChatType }) => {
                 flex="1"
                 overflow="auto"
                 flexDir="column"
+                overflowY="auto"
             >
                 {chats.length === 0 && (
                     <>
@@ -77,7 +78,6 @@ const ChatSide = ({ chats }: { chats: initialChatType }) => {
                 paddingBottom="4"
             >
                 <Textarea
-                    placeholder="Type here..."
                     borderColor="blackAlpha.900"
                     zIndex="1"
                     _hover={{}}

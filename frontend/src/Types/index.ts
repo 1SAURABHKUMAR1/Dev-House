@@ -437,6 +437,7 @@ export interface intialCodebox {
     codebox_id: string;
     creator: userMiniType;
 
+    sidebarComponent: 'Files' | 'Users' | 'Chat' | 'Collaborate' | 'None';
     compiling: boolean;
     consoleLogs: Message[];
 }
@@ -537,15 +538,7 @@ export type sidebarIcons = Array<
 >;
 
 export interface sidebarProps {
-    defaultOpen:
-        | 'Files'
-        | 'Users'
-        | 'Chat'
-        | 'Collaborate'
-        | (() => 'Chat' | 'Files' | 'Users' | 'Collaborate');
     buttonsArray: sidebarIcons;
-    users: socketCodeboxUser[];
-    chats: initialChatType;
 }
 
 export interface iconBoxProps {
@@ -594,4 +587,16 @@ export interface libraryFooterProps {
 export interface previewScreenProps {
     formatCode: () => void;
     resetCode: () => void;
+}
+
+export type fileFormat = {
+    id: string;
+    name: string;
+    directory: null | string;
+    type: 'file' | 'directory';
+    code?: string;
+};
+
+export interface fileSide {
+    files: fileFormat[];
 }

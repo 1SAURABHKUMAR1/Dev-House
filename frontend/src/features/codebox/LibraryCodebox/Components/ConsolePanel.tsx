@@ -47,6 +47,8 @@ const ConsolePanel = () => {
                         styles={{
                             BASE_FONT_FAMILY: 'League Mono, sans-serif;',
                             BASE_FONT_SIZE: 13,
+                            LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
+                            LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
                         }}
                         logs={consoleLogs}
                         variant="light"

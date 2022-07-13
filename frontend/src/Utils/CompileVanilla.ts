@@ -22,10 +22,10 @@ const compileVanilla = ({
         <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
         <title>Dev - House</title>
         <style>${css}</style>
-      </head>
-      <body>
+        </head>
+        <body>
         ${html}
-        <script> 
+        <script>
         window.onerror = function (err) {
           window.parent.postMessage(
             { source: "iframe", type: "iframe_error", message: err },
@@ -39,7 +39,7 @@ const compileVanilla = ({
             "*"
           );
         };
-        
+  
         window.onmessage = function (event) {
           try {
             eval(event.data);
@@ -48,10 +48,7 @@ const compileVanilla = ({
           }
         };
         </script>
-        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-        <script src="https://unpkg.com/react/umd/react.development.js"></script>
-        <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-        <script type='text/babel'>
+        <script>
         ${javascript}
         </script>  
       </body>

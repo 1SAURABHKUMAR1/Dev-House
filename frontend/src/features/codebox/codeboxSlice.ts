@@ -26,6 +26,7 @@ const initialState: intialCodebox = {
         username: '',
     },
 
+    sidebarComponent: 'None',
     compiling: false,
     consoleLogs: [],
 };
@@ -96,6 +97,10 @@ const codeSlice = createSlice({
                 user_id: '',
                 username: '',
             };
+
+            state.sidebarComponent = 'None';
+            state.compiling = false;
+            state.consoleLogs = [];
         },
 
         setConsoleLogs: (
@@ -106,6 +111,14 @@ const codeSlice = createSlice({
         },
         clearConsoleLogs: (state: intialCodebox) => {
             state.consoleLogs = [];
+        },
+        setSidebarComponent: (
+            state: intialCodebox,
+            action: PayloadAction<{
+                component: 'Files' | 'Users' | 'Chat' | 'Collaborate' | 'None';
+            }>,
+        ) => {
+            state.sidebarComponent = action.payload.component;
         },
     },
     extraReducers: (builder) => {
@@ -120,4 +133,5 @@ export const {
     resetState: resetCodeboxState,
     setConsoleLogs,
     clearConsoleLogs,
+    setSidebarComponent,
 } = codeSlice.actions;

@@ -90,7 +90,7 @@ const ShareSide = () => {
                 </Flex>
 
                 <Tooltip label="QR Code" placement="right">
-                    <Box display="flex">
+                    <Box display="flex" justifyContent="center">
                         <AspectRatio
                             objectFit="contain"
                             ratio={4 / 3}

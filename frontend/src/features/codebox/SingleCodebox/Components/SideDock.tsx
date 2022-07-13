@@ -1,28 +1,21 @@
-import { Box, Image, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Image, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
 
-import { ChatSide, UserSide, ShareSide, FileSide } from 'features';
+import { setSidebarComponent } from 'features';
 import { sidebarProps } from 'Types';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-const SideDock = ({
-    defaultOpen,
-    buttonsArray,
-    users,
-    chats,
-}: sidebarProps) => {
-    const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-    const [boxComponent, setBoxComponent] = useState<
-        'Chat' | 'Collaborate' | 'Files' | 'Users'
-    >(defaultOpen);
+const SideDock = ({ buttonsArray }: sidebarProps) => {
+    const dispatch = useAppDispatch();
+    const { sidebarComponent } = useAppSelector((state) => state.codebox);
 
     const handleSidebarOpen = (
         buttonType: 'Chat' | 'Collaborate' | 'Files' | 'Users',
     ) => {
-        if (boxComponent === buttonType)
-            return setSidebarOpen(() => !sidebarOpen);
+        if (sidebarComponent === buttonType)
+            return dispatch(setSidebarComponent({ component: 'None' }));
 
-        !sidebarOpen && setSidebarOpen(true);
-        setBoxComponent(buttonType);
+        dispatch(setSidebarComponent({ component: buttonType }));
     };
 
     return (
@@ -75,75 +68,6 @@ const SideDock = ({
                         </Box>
                     </Tooltip>
                 ))}
-            </Box>
-            <Box
-                minW="9rem"
-                maxW="11rem"
-                flexDir="column"
-                flex="1"
-                display={sidebarOpen ? 'inline-flex' : 'none'}
-                borderRight="2px solid"
-                borderColor={useColorModeValue('gray.200', 'gray.900')}
-                maxH={`calc(100vh - 3.8rem)`}
-            >
-                {boxComponent === 'Files' && <FileSide />}
-                {boxComponent === 'Users' && (
-                    <>
-                        <Box
-                            justifyContent="center"
-                            alignItems="center"
-                            display="flex"
-                            flex="0"
-                            pt="4"
-                            pb="4"
-                            fontSize="large"
-                            fontWeight="semibold"
-                            paddingInline="6"
-                            alignContent="center"
-                        >
-                            <Text textAlign="center">All Users</Text>
-                        </Box>
-                        <UserSide users={users} />
-                    </>
-                )}
-                {boxComponent === 'Chat' && (
-                    <>
-                        <Box
-                            justifyContent="center"
-                            alignItems="center"
-                            display="flex"
-                            flex="0"
-                            pt="4"
-                            pb="4"
-                            fontSize="large"
-                            fontWeight="semibold"
-                            paddingInline="6"
-                            alignContent="center"
-                        >
-                            <Text textAlign="center">Chat Box</Text>
-                        </Box>
-                        <ChatSide chats={chats} />
-                    </>
-                )}
-                {boxComponent === 'Collaborate' && (
-                    <>
-                        <Box
-                            justifyContent="center"
-                            alignItems="center"
-                            display="flex"
-                            flex="0"
-                            pt="4"
-                            pb="4"
-                            fontSize="large"
-                            fontWeight="semibold"
-                            paddingInline="6"
-                            alignContent="center"
-                        >
-                            <Text textAlign="center">Collaborate</Text>
-                        </Box>
-                        <ShareSide />
-                    </>
-                )}
             </Box>
         </>
     );

@@ -31,6 +31,12 @@ const MonacoEditorBox = ({
                                     .ES2015,
                                 allowNonTsExtensions: true,
                                 lib: ['es2018'],
+                                noSyntaxValidation: true, // This line disables errors in jsx tags like <div>, etc.
+                                jsx: monaco.languages.typescript.JsxEmit
+                                    .ReactJSX,
+                                jsxFactory: 'React.createElement',
+                                reactNamespace: 'React',
+                                allowJs: true,
                             },
                         );
                 }}

@@ -1,5 +1,5 @@
 import { Flex, Icon, Text, Tooltip } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 
 import { IconType } from 'react-icons/lib';
@@ -7,19 +7,32 @@ import { FiSkipBack } from 'react-icons/fi';
 import { RiRefreshLine } from 'react-icons/ri';
 import { SiPrettier } from 'react-icons/si';
 
-import { Hook, Unhook } from 'console-feed';
+import { Hook } from 'console-feed';
 
 import { previewScreenProps } from 'Types';
 import { setConsoleLogs } from 'features/codebox/codeboxSlice';
 
 const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
     const dispatch = useAppDispatch();
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
     const refreshPanel = () => {
-        iframeRef?.current?.contentWindow &&
+        setIsRefreshing(true);
+        if (iframeRef?.current?.contentWindow) {
             iframeRef.current.contentWindow.location.reload();
+
+            // iframeRef.current.contentWindow.postMessage(
+            //     iframeRef.current.contentWindow.postMessage,
+            //     '*',
+            // );
+            // FIXME:
+        }
+
+        setTimeout(() => {
+            setIsRefreshing(false);
+        }, 2000);
     };
 
     useEffect(() => {
@@ -28,14 +41,19 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                 dispatch(
                     setConsoleLogs({
                         data: [`${message.data.message}`],
-                        id: `${Date.now()}`,
-                        method: 'command',
+                        id: `${message.timeStamp}`,
+                        method: 'error',
                     }),
                 );
             }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
+        // iframeRef.current?.contentWindow?.postMessage(
+        //     // '(()=>{document.getElementById("app").innerHtml=`<h1>Vanilla</h1><div>Bare minimal javascript template</div>`;})();',
+        //     // 'document.querySelector("#app").innerHTML = "app"',
+        //     '*',
+        // ); //FIXME:
+    }, [dispatch]);
 
     return (
         <>
@@ -48,6 +66,8 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                     padding="0.2rem 0.8rem"
                     overflowY="hidden"
                     overflowX="auto"
+                    className="hide-scrollbar"
+                    gap="2rem"
                 >
                     <Text
                         textTransform="uppercase"
@@ -65,6 +85,7 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                             tooltipLabel="Refresh"
                             key="refresh screen"
                             onClick={refreshPanel}
+                            className={isRefreshing ? 'buttonLoading' : ''}
                         />
 
                         <PreviewIcon
@@ -107,17 +128,13 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads allow-pointer-lock"
                         onLoad={() => {
                             Hook(
-                                iframeRef.current?.contentWindow &&
-                                    // @ts-ignore
-                                    iframeRef.current.contentWindow.console,
+                                // @ts-ignore
+                                iframeRef?.current?.contentWindow?.console,
                                 (log: any) => {
                                     dispatch(setConsoleLogs(log));
                                 },
                                 false,
                             );
-
-                            // @ts-ignore
-                            Unhook(iframeRef.current?.contentWindow.console);
                         }}
                     ></iframe>
                 </Flex>
@@ -133,16 +150,18 @@ const PreviewIcon = ({
     icon,
     height,
     onClick,
+    className,
 }: {
     tooltipLabel: 'Format' | 'Reset' | 'Refresh';
     icon: IconType;
     height: string;
+    className?: string;
     onClick: () => void;
 }) => {
     return (
         <>
             <Tooltip label={tooltipLabel}>
-                <button className="button" onClick={onClick}>
+                <button className={`button ${className}`} onClick={onClick}>
                     <Icon
                         as={icon}
                         height={height}

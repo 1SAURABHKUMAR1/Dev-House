@@ -161,7 +161,7 @@ const LibraryCodebox = ({
                     <Allotment maxSize={Infinity}>
                         <Allotment.Pane
                             minSize={150}
-                            maxSize={200}
+                            maxSize={250}
                             preferredSize={170}
                             visible={sidebarComponent !== 'None'}
                         >
@@ -177,7 +177,9 @@ const LibraryCodebox = ({
                                 width="100%"
                             >
                                 {sidebarComponent === 'Files' && (
-                                    <FileSide files={structure} />
+                                    <Box flex="0" pt="4" pb="4">
+                                        <FileSide files={structure} />
+                                    </Box>
                                 )}
                                 {sidebarComponent === 'Users' && (
                                     <>

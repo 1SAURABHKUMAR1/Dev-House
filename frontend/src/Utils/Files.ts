@@ -51,7 +51,7 @@ const getAllFilesInCurrentSubtree = (
 
     let parentDirectory = getParentDirectory(allFiles, selectedFile);
 
-    while (parentDirectory) {
+    while (!!parentDirectory) {
         currentTree.push(parentDirectory);
 
         parentDirectory = getParentDirectory(allFiles, parentDirectory);

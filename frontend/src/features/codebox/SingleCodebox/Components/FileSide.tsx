@@ -1,19 +1,20 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import React, { ReactNode, useLayoutEffect, useState } from 'react';
-import { AiOutlineFile, AiOutlineFolder } from 'react-icons/ai';
+import React, { useLayoutEffect, useState } from 'react';
 
 import { DiJavascript1, DiCss3Full, DiHtml5, DiReact } from 'react-icons/di';
-import { fileFormat, fileSide } from 'Types';
+import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 
 import { useAppSelector } from 'store/hooks';
+
 import {
     getFileDepth,
     isFileOpenedInDirectory,
     isRootLevel,
     sortFiles,
 } from 'Utils/Files';
+
+import { fileFormat, fileSide } from 'Types';
 import { IconType } from 'react-icons/lib';
-import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 
 const FileSide = ({ files }: fileSide) => {
     const [selectedFile, setSelectedFile] = useState<fileFormat | null>(null);
@@ -81,22 +82,7 @@ const RenderFileTree = ({
 }) => {
     return (
         <>
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap="0.7rem"
-                scrollBehavior="smooth"
-                role="chat"
-                px="0.5rem"
-                paddingInlineStart="2"
-                paddingInlineEnd="2"
-                paddingTop="2"
-                paddingBottom="2"
-                flex="1"
-                overflow="auto"
-                flexDir="column"
-                overflowY="auto"
-            >
+            <Box overflowY="auto" className="hide-scrollbar">
                 <>
                     {files
                         ?.filter((file) => isRootLevel(files, file))
@@ -106,7 +92,6 @@ const RenderFileTree = ({
                                 {file.type === 'directory' ? (
                                     <Folder
                                         allFiles={allFiles}
-                                        files={files}
                                         selectFile={selectFile}
                                         selectedFile={selectedFile}
                                         key={file.id}
@@ -130,13 +115,11 @@ const RenderFileTree = ({
 };
 
 const Folder = ({
-    files,
     allFiles,
     selectedFile,
     selectFile,
     currentFile,
 }: {
-    files: Array<fileFormat>;
     allFiles: Array<fileFormat>;
     selectFile: (file: fileFormat) => void;
     selectedFile: fileFormat | null;
@@ -152,22 +135,22 @@ const Folder = ({
         selectedFile,
     );
 
-    const [isOpen, setIsOpen] = useState<boolean>(defaultDirectoryOpen);
+    const [isOpen, setIsOpen] = useState<boolean>(() => !!defaultDirectoryOpen);
 
     const toggleOpen = () => setIsOpen(!isOpen);
 
     return (
         <>
             <File
-                icon={isOpen ? FcOpenedFolder : FcFolder} //FIXME:
+                icon={isOpen ? FcOpenedFolder : FcFolder}
                 allFiles={allFiles}
                 selectedFile={selectedFile}
                 currentFile={currentFile}
                 onClick={toggleOpen}
             />
-            {isOpen && (
+            {!!isOpen && (
                 <RenderFileTree
-                    files={[...subFiles]}
+                    files={subFiles}
                     allFiles={allFiles}
                     selectFile={selectFile}
                     selectedFile={selectedFile}
@@ -198,15 +181,25 @@ const File = ({
         <>
             <Flex
                 alignItems="center"
-                paddingLeft={depth + 1}
+                paddingLeft={`${depth === 0 ? 0.6 : (depth + 1) * 0.75}rem`}
                 cursor="pointer"
-                gap="0.3rem"
+                gap="0.5rem"
                 _hover={{ backgroundColor: 'gray.100' }}
                 backgroundColor={isSelected ? 'gray.100' : 'inherit'}
                 onClick={onClick}
+                flex="0"
+                className="hide-scrollbar"
+                py="0.2rem"
             >
-                <Icon as={icon} />
-                <Text as="span">{currentFile.name}</Text>
+                <Icon as={icon} boxSize="1.3rem" />
+                <Text
+                    as="span"
+                    fontSize="1.02rem"
+                    fontWeight="medium"
+                    wordBreak="break-word"
+                >
+                    {currentFile.name}
+                </Text>
             </Flex>
         </>
     );

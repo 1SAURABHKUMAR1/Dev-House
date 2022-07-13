@@ -1,10 +1,7 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
-import { DiJavascript1, DiCss3Full, DiHtml5, DiReact } from 'react-icons/di';
 import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
-
-import { useAppSelector } from 'store/hooks';
 
 import {
     getFileDepth,
@@ -125,19 +122,22 @@ const Folder = ({
     selectedFile: fileFormat | null;
     currentFile: fileFormat;
 }) => {
-    const subFiles = [
-        ...allFiles.filter((file) => file.directory === currentFile.id),
-    ];
-
-    const defaultDirectoryOpen = isFileOpenedInDirectory(
-        allFiles,
-        currentFile,
-        selectedFile,
+    const subFiles = allFiles.filter(
+        (file) => file.directory === currentFile.id,
     );
 
-    const [isOpen, setIsOpen] = useState<boolean>(() => !!defaultDirectoryOpen);
-
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const toggleOpen = () => setIsOpen(!isOpen);
+
+    useEffect(() => {
+        if (!isOpen) {
+            setIsOpen(() =>
+                isFileOpenedInDirectory(allFiles, currentFile, selectedFile),
+            );
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allFiles, currentFile, selectedFile]);
 
     return (
         <>
@@ -148,7 +148,7 @@ const Folder = ({
                 currentFile={currentFile}
                 onClick={toggleOpen}
             />
-            {!!isOpen && (
+            {isOpen && (
                 <RenderFileTree
                     files={subFiles}
                     allFiles={allFiles}

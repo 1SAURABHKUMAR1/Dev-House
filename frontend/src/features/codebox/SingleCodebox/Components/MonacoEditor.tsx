@@ -5,7 +5,7 @@ import { ContainerLoader } from 'Components';
 
 import { monacoEditorBox } from 'Types';
 
-import { editorConfig } from 'Utils/Editor';
+import { editorConfig } from 'Utils/EditorConfig';
 
 const MonacoEditorBox = ({
     language,

@@ -559,6 +559,8 @@ export type useSocketCodebox = (
     chats: Array<chatType>;
     monacoEditorCode: string;
     setMonacoCode: React.Dispatch<React.SetStateAction<string>>;
+    allFiles: fileFormat[];
+    setAllFiles: React.Dispatch<React.SetStateAction<fileFormat[]>>;
 };
 
 export type socketCodeboxUser = {
@@ -578,6 +580,7 @@ export interface languageCodeboxProps {
     handleCodeChange: (event: string | undefined) => void;
     resetCode: () => void;
     formatCode: () => void;
+    allFiles: fileFormat[];
 }
 
 export interface libraryFooterProps {

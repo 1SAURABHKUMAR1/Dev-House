@@ -39,7 +39,14 @@ const SingleCodebox = () => {
     );
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const { users, chats, monacoEditorCode, setMonacoCode } = useSocketCodebox(
+    const {
+        users,
+        chats,
+        monacoEditorCode,
+        setMonacoCode,
+        allFiles,
+        setAllFiles,
+    } = useSocketCodebox(
         // @ts-ignore
         codeboxId,
         {
@@ -57,7 +64,7 @@ const SingleCodebox = () => {
                 ? codes[language]
                 : '';
 
-        setMonacoCode(finalCode);
+        // setMonacoCode(finalCode);
 
         socket.emit(ACTIONS_CODE_CLIENT_CODE, {
             codebox_id,
@@ -113,13 +120,35 @@ const SingleCodebox = () => {
             refetchOnWindowFocus: false,
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));
-                setMonacoCode(() =>
-                    data.data.room?.language === 'JAVASCRIPT' ||
-                    data.data.room?.language === 'CPP' ||
-                    data.data.room?.language === 'PYTHON'
-                        ? codes[data.data.room?.language]
-                        : '',
+                setMonacoCode(
+                    () =>
+                        // data.data.room?.language === 'JAVASCRIPT' ||
+                        // data.data.room?.language === 'CPP' ||
+                        // data.data.room?.language === 'PYTHON'
+                        //     ? codes[data.data.room?.language]?
+                        // : ''
+                        '',
                 );
+
+                const language = data.data.room.language;
+
+                setAllFiles(() => {
+                    if (language === 'CPP') return codes[language];
+                    if (language === 'PYTHON') return codes[language];
+                    if (language === 'JAVASCRIPT') return codes[language];
+                    if (language === 'VANILLA') return codes[language];
+                    if (language === 'REACT') return codes[language];
+                    if (language === 'REACT TYPESCRIPT') return codes[language];
+
+                    return [
+                        {
+                            id: 'error',
+                            directory: null,
+                            name: 'Error',
+                            type: 'directory',
+                        },
+                    ];
+                });
             },
             onError: (error: Error) => {
                 console.log(error);
@@ -165,6 +194,7 @@ const SingleCodebox = () => {
                             formatCode={formatCode}
                             handleCodeChange={handleCodeChange}
                             resetCode={resetCode}
+                            allFiles={allFiles}
                         />
                     ) : (
                         <LanguageCodebox
@@ -174,6 +204,7 @@ const SingleCodebox = () => {
                             formatCode={formatCode}
                             handleCodeChange={handleCodeChange}
                             resetCode={resetCode}
+                            allFiles={allFiles}
                         />
                     )}
                 </Flex>

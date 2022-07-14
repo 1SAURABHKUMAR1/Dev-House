@@ -42,8 +42,8 @@ const SingleCodebox = () => {
     const {
         users,
         chats,
-        monacoEditorCode,
-        setMonacoCode,
+        setSelectedFile,
+        selectedFile,
         allFiles,
         setAllFiles,
     } = useSocketCodebox(
@@ -74,7 +74,7 @@ const SingleCodebox = () => {
 
     const formatCode = () => {
         if (language === 'JAVASCRIPT' || codeBoxType === 'LIBRARY') {
-            const prettifiedCode = Prettier.format(monacoEditorCode, {
+            const prettifiedCode = Prettier.format(selectedFile.code ?? '', {
                 parser: 'babel',
                 plugins: [prettierParser],
                 arrowParens: 'always',
@@ -94,14 +94,14 @@ const SingleCodebox = () => {
                 useTabs: false,
             }).replace(/\n$/, '');
 
-            setMonacoCode(() => prettifiedCode);
+            // setMonacoCode(() => prettifiedCode);
         } else {
             ErrorToast('Failed');
         }
     };
 
     const handleCodeChange = (event: string | undefined) => {
-        setMonacoCode(() => event ?? '');
+        // setMonacoCode(() => event ?? '');
         socket.emit(ACTIONS_CODE_CLIENT_CODE, {
             codebox_id,
             code: event ?? '',
@@ -120,20 +120,12 @@ const SingleCodebox = () => {
             refetchOnWindowFocus: false,
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));
-                setMonacoCode(
-                    () =>
-                        // data.data.room?.language === 'JAVASCRIPT' ||
-                        // data.data.room?.language === 'CPP' ||
-                        // data.data.room?.language === 'PYTHON'
-                        //     ? codes[data.data.room?.language]?
-                        // : ''
-                        '',
-                );
 
-                const language = data.data.room.language;
-
+                // chnage all file
                 setAllFiles(() => {
-                    if (language === 'CPP') return codes[language];
+                    if (language === 'CPP') {
+                        return codes[language];
+                    }
                     if (language === 'PYTHON') return codes[language];
                     if (language === 'JAVASCRIPT') return codes[language];
                     if (language === 'VANILLA') return codes[language];
@@ -149,6 +141,28 @@ const SingleCodebox = () => {
                         },
                     ];
                 });
+
+                // change selected file
+                const language = data.data.room.language;
+                const allFile = codes[language];
+                const selectFile = allFile.find((file) => {
+                    if (file.name === 'index.js') return file;
+                    if (file.name === 'index.ts') return file;
+                    if (file.name === 'index.jsx') return file;
+                    if (file.name === 'index.tsx') return file;
+                    if (file.name === 'index.cpp') return file;
+                    if (file.name === 'index.py') return file;
+
+                    return null;
+                });
+                setSelectedFile(
+                    selectFile ?? {
+                        id: '',
+                        directory: '',
+                        name: '',
+                        type: 'directory',
+                    },
+                );
             },
             onError: (error: Error) => {
                 console.log(error);
@@ -190,21 +204,23 @@ const SingleCodebox = () => {
                         <LibraryCodebox
                             users={users}
                             chats={chats}
-                            monacoEditorCode={monacoEditorCode}
                             formatCode={formatCode}
                             handleCodeChange={handleCodeChange}
                             resetCode={resetCode}
                             allFiles={allFiles}
+                            selectedFile={selectedFile}
+                            setSelectedFile={setSelectedFile}
                         />
                     ) : (
                         <LanguageCodebox
                             users={users}
                             chats={chats}
-                            monacoEditorCode={monacoEditorCode}
                             formatCode={formatCode}
                             handleCodeChange={handleCodeChange}
                             resetCode={resetCode}
                             allFiles={allFiles}
+                            selectedFile={selectedFile}
+                            setSelectedFile={setSelectedFile}
                         />
                     )}
                 </Flex>

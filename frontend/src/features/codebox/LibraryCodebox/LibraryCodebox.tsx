@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     SideDock,
@@ -12,7 +12,6 @@ import {
     UserSide,
     ShareSide,
     FileSide,
-    resetCodeboxState,
 } from 'features';
 
 import { Allotment } from 'allotment';
@@ -31,11 +30,12 @@ const sideBarIcons: sidebarIcons = [
 const LibraryCodebox = ({
     users,
     chats,
-    monacoEditorCode,
     handleCodeChange,
     resetCode,
     formatCode,
     allFiles,
+    selectedFile,
+    setSelectedFile,
 }: languageCodeboxProps) => {
     const [consoleVisible, setConsoleVisible] = useState(false);
     const dispatch = useAppDispatch();
@@ -45,13 +45,10 @@ const LibraryCodebox = ({
         setConsoleVisible(!consoleVisible);
     };
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         dispatch(setSidebarComponent({ component: 'Files' }));
-
-        return () => {
-            dispatch(resetCodeboxState());
-        };
-    }, [dispatch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -79,7 +76,11 @@ const LibraryCodebox = ({
                             >
                                 {sidebarComponent === 'Files' && (
                                     <Box flex="0" pt="4" pb="4">
-                                        <FileSide files={allFiles} />
+                                        <FileSide
+                                            files={allFiles}
+                                            selectedFile={selectedFile}
+                                            setSelectedFile={setSelectedFile}
+                                        />
                                     </Box>
                                 )}
                                 {sidebarComponent === 'Users' && (
@@ -150,7 +151,7 @@ const LibraryCodebox = ({
 
                         <Allotment.Pane minSize={200} preferredSize={'50%'}>
                             <MonacoEditor
-                                codeMonaco={monacoEditorCode}
+                                codeMonaco={selectedFile.code ?? ''}
                                 language={'JAVASCRIPT'} //FIXME:
                                 handleCodeChange={handleCodeChange}
                             />

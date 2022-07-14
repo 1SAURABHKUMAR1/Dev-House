@@ -35,7 +35,12 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
             type: 'directory',
         },
     ]);
-    const [monacoEditorCode, setMonacoCode] = useState<string>('');
+    const [selectedFile, setSelectedFile] = useState<fileFormat>({
+        id: '',
+        directory: null,
+        name: '',
+        type: 'directory',
+    });
 
     const addUsers = (newUser: socketCodeboxUser) => {
         !users.find(
@@ -71,9 +76,9 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
                 addChats,
             });
 
-            socketCode({
-                setMonacoCode,
-            });
+            // socketCode({
+            //     setMonacoCode,
+            // });
         };
 
         initalize();
@@ -91,8 +96,8 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
     return {
         users,
         chats,
-        monacoEditorCode,
-        setMonacoCode,
+        selectedFile,
+        setSelectedFile,
         allFiles,
         setAllFiles,
     };

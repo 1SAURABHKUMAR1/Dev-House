@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 
@@ -13,22 +13,7 @@ import {
 import { fileFormat, fileSide } from 'Types';
 import { IconType } from 'react-icons/lib';
 
-const FileSide = ({ files }: fileSide) => {
-    const [selectedFile, setSelectedFile] = useState<fileFormat | null>(null);
-
-    useLayoutEffect(() => {
-        const selectFile = files.find((file) => {
-            if (file.name === 'index.js') return file;
-            if (file.name === 'index.ts') return file;
-            if (file.name === 'index.jsx') return file;
-            if (file.name === 'index.tsx') return file;
-
-            return null;
-        });
-
-        setSelectedFile(selectFile ?? null);
-    }, [files]);
-
+const FileSide = ({ files, selectedFile, setSelectedFile }: fileSide) => {
     const selectFile = (file: fileFormat) => setSelectedFile(file);
 
     // const createFile = (file: any) => {

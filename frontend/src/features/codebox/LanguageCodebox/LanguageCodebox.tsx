@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { executeCodebox } from 'Services';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -11,7 +11,6 @@ import {
     ChatSide,
     UserSide,
     ShareSide,
-    resetCodeboxState,
 } from 'features';
 
 import { Allotment } from 'allotment';
@@ -44,10 +43,10 @@ const sideBarIcons: sidebarIcons = [
 const LanguageCodebox = ({
     users,
     chats,
-    monacoEditorCode,
     handleCodeChange,
     resetCode,
     formatCode,
+    selectedFile,
 }: languageCodeboxProps) => {
     const { language } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
@@ -78,13 +77,11 @@ const LanguageCodebox = ({
         await mutateAsync();
     };
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         dispatch(setSidebarComponent({ component: 'Users' }));
 
-        return () => {
-            dispatch(resetCodeboxState());
-        };
-    }, [dispatch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -168,7 +165,7 @@ const LanguageCodebox = ({
 
                 <Allotment.Pane minSize={200} preferredSize={'70%'}>
                     <MonacoEditor
-                        codeMonaco={monacoEditorCode}
+                        codeMonaco={selectedFile.code ?? ''}
                         language={
                             language === 'JAVASCRIPT' ||
                             language === 'CPP' ||

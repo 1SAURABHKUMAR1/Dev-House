@@ -24,19 +24,11 @@ import { codeBoxCreateResponse } from 'Types';
 import { AxiosResponse } from 'axios';
 
 import ErrorToast from 'Utils/Toast/Error';
-import { codes } from 'Utils/Code';
-
-import Prettier from 'prettier';
-import prettierParser from 'prettier/parser-babel';
-
-import { socket } from 'Socket/socket';
-import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
+import { resetCode } from 'Utils/Files';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType, language, codebox_id } = useAppSelector(
-        (state) => state.codebox,
-    );
+    const { codeBoxType, language } = useAppSelector((state) => state.codebox);
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const {
@@ -56,58 +48,6 @@ const SingleCodebox = () => {
         },
     );
 
-    const resetCode = () => {
-        const finalCode =
-            language === 'JAVASCRIPT' ||
-            language === 'CPP' ||
-            language === 'PYTHON'
-                ? codes[language]
-                : '';
-
-        // setMonacoCode(finalCode);
-
-        socket.emit(ACTIONS_CODE_CLIENT_CODE, {
-            codebox_id,
-            code: finalCode,
-        });
-    };
-
-    const formatCode = () => {
-        if (language === 'JAVASCRIPT' || codeBoxType === 'LIBRARY') {
-            const prettifiedCode = Prettier.format(selectedFile.code ?? '', {
-                parser: 'babel',
-                plugins: [prettierParser],
-                arrowParens: 'always',
-                bracketSameLine: true,
-                singleQuote: true,
-                semi: true,
-                jsxSingleQuote: false,
-                tabWidth: 4,
-                endOfLine: 'lf',
-                htmlWhitespaceSensitivity: 'css',
-                jsxBracketSameLine: false,
-                printWidth: 80,
-                proseWrap: 'preserve',
-                quoteProps: 'as-needed',
-                requirePragma: false,
-                trailingComma: 'all',
-                useTabs: false,
-            }).replace(/\n$/, '');
-
-            // setMonacoCode(() => prettifiedCode);
-        } else {
-            ErrorToast('Failed');
-        }
-    };
-
-    const handleCodeChange = (event: string | undefined) => {
-        // setMonacoCode(() => event ?? '');
-        socket.emit(ACTIONS_CODE_CLIENT_CODE, {
-            codebox_id,
-            code: event ?? '',
-        });
-    };
-
     const { isLoading, isError } = useQuery<
         AxiosResponse<codeBoxCreateResponse>,
         Error
@@ -121,48 +61,7 @@ const SingleCodebox = () => {
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));
 
-                // chnage all file
-                setAllFiles(() => {
-                    if (language === 'CPP') {
-                        return codes[language];
-                    }
-                    if (language === 'PYTHON') return codes[language];
-                    if (language === 'JAVASCRIPT') return codes[language];
-                    if (language === 'VANILLA') return codes[language];
-                    if (language === 'REACT') return codes[language];
-                    if (language === 'REACT TYPESCRIPT') return codes[language];
-
-                    return [
-                        {
-                            id: 'error',
-                            directory: null,
-                            name: 'Error',
-                            type: 'directory',
-                        },
-                    ];
-                });
-
-                // change selected file
-                const language = data.data.room.language;
-                const allFile = codes[language];
-                const selectFile = allFile.find((file) => {
-                    if (file.name === 'index.js') return file;
-                    if (file.name === 'index.ts') return file;
-                    if (file.name === 'index.jsx') return file;
-                    if (file.name === 'index.tsx') return file;
-                    if (file.name === 'index.cpp') return file;
-                    if (file.name === 'index.py') return file;
-
-                    return null;
-                });
-                setSelectedFile(
-                    selectFile ?? {
-                        id: '',
-                        directory: '',
-                        name: '',
-                        type: 'directory',
-                    },
-                );
+                resetCode(language, false, setAllFiles, setSelectedFile);
             },
             onError: (error: Error) => {
                 console.log(error);
@@ -204,10 +103,8 @@ const SingleCodebox = () => {
                         <LibraryCodebox
                             users={users}
                             chats={chats}
-                            formatCode={formatCode}
-                            handleCodeChange={handleCodeChange}
-                            resetCode={resetCode}
                             allFiles={allFiles}
+                            setAllFiles={setAllFiles}
                             selectedFile={selectedFile}
                             setSelectedFile={setSelectedFile}
                         />
@@ -215,10 +112,8 @@ const SingleCodebox = () => {
                         <LanguageCodebox
                             users={users}
                             chats={chats}
-                            formatCode={formatCode}
-                            handleCodeChange={handleCodeChange}
-                            resetCode={resetCode}
                             allFiles={allFiles}
+                            setAllFiles={setAllFiles}
                             selectedFile={selectedFile}
                             setSelectedFile={setSelectedFile}
                         />

@@ -1,3 +1,4 @@
+import { Box, Text } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { executeCodebox } from 'Services';
@@ -20,7 +21,11 @@ import { AxiosResponse } from 'axios';
 import { languageCodeboxProps, runCodeResponse, sidebarIcons } from 'Types';
 
 import ErrorToast from 'Utils/Toast/Error';
-import { Box, Text } from '@chakra-ui/react';
+import {
+    formatCode as formartCodeFn,
+    resetCode as resetCodeFn,
+    handleCodeChange as handleCodeChangeFunction,
+} from 'Utils/Files';
 
 const sideBarIcons: sidebarIcons = [
     {
@@ -43,12 +48,11 @@ const sideBarIcons: sidebarIcons = [
 const LanguageCodebox = ({
     users,
     chats,
-    handleCodeChange,
-    resetCode,
-    formatCode,
     selectedFile,
+    setAllFiles,
+    setSelectedFile,
 }: languageCodeboxProps) => {
-    const { language } = useAppSelector((state) => state.codebox);
+    const { language, codeBoxType } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
     const outputContent = useRef<HTMLTextAreaElement | null>(null);
     const { sidebarComponent } = useAppSelector((state) => state.codebox);
@@ -173,14 +177,36 @@ const LanguageCodebox = ({
                                 ? language
                                 : 'JAVASCRIPT'
                         }
-                        handleCodeChange={handleCodeChange}
+                        handleCodeChange={(event: string | undefined) => {
+                            handleCodeChangeFunction(
+                                event,
+                                selectedFile,
+                                setAllFiles,
+                                setSelectedFile,
+                            );
+                        }}
                     />
                 </Allotment.Pane>
 
                 <Allotment.Pane minSize={200} preferredSize={'30%'}>
                     <OutputArea
-                        resetCode={resetCode}
-                        formatCode={formatCode}
+                        formatCode={() => {
+                            formartCodeFn(
+                                language,
+                                codeBoxType,
+                                selectedFile,
+                                setAllFiles,
+                                setSelectedFile,
+                            );
+                        }}
+                        resetCode={() => {
+                            resetCodeFn(
+                                language,
+                                true,
+                                setAllFiles,
+                                setSelectedFile,
+                            );
+                        }}
                         executeCode={executeCode}
                         inputContent={inputContent}
                         setInputContent={setInputContent}

@@ -9,7 +9,6 @@ import {
 import {
     socketAddUser,
     socketChat,
-    socketCode,
     socketEmit,
     socketRemoveUser,
 } from 'Socket/codeboxSocketHandler';

@@ -19,6 +19,11 @@ import 'allotment/dist/style.css';
 
 import { languageCodeboxProps, sidebarIcons } from 'Types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import {
+    formatCode as formatCodeFn,
+    handleCodeChange as handleCodeChangeFunction,
+    resetCode as resetCodeFn,
+} from 'Utils/Files';
 
 const sideBarIcons: sidebarIcons = [
     { type: 'FILES', icon: 'files', tooltipLabel: 'Files' },
@@ -30,16 +35,16 @@ const sideBarIcons: sidebarIcons = [
 const LibraryCodebox = ({
     users,
     chats,
-    handleCodeChange,
-    resetCode,
-    formatCode,
     allFiles,
     selectedFile,
     setSelectedFile,
+    setAllFiles,
 }: languageCodeboxProps) => {
     const [consoleVisible, setConsoleVisible] = useState(false);
     const dispatch = useAppDispatch();
-    const { sidebarComponent } = useAppSelector((state) => state.codebox);
+    const { sidebarComponent, language, codeBoxType } = useAppSelector(
+        (state) => state.codebox,
+    );
 
     const handleConsoleVisible = () => {
         setConsoleVisible(!consoleVisible);
@@ -153,15 +158,39 @@ const LibraryCodebox = ({
                             <MonacoEditor
                                 codeMonaco={selectedFile.code ?? ''}
                                 language={'JAVASCRIPT'} //FIXME:
-                                handleCodeChange={handleCodeChange}
+                                handleCodeChange={(
+                                    event: string | undefined,
+                                ) => {
+                                    handleCodeChangeFunction(
+                                        event,
+                                        selectedFile,
+                                        setAllFiles,
+                                        setSelectedFile,
+                                    );
+                                }}
                             />
                         </Allotment.Pane>
 
                         <Allotment vertical={true} minSize={200}>
                             <Allotment.Pane preferredSize="75%">
                                 <Preview
-                                    formatCode={formatCode}
-                                    resetCode={resetCode}
+                                    formatCode={() => {
+                                        formatCodeFn(
+                                            language,
+                                            codeBoxType,
+                                            selectedFile,
+                                            setAllFiles,
+                                            setSelectedFile,
+                                        );
+                                    }}
+                                    resetCode={() => {
+                                        resetCodeFn(
+                                            language,
+                                            true,
+                                            setAllFiles,
+                                            setSelectedFile,
+                                        );
+                                    }}
                                 />
                             </Allotment.Pane>
 

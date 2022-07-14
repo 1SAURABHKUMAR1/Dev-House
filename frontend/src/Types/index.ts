@@ -576,10 +576,8 @@ export interface userSideProps {
 export interface languageCodeboxProps {
     users: socketCodeboxUser[];
     chats: initialChatType;
-    handleCodeChange: (event: string | undefined) => void;
-    resetCode: () => void;
-    formatCode: () => void;
     allFiles: fileFormat[];
+    setAllFiles: React.Dispatch<React.SetStateAction<fileFormat[]>>;
     selectedFile: fileFormat;
     setSelectedFile: React.Dispatch<React.SetStateAction<fileFormat>>;
 }

@@ -11,6 +11,7 @@ import {
     resetCodeboxState,
     setUserJoinedCodebox,
     ShareModal,
+    resetCodeFn,
 } from 'features';
 import {
     Container as MainContainer,
@@ -24,21 +25,13 @@ import { codeBoxCreateResponse } from 'Types';
 import { AxiosResponse } from 'axios';
 
 import ErrorToast from 'Utils/Toast/Error';
-import { resetCode } from 'Utils/Files';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType, language } = useAppSelector((state) => state.codebox);
+    const { codeBoxType } = useAppSelector((state) => state.codebox);
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const {
-        users,
-        chats,
-        setSelectedFile,
-        selectedFile,
-        allFiles,
-        setAllFiles,
-    } = useSocketCodebox(
+    const { users, chats } = useSocketCodebox(
         // @ts-ignore
         codeboxId,
         {
@@ -61,7 +54,12 @@ const SingleCodebox = () => {
             onSuccess: (data: AxiosResponse<codeBoxCreateResponse>) => {
                 dispatch(setUserJoinedCodebox(data.data.room));
 
-                resetCode(language, false, setAllFiles, setSelectedFile);
+                resetCodeFn(
+                    false,
+                    dispatch,
+                    data.data.room.language,
+                    data.data.room.codebox_type,
+                );
             },
             onError: (error: Error) => {
                 console.log(error);
@@ -100,23 +98,9 @@ const SingleCodebox = () => {
                     height="100%"
                 >
                     {codeBoxType === 'LIBRARY' ? (
-                        <LibraryCodebox
-                            users={users}
-                            chats={chats}
-                            allFiles={allFiles}
-                            setAllFiles={setAllFiles}
-                            selectedFile={selectedFile}
-                            setSelectedFile={setSelectedFile}
-                        />
+                        <LibraryCodebox users={users} chats={chats} />
                     ) : (
-                        <LanguageCodebox
-                            users={users}
-                            chats={chats}
-                            allFiles={allFiles}
-                            setAllFiles={setAllFiles}
-                            selectedFile={selectedFile}
-                            setSelectedFile={setSelectedFile}
-                        />
+                        <LanguageCodebox users={users} chats={chats} />
                     )}
                 </Flex>
 

@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 
@@ -10,11 +10,17 @@ import {
     sortFiles,
 } from 'Utils/Files';
 
-import { fileFormat, fileSide } from 'Types';
+import { fileFormat } from 'Types';
 import { IconType } from 'react-icons/lib';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setSelectedFile } from 'features/codebox/codeboxSlice';
 
-const FileSide = ({ files, selectedFile, setSelectedFile }: fileSide) => {
-    const selectFile = (file: fileFormat) => setSelectedFile(file);
+const FileSide = () => {
+    const { allFiles, selectedFile } = useAppSelector((state) => state.codebox);
+    const dispatch = useAppDispatch();
+
+    const selectFile = (file: fileFormat) =>
+        dispatch(setSelectedFile({ file: file }));
 
     // const createFile = (file: any) => {
     //     //
@@ -31,8 +37,8 @@ const FileSide = ({ files, selectedFile, setSelectedFile }: fileSide) => {
     return (
         <>
             <RenderFileTree
-                files={files}
-                allFiles={files}
+                files={allFiles}
+                allFiles={allFiles}
                 selectedFile={selectedFile}
                 selectFile={selectFile}
                 //     createFile={createFile}
@@ -44,150 +50,162 @@ const FileSide = ({ files, selectedFile, setSelectedFile }: fileSide) => {
 };
 
 //
-const RenderFileTree = ({
-    files,
-    allFiles,
-    selectedFile,
-    selectFile,
-}: // createFile,
-// removeFile,
-// renameFile,
-{
-    files: Array<fileFormat>;
-    allFiles: Array<fileFormat>;
-    selectFile: (file: fileFormat) => void;
-    selectedFile: fileFormat | null;
+const RenderFileTree = memo(
+    ({
+        files,
+        allFiles,
+        selectedFile,
+        selectFile,
+    }: // createFile,
+    // removeFile,
+    // renameFile,
+    {
+        files: Array<fileFormat>;
+        allFiles: Array<fileFormat>;
+        selectFile: (file: fileFormat) => void;
+        selectedFile: fileFormat | null;
 
-    // createFile: (file: any) => void;
-    // removeFile: (file: any) => void;
-    // renameFile: (file: any) => void;
-}) => {
-    return (
-        <>
-            <Box overflowY="auto" className="hide-scrollbar">
-                <>
-                    {files
-                        ?.filter((file) => isRootLevel(files, file))
-                        ?.sort((file1, file2) => sortFiles(file1, file2))
-                        ?.map((file) => (
-                            <React.Fragment key={file.id}>
-                                {file.type === 'directory' ? (
-                                    <Folder
-                                        allFiles={allFiles}
-                                        selectFile={selectFile}
-                                        selectedFile={selectedFile}
-                                        key={file.id}
-                                        currentFile={file}
-                                    />
-                                ) : (
-                                    <File
-                                        allFiles={allFiles}
-                                        selectedFile={selectedFile}
-                                        onClick={() => selectFile(file)}
-                                        key={file.id}
-                                        currentFile={file}
-                                    />
-                                )}
-                            </React.Fragment>
-                        ))}
-                </>
-            </Box>
-        </>
-    );
-};
+        // createFile: (file: any) => void;
+        // removeFile: (file: any) => void;
+        // renameFile: (file: any) => void;
+    }) => {
+        return (
+            <>
+                <Box overflowY="auto" className="hide-scrollbar">
+                    <>
+                        {files
+                            ?.filter((file) => isRootLevel(files, file))
+                            ?.sort((file1, file2) => sortFiles(file1, file2))
+                            ?.map((file) => (
+                                <React.Fragment key={file.id}>
+                                    {file.type === 'directory' ? (
+                                        <Folder
+                                            allFiles={allFiles}
+                                            selectFile={selectFile}
+                                            selectedFile={selectedFile}
+                                            currentFile={file}
+                                            key={file.id}
+                                        />
+                                    ) : (
+                                        <File
+                                            allFiles={allFiles}
+                                            selectedFile={selectedFile}
+                                            onClick={() => selectFile(file)}
+                                            key={file.id}
+                                            currentFile={file}
+                                        />
+                                    )}
+                                </React.Fragment>
+                            ))}
+                    </>
+                </Box>
+            </>
+        );
+    },
+);
 
-const Folder = ({
-    allFiles,
-    selectedFile,
-    selectFile,
-    currentFile,
-}: {
-    allFiles: Array<fileFormat>;
-    selectFile: (file: fileFormat) => void;
-    selectedFile: fileFormat | null;
-    currentFile: fileFormat;
-}) => {
-    const subFiles = allFiles.filter(
-        (file) => file.directory === currentFile.id,
-    );
+const Folder = memo(
+    ({
+        allFiles,
+        selectedFile,
+        selectFile,
+        currentFile,
+    }: {
+        allFiles: Array<fileFormat>;
+        selectFile: (file: fileFormat) => void;
+        selectedFile: fileFormat | null;
+        currentFile: fileFormat;
+    }) => {
+        const subFiles = allFiles.filter(
+            (file) => file.directory === currentFile.id,
+        );
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const toggleOpen = () => setIsOpen(!isOpen);
+        const [isOpen, setIsOpen] = useState<boolean>(false);
+        const toggleOpen = () => setIsOpen(!isOpen);
 
-    useEffect(() => {
-        if (!isOpen) {
-            setIsOpen(() =>
-                isFileOpenedInDirectory(allFiles, currentFile, selectedFile),
-            );
-        }
+        useEffect(() => {
+            if (!isOpen) {
+                setIsOpen(() =>
+                    isFileOpenedInDirectory(
+                        allFiles,
+                        currentFile,
+                        selectedFile,
+                    ),
+                );
+            }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allFiles, currentFile, selectedFile]);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [allFiles, currentFile]);
 
-    return (
-        <>
-            <File
-                icon={isOpen ? FcOpenedFolder : FcFolder}
-                allFiles={allFiles}
-                selectedFile={selectedFile}
-                currentFile={currentFile}
-                onClick={toggleOpen}
-            />
-            {isOpen && (
-                <RenderFileTree
-                    files={subFiles}
+        return (
+            <>
+                <File
+                    icon={isOpen ? FcOpenedFolder : FcFolder}
                     allFiles={allFiles}
-                    selectFile={selectFile}
                     selectedFile={selectedFile}
-                    key={currentFile.id}
+                    currentFile={currentFile}
+                    onClick={toggleOpen}
                 />
-            )}
-        </>
-    );
-};
+                {isOpen && (
+                    <RenderFileTree
+                        files={subFiles}
+                        allFiles={allFiles}
+                        selectFile={selectFile}
+                        selectedFile={selectedFile}
+                        key={currentFile.id}
+                    />
+                )}
+            </>
+        );
+    },
+);
 
-const File = ({
-    allFiles,
-    selectedFile,
-    onClick,
-    currentFile,
-    icon,
-}: {
-    allFiles: Array<fileFormat>;
-    selectedFile: fileFormat | null;
-    onClick: () => void;
-    currentFile: fileFormat;
-    icon?: IconType;
-}) => {
-    const isSelected = selectedFile && selectedFile.id === currentFile.id;
-    const depth = getFileDepth(allFiles, currentFile);
+const File = memo(
+    ({
+        allFiles,
+        selectedFile,
+        onClick,
+        currentFile,
+        icon,
+    }: {
+        allFiles: Array<fileFormat>;
+        selectedFile: fileFormat | null;
+        onClick: () => void;
+        currentFile: fileFormat;
+        icon?: IconType;
+    }) => {
+        const isSelected = selectedFile && selectedFile.id === currentFile.id;
+        const depth = getFileDepth(allFiles, currentFile);
 
-    return (
-        <>
-            <Flex
-                alignItems="center"
-                paddingLeft={`${depth === 0 ? 0.6 : (depth + 1) * 0.75}rem`}
-                cursor="pointer"
-                gap="0.5rem"
-                _hover={{ backgroundColor: 'gray.100' }}
-                backgroundColor={isSelected ? 'gray.100' : 'inherit'}
-                onClick={onClick}
-                flex="0"
-                className="hide-scrollbar"
-                py="0.2rem"
-            >
-                <Icon as={icon} boxSize="1.3rem" />
-                <Text
-                    as="span"
-                    fontSize="1.02rem"
-                    fontWeight="medium"
-                    wordBreak="break-word"
+        return (
+            <>
+                <Flex
+                    alignItems="center"
+                    paddingLeft={`${depth === 0 ? 0.6 : (depth + 1) * 0.75}rem`}
+                    cursor="pointer"
+                    gap="0.5rem"
+                    _hover={{ backgroundColor: 'gray.100' }}
+                    backgroundColor={isSelected ? 'gray.100' : 'inherit'}
+                    onClick={onClick}
+                    flex="0"
+                    className="hide-scrollbar"
+                    py="0.2rem"
+                    key={currentFile.id}
                 >
-                    {currentFile.name}
-                </Text>
-            </Flex>
-        </>
-    );
-};
+                    <Icon as={icon} boxSize="1.3rem" />
+                    <Text
+                        as="span"
+                        fontSize="1.02rem"
+                        fontWeight="medium"
+                        wordBreak="break-word"
+                        key={currentFile.id}
+                    >
+                        {currentFile.name}
+                    </Text>
+                </Flex>
+            </>
+        );
+    },
+);
 
-export default FileSide;
+export default memo(FileSide);

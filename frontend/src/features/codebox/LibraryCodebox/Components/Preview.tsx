@@ -1,6 +1,6 @@
 import { Flex, Icon, Text, Tooltip } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from 'store/hooks';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { IconType } from 'react-icons/lib';
 import { FiSkipBack } from 'react-icons/fi';
@@ -9,12 +9,18 @@ import { SiPrettier } from 'react-icons/si';
 
 import { Hook } from 'console-feed';
 
-import { previewScreenProps } from 'Types';
-import { setConsoleLogs } from 'features/codebox/codeboxSlice';
+import {
+    formatCode,
+    resetCodeFn,
+    setConsoleLogs,
+} from 'features/codebox/codeboxSlice';
 
-const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
+const Preview = () => {
     const dispatch = useAppDispatch();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+    const { language, selectedFile, codeBoxType } = useAppSelector(
+        (state) => state.codebox,
+    );
 
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -93,7 +99,14 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                             icon={SiPrettier}
                             tooltipLabel="Format"
                             key="format code"
-                            onClick={formatCode}
+                            onClick={() =>
+                                formatCode(
+                                    dispatch,
+                                    language,
+                                    'LIBRARY',
+                                    selectedFile,
+                                )
+                            }
                         />
 
                         <PreviewIcon
@@ -101,7 +114,14 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
                             icon={FiSkipBack}
                             tooltipLabel="Reset"
                             key="reset code"
-                            onClick={resetCode}
+                            onClick={() =>
+                                resetCodeFn(
+                                    true,
+                                    dispatch,
+                                    language,
+                                    codeBoxType,
+                                )
+                            }
                         />
                     </Flex>
                 </Flex>
@@ -145,37 +165,39 @@ const Preview = ({ formatCode, resetCode }: previewScreenProps) => {
 
 export default Preview;
 
-const PreviewIcon = ({
-    tooltipLabel,
-    icon,
-    height,
-    onClick,
-    className,
-}: {
-    tooltipLabel: 'Format' | 'Reset' | 'Refresh';
-    icon: IconType;
-    height: string;
-    className?: string;
-    onClick: () => void;
-}) => {
-    return (
-        <>
-            <Tooltip label={tooltipLabel}>
-                <button className={`button ${className}`} onClick={onClick}>
-                    <Icon
-                        as={icon}
-                        height={height}
-                        width={height}
-                        _hover={{
-                            transform: 'scale(1.2)',
-                            opacity: '1',
-                        }}
-                        opacity="0.8"
-                        transition="transform 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s, opacity 200ms ease-in-out 100ms"
-                        animation="1s cubic-bezier(0.22, 0.29, 0.12, 2) 1s 1 normal backwards running icon"
-                    />
-                </button>
-            </Tooltip>
-        </>
-    );
-};
+const PreviewIcon = memo(
+    ({
+        tooltipLabel,
+        icon,
+        height,
+        onClick,
+        className,
+    }: {
+        tooltipLabel: 'Format' | 'Reset' | 'Refresh';
+        icon: IconType;
+        height: string;
+        className?: string;
+        onClick: () => void;
+    }) => {
+        return (
+            <>
+                <Tooltip label={tooltipLabel}>
+                    <button className={`button ${className}`} onClick={onClick}>
+                        <Icon
+                            as={icon}
+                            height={height}
+                            width={height}
+                            _hover={{
+                                transform: 'scale(1.2)',
+                                opacity: '1',
+                            }}
+                            opacity="0.8"
+                            transition="transform 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s, opacity 200ms ease-in-out 100ms"
+                            animation="1s cubic-bezier(0.22, 0.29, 0.12, 2) 1s 1 normal backwards running icon"
+                        />
+                    </button>
+                </Tooltip>
+            </>
+        );
+    },
+);

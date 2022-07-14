@@ -17,7 +17,6 @@ import { socket } from 'Socket/socket';
 
 import {
     chatType,
-    fileFormat,
     initialChatType,
     socketCodeboxUser,
     useSocketCodebox as useSocketCodeboxType,
@@ -26,20 +25,6 @@ import {
 const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
     const [users, setUsers] = useState<Array<socketCodeboxUser>>([]);
     const [chats, setChats] = useState<initialChatType>([]);
-    const [allFiles, setAllFiles] = useState<fileFormat[]>([
-        {
-            id: 'loading',
-            directory: null,
-            name: 'Loading....',
-            type: 'directory',
-        },
-    ]);
-    const [selectedFile, setSelectedFile] = useState<fileFormat>({
-        id: '',
-        directory: null,
-        name: '',
-        type: 'directory',
-    });
 
     const addUsers = (newUser: socketCodeboxUser) => {
         !users.find(
@@ -95,10 +80,6 @@ const useSocketCodebox: useSocketCodeboxType = (codeboxId, user) => {
     return {
         users,
         chats,
-        selectedFile,
-        setSelectedFile,
-        allFiles,
-        setAllFiles,
     };
 };
 

@@ -1,47 +1,30 @@
-import { Box } from '@chakra-ui/react';
+import { SingleMonaco } from 'features';
+import { useAppSelector } from 'store/hooks';
+import { codeBoxType } from 'Types';
 
-import Editor from '@monaco-editor/react';
-import { ContainerLoader } from 'Components';
+const MonacoEditorBox = () => {
+    const { selectedFile, allFiles } = useAppSelector((state) => state.codebox);
 
-import { monacoEditorBox } from 'Types';
-
-import { editorConfig } from 'Utils/EditorConfig';
-
-const MonacoEditorBox = ({
-    language,
-    codeMonaco,
-    handleCodeChange,
-}: monacoEditorBox) => {
     return (
-        <Box flex="1 1 0px" width="100%" height="100%">
-            <Editor
-                language={language.toLowerCase()}
-                value={codeMonaco}
-                height="100%"
-                loading={<ContainerLoader />}
-                onChange={handleCodeChange}
-                options={editorConfig(language)}
-                beforeMount={(monaco) => {
-                    language === 'JAVASCRIPT' &&
-                        monaco.languages.typescript.javascriptDefaults.setCompilerOptions(
-                            {
-                                target: monaco.languages.typescript.ScriptTarget
-                                    .Latest,
-                                module: monaco.languages.typescript.ModuleKind
-                                    .ES2015,
-                                allowNonTsExtensions: true,
-                                lib: ['es2018'],
-                                noSyntaxValidation: true, // This line disables errors in jsx tags like <div>, etc.
-                                jsx: monaco.languages.typescript.JsxEmit
-                                    .ReactJSX,
-                                jsxFactory: 'React.createElement',
-                                reactNamespace: 'React',
-                                allowJs: true,
-                            },
-                        );
-                }}
-            />
-        </Box>
+        <>
+            {allFiles.map(
+                (file) =>
+                    file.type === 'file' &&
+                    file.id === selectedFile.id && (
+                        <SingleMonaco
+                            file={file}
+                            language={
+                                (file.name
+                                    .split('.')
+                                    .at(-1)
+                                    ?.toUpperCase() as codeBoxType) ??
+                                'JAVASCRIPT'
+                            }
+                            key={`monaoc ${file.id}`}
+                        />
+                    ),
+            )}
+        </>
     );
 };
 

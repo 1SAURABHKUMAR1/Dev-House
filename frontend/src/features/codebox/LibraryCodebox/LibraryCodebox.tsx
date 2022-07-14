@@ -19,11 +19,6 @@ import 'allotment/dist/style.css';
 
 import { languageCodeboxProps, sidebarIcons } from 'Types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import {
-    formatCode as formatCodeFn,
-    handleCodeChange as handleCodeChangeFunction,
-    resetCode as resetCodeFn,
-} from 'Utils/Files';
 
 const sideBarIcons: sidebarIcons = [
     { type: 'FILES', icon: 'files', tooltipLabel: 'Files' },
@@ -32,19 +27,10 @@ const sideBarIcons: sidebarIcons = [
     { type: 'SHARE', tooltipLabel: 'Collaborate', icon: 'share' },
 ];
 
-const LibraryCodebox = ({
-    users,
-    chats,
-    allFiles,
-    selectedFile,
-    setSelectedFile,
-    setAllFiles,
-}: languageCodeboxProps) => {
+const LibraryCodebox = ({ users, chats }: languageCodeboxProps) => {
     const [consoleVisible, setConsoleVisible] = useState(false);
     const dispatch = useAppDispatch();
-    const { sidebarComponent, language, codeBoxType } = useAppSelector(
-        (state) => state.codebox,
-    );
+    const { sidebarComponent } = useAppSelector((state) => state.codebox);
 
     const handleConsoleVisible = () => {
         setConsoleVisible(!consoleVisible);
@@ -81,11 +67,7 @@ const LibraryCodebox = ({
                             >
                                 {sidebarComponent === 'Files' && (
                                     <Box flex="0" pt="4" pb="4">
-                                        <FileSide
-                                            files={allFiles}
-                                            selectedFile={selectedFile}
-                                            setSelectedFile={setSelectedFile}
-                                        />
+                                        <FileSide />
                                     </Box>
                                 )}
                                 {sidebarComponent === 'Users' && (
@@ -155,43 +137,12 @@ const LibraryCodebox = ({
                         </Allotment.Pane>
 
                         <Allotment.Pane minSize={200} preferredSize={'50%'}>
-                            <MonacoEditor
-                                codeMonaco={selectedFile.code ?? ''}
-                                language={'JAVASCRIPT'} //FIXME:
-                                handleCodeChange={(
-                                    event: string | undefined,
-                                ) => {
-                                    handleCodeChangeFunction(
-                                        event,
-                                        selectedFile,
-                                        setAllFiles,
-                                        setSelectedFile,
-                                    );
-                                }}
-                            />
+                            <MonacoEditor />
                         </Allotment.Pane>
 
                         <Allotment vertical={true} minSize={200}>
                             <Allotment.Pane preferredSize="75%">
-                                <Preview
-                                    formatCode={() => {
-                                        formatCodeFn(
-                                            language,
-                                            codeBoxType,
-                                            selectedFile,
-                                            setAllFiles,
-                                            setSelectedFile,
-                                        );
-                                    }}
-                                    resetCode={() => {
-                                        resetCodeFn(
-                                            language,
-                                            true,
-                                            setAllFiles,
-                                            setSelectedFile,
-                                        );
-                                    }}
-                                />
+                                <Preview />
                             </Allotment.Pane>
 
                             <Allotment.Pane

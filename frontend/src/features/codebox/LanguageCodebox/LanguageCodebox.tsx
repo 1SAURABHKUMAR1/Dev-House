@@ -21,11 +21,6 @@ import { AxiosResponse } from 'axios';
 import { languageCodeboxProps, runCodeResponse, sidebarIcons } from 'Types';
 
 import ErrorToast from 'Utils/Toast/Error';
-import {
-    formatCode as formartCodeFn,
-    resetCode as resetCodeFn,
-    handleCodeChange as handleCodeChangeFunction,
-} from 'Utils/Files';
 
 const sideBarIcons: sidebarIcons = [
     {
@@ -45,14 +40,8 @@ const sideBarIcons: sidebarIcons = [
     },
 ];
 
-const LanguageCodebox = ({
-    users,
-    chats,
-    selectedFile,
-    setAllFiles,
-    setSelectedFile,
-}: languageCodeboxProps) => {
-    const { language, codeBoxType } = useAppSelector((state) => state.codebox);
+const LanguageCodebox = ({ users, chats }: languageCodeboxProps) => {
+    const { language } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
     const outputContent = useRef<HTMLTextAreaElement | null>(null);
     const { sidebarComponent } = useAppSelector((state) => state.codebox);
@@ -168,45 +157,11 @@ const LanguageCodebox = ({
                 </Allotment.Pane>
 
                 <Allotment.Pane minSize={200} preferredSize={'70%'}>
-                    <MonacoEditor
-                        codeMonaco={selectedFile.code ?? ''}
-                        language={
-                            language === 'JAVASCRIPT' ||
-                            language === 'CPP' ||
-                            language === 'PYTHON'
-                                ? language
-                                : 'JAVASCRIPT'
-                        }
-                        handleCodeChange={(event: string | undefined) => {
-                            handleCodeChangeFunction(
-                                event,
-                                selectedFile,
-                                setAllFiles,
-                                setSelectedFile,
-                            );
-                        }}
-                    />
+                    <MonacoEditor />
                 </Allotment.Pane>
 
                 <Allotment.Pane minSize={200} preferredSize={'30%'}>
                     <OutputArea
-                        formatCode={() => {
-                            formartCodeFn(
-                                language,
-                                codeBoxType,
-                                selectedFile,
-                                setAllFiles,
-                                setSelectedFile,
-                            );
-                        }}
-                        resetCode={() => {
-                            resetCodeFn(
-                                language,
-                                true,
-                                setAllFiles,
-                                setSelectedFile,
-                            );
-                        }}
                         executeCode={executeCode}
                         inputContent={inputContent}
                         setInputContent={setInputContent}

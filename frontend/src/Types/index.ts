@@ -440,6 +440,8 @@ export interface intialCodebox {
     sidebarComponent: 'Files' | 'Users' | 'Chat' | 'Collaborate' | 'None';
     compiling: boolean;
     consoleLogs: Message[];
+    allFiles: fileFormat[];
+    selectedFile: fileFormat;
 }
 
 export interface setLanguageAction {
@@ -465,20 +467,6 @@ export interface codeBoxCreateResponse {
     room: codeBoxResponseType;
 }
 
-export interface monacoEditorBox {
-    language:
-        | 'CPP'
-        | 'JAVASCRIPT'
-        | 'PYTHON'
-        | 'TYPESCRIPT'
-        | 'JSX'
-        | 'TSX'
-        | 'HTML'
-        | 'CSS';
-    codeMonaco: string;
-    handleCodeChange: (event: string | undefined) => void;
-}
-
 export interface inputFieldMonaco {
     label: 'Input -' | 'Output -';
     value?: string;
@@ -488,8 +476,6 @@ export interface inputFieldMonaco {
 }
 
 export interface outputMonacoArea {
-    resetCode: () => void;
-    formatCode: () => void;
     executeCode: () => void;
     inputContent: string;
     setInputContent: React.Dispatch<React.SetStateAction<string>>;
@@ -557,10 +543,6 @@ export type useSocketCodebox = (
 ) => {
     users: Array<socketCodeboxUser>;
     chats: Array<chatType>;
-    selectedFile: fileFormat;
-    setSelectedFile: React.Dispatch<React.SetStateAction<fileFormat>>;
-    allFiles: fileFormat[];
-    setAllFiles: React.Dispatch<React.SetStateAction<fileFormat[]>>;
 };
 
 export type socketCodeboxUser = {
@@ -576,19 +558,10 @@ export interface userSideProps {
 export interface languageCodeboxProps {
     users: socketCodeboxUser[];
     chats: initialChatType;
-    allFiles: fileFormat[];
-    setAllFiles: React.Dispatch<React.SetStateAction<fileFormat[]>>;
-    selectedFile: fileFormat;
-    setSelectedFile: React.Dispatch<React.SetStateAction<fileFormat>>;
 }
 
 export interface libraryFooterProps {
     handleConsoleVisiblity: () => void;
-}
-
-export interface previewScreenProps {
-    formatCode: () => void;
-    resetCode: () => void;
 }
 
 export type fileFormat = {
@@ -598,9 +571,3 @@ export type fileFormat = {
     type: 'file' | 'directory';
     code?: string;
 };
-
-export interface fileSide {
-    files: fileFormat[];
-    selectedFile: fileFormat;
-    setSelectedFile: React.Dispatch<React.SetStateAction<fileFormat>>;
-}

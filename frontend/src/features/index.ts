@@ -49,6 +49,7 @@ import ShareModal from './codebox/SingleCodebox/Components/ShareModal';
 import Preview from './codebox/LibraryCodebox/Components/Preview';
 import ConsolePanel from './codebox/LibraryCodebox/Components/ConsolePanel';
 import LibraryFooter from './codebox/LibraryCodebox/Components/LibraryFooter';
+import SingleMonaco from './codebox/SingleCodebox/Components/SingleMonaco';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -107,4 +108,5 @@ export {
     Preview,
     ConsolePanel,
     LibraryFooter,
+    SingleMonaco,
 };

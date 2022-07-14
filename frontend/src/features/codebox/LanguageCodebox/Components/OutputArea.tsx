@@ -1,20 +1,21 @@
 import { Box, Button, Flex, Image, Tooltip } from '@chakra-ui/react';
 
-import { useAppSelector } from 'store/hooks';
-import { InputField } from 'features';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { InputField, formatCode, resetCodeFn } from 'features';
 
 import { outputMonacoArea } from 'Types';
 
 const OutputArea = ({
-    resetCode,
-    formatCode,
     executeCode,
     inputContent,
     outputContent,
     setInputContent,
     isExecutingCode,
 }: outputMonacoArea) => {
-    const { language } = useAppSelector((state) => state.codebox);
+    const { language, selectedFile, codeBoxType } = useAppSelector(
+        (state) => state.codebox,
+    );
+    const dispatch = useAppDispatch();
 
     return (
         <Box
@@ -54,7 +55,14 @@ const OutputArea = ({
                     <Button
                         bg="rgb(249, 249, 249)"
                         p="0rem"
-                        onClick={formatCode}
+                        onClick={() =>
+                            formatCode(
+                                dispatch,
+                                language,
+                                'LANGUAGE',
+                                selectedFile,
+                            )
+                        }
                         disabled={language !== 'JAVASCRIPT'}
                     >
                         <Image
@@ -71,7 +79,9 @@ const OutputArea = ({
                     <Button
                         bg="rgb(249, 249, 249)"
                         p="0rem"
-                        onClick={resetCode}
+                        onClick={() =>
+                            resetCodeFn(true, dispatch, language, codeBoxType)
+                        }
                     >
                         <Image
                             src={`/images/reset.svg`}

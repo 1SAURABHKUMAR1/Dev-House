@@ -571,3 +571,15 @@ export type fileFormat = {
     type: 'file' | 'directory';
     code?: string;
 };
+
+export type codeboxIcons =
+    | 'html'
+    | 'css'
+    | 'js'
+    | 'ts'
+    | 'jsx'
+    | 'tsx'
+    | 'cpp'
+    | 'py'
+    | 'CLOSED DIRECTORY'
+    | 'OPEN DIRECTORY';

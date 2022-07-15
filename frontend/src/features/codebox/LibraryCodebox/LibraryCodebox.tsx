@@ -136,23 +136,25 @@ const LibraryCodebox = ({ users, chats }: languageCodeboxProps) => {
                             </Box>
                         </Allotment.Pane>
 
-                        <Allotment.Pane minSize={200} preferredSize={'50%'}>
+                        <Allotment.Pane minSize={230} preferredSize={'50%'}>
                             <MonacoEditor />
                         </Allotment.Pane>
 
-                        <Allotment vertical={true} minSize={200}>
-                            <Allotment.Pane preferredSize="75%">
-                                <Preview />
-                            </Allotment.Pane>
+                        <Allotment.Pane minSize={230}>
+                            <Allotment vertical={true}>
+                                <Allotment.Pane preferredSize="75%">
+                                    <Preview />
+                                </Allotment.Pane>
 
-                            <Allotment.Pane
-                                minSize={60}
-                                snap
-                                visible={consoleVisible}
-                            >
-                                <ConsolePanel />
-                            </Allotment.Pane>
-                        </Allotment>
+                                <Allotment.Pane
+                                    minSize={60}
+                                    snap
+                                    visible={consoleVisible}
+                                >
+                                    <ConsolePanel />
+                                </Allotment.Pane>
+                            </Allotment>
+                        </Allotment.Pane>
                     </Allotment>
                 </Flex>
 

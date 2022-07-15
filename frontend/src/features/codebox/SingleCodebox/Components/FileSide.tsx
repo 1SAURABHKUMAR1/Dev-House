@@ -1,7 +1,5 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { memo, useEffect, useState } from 'react';
-
-import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 
 import {
     getFileDepth,
@@ -10,10 +8,11 @@ import {
     sortFiles,
 } from 'Utils/Files';
 
-import { fileFormat } from 'Types';
-import { IconType } from 'react-icons/lib';
+import { codeboxIcons, fileFormat } from 'Types';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { setSelectedFile } from 'features/codebox/codeboxSlice';
+
+import { FileIcon, setSelectedFile } from 'features';
 
 const FileSide = () => {
     const { allFiles, selectedFile } = useAppSelector((state) => state.codebox);
@@ -88,6 +87,11 @@ const RenderFileTree = memo(
                                         />
                                     ) : (
                                         <File
+                                            icon={
+                                                file.name
+                                                    .split('.')
+                                                    .at(-1) as codeboxIcons
+                                            }
                                             allFiles={allFiles}
                                             selectedFile={selectedFile}
                                             onClick={() => selectFile(file)}
@@ -140,7 +144,7 @@ const Folder = memo(
         return (
             <>
                 <File
-                    icon={isOpen ? FcOpenedFolder : FcFolder}
+                    icon={isOpen ? 'OPEN DIRECTORY' : 'CLOSED DIRECTORY'}
                     allFiles={allFiles}
                     selectedFile={selectedFile}
                     currentFile={currentFile}
@@ -172,7 +176,7 @@ const File = memo(
         selectedFile: fileFormat | null;
         onClick: () => void;
         currentFile: fileFormat;
-        icon?: IconType;
+        icon: codeboxIcons;
     }) => {
         const isSelected = selectedFile && selectedFile.id === currentFile.id;
         const depth = getFileDepth(allFiles, currentFile);
@@ -192,7 +196,7 @@ const File = memo(
                     py="0.2rem"
                     key={currentFile.id}
                 >
-                    <Icon as={icon} boxSize="1.3rem" />
+                    <FileIcon file={icon} />
                     <Text
                         as="span"
                         fontSize="1.02rem"

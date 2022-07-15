@@ -1,4 +1,6 @@
 import { Flex, Text } from '@chakra-ui/react';
+import { memo } from 'react';
+
 import { SingleChatProps } from 'Types';
 
 const SingleChat = ({ chatContent, username }: SingleChatProps) => {
@@ -24,4 +26,4 @@ const SingleChat = ({ chatContent, username }: SingleChatProps) => {
     );
 };
 
-export default SingleChat;
+export default memo(SingleChat);

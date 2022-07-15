@@ -1,7 +1,7 @@
 import { Box, Button, Textarea } from '@chakra-ui/react';
 
 import { SingleChat } from 'Components';
-import { memo, useRef } from 'react';
+import { memo, useLayoutEffect, useRef } from 'react';
 import { BiSend } from 'react-icons/bi';
 
 import { ACTIONS_SEND_CODE_CHAT } from 'Socket/actions';
@@ -13,6 +13,7 @@ const ChatSide = () => {
     const { codebox_id, chats } = useAppSelector((state) => state.codebox);
     const { username } = useAppSelector((state) => state.auth);
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+    const chatRef = useRef<HTMLDivElement>(null);
 
     const handleNewChat: () => void = () => {
         socket.emit(ACTIONS_SEND_CODE_CHAT, {
@@ -23,6 +24,11 @@ const ChatSide = () => {
 
         textAreaRef.current && (textAreaRef.current.value = '');
     };
+
+    useLayoutEffect(() => {
+        chatRef.current !== null &&
+            (chatRef.current.scrollTop = chatRef.current.scrollHeight);
+    }, [chats]);
 
     return (
         <>
@@ -41,6 +47,7 @@ const ChatSide = () => {
                 overflow="auto"
                 flexDir="column"
                 overflowY="auto"
+                ref={chatRef}
             >
                 {chats.length === 0 && (
                     <>

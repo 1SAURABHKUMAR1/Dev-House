@@ -32,7 +32,7 @@ const ChatBox = ({
     useLayoutEffect(() => {
         chatRef.current !== null &&
             (chatRef.current.scrollTop = chatRef.current.scrollHeight);
-    });
+    }, [chats]);
 
     const handleNewChat = () => {
         if (inputRef.current?.value) {

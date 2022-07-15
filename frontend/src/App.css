@@ -14,7 +14,15 @@ html {
     min-width: 0px;
     scroll-behavior: smooth;
     scrollbar-width: 15px;
+    -webkit-scrollbar-color: #5a5a5a #efefef;
+    -moz-scrollbar-color: #5a5a5a #efefef;
+    -ms-scrollbar-color: #5a5a5a #efefef;
     scrollbar-color: #5a5a5a #efefef;
+    -webkit-scrollbar-width: thin;
+    -moz-scrollbar-width: thin;
+    -ms-scrollbar-width: thin;
+    scrollbar-width: thin;
+
 }
 
 ::selection {

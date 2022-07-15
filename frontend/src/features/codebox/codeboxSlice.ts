@@ -1,11 +1,13 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { Message } from 'console-feed/lib/definitions/Component';
 import {
+    chatType,
     codeBoxResponseType,
     codeBoxType,
     fileFormat,
     intialCodebox,
     setLanguageAction,
+    socketCodeboxUser,
 } from 'Types';
 import { codes } from 'Utils/Code';
 
@@ -54,6 +56,9 @@ const initialState: intialCodebox = {
         name: '',
         type: 'directory',
     },
+
+    users: [],
+    chats: [],
 };
 
 const codeSlice = createSlice({
@@ -126,8 +131,25 @@ const codeSlice = createSlice({
             state.sidebarComponent = 'None';
             state.compiling = false;
             state.consoleLogs = [];
-        },
 
+            state.allFiles = [
+                {
+                    id: 'loading',
+                    directory: null,
+                    name: 'Loading....',
+                    type: 'directory',
+                },
+            ];
+            state.selectedFile = {
+                id: '',
+                directory: null,
+                name: '',
+                type: 'directory',
+            };
+
+            state.users = [];
+            state.chats = [];
+        },
         setConsoleLogs: (
             state: intialCodebox,
             action: PayloadAction<Message>,
@@ -163,7 +185,7 @@ const codeSlice = createSlice({
         },
         changeCode: (
             state: intialCodebox,
-            action: PayloadAction<{ code: string }>,
+            action: PayloadAction<{ code: string; file: fileFormat }>,
         ) => {
             state.selectedFile.code = action.payload.code;
             state.allFiles = state.allFiles.map((file) =>
@@ -174,6 +196,53 @@ const codeSlice = createSlice({
                       }
                     : file,
             );
+        },
+        addUsers: (
+            state: intialCodebox,
+            action: PayloadAction<{
+                user: socketCodeboxUser | socketCodeboxUser[];
+            }>,
+        ) => {
+            if (Array.isArray(action.payload.user)) {
+                state.users = action.payload.user;
+            } else {
+                const isPresent = state.users.find(
+                    (singleUser) =>
+                        // @ts-ignore
+                        singleUser.userId === action.payload.user?.userId &&
+                        // @ts-ignore
+                        singleUser.username === action.payload.user?.username,
+                );
+
+                if (!isPresent) {
+                    state.users = [...state.users, action.payload.user];
+                }
+            }
+        },
+        removeUsers: (
+            state: intialCodebox,
+            action: PayloadAction<{ userId: string }>,
+        ) => {
+            state.users = state.users.filter(
+                (user) => user.userId !== action.payload.userId,
+            );
+        },
+        addChats: (
+            state: intialCodebox,
+            action: PayloadAction<{ chat: chatType | chatType[] }>,
+        ) => {
+            if (Array.isArray(action.payload.chat)) {
+                state.chats = action.payload.chat;
+            } else {
+                const isPresent = state.chats.find(
+                    // @ts-ignore
+                    (chat) => chat.messageId === action.payload.chat.messageId,
+                );
+
+                if (!isPresent) {
+                    state.chats = [...state.chats, action.payload.chat];
+                }
+            }
         },
     },
     extraReducers: (builder) => {
@@ -245,7 +314,7 @@ export const formatCode = (
             useTabs: false,
         }).replace(/\n$/, '');
 
-        dispatch(changeCode({ code: prettifiedCode }));
+        dispatch(changeCode({ code: prettifiedCode, file: selectedFile }));
         // FIXME:
     } else {
         ErrorToast('Failed');
@@ -263,4 +332,7 @@ export const {
     setSelectedFile,
     resetAllFiles,
     changeCode,
+    addUsers,
+    removeUsers,
+    addChats,
 } = codeSlice.actions;

@@ -17,7 +17,7 @@ import {
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 
-import { languageCodeboxProps, sidebarIcons } from 'Types';
+import { sidebarIcons } from 'Types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 const sideBarIcons: sidebarIcons = [
@@ -27,7 +27,7 @@ const sideBarIcons: sidebarIcons = [
     { type: 'SHARE', tooltipLabel: 'Collaborate', icon: 'share' },
 ];
 
-const LibraryCodebox = ({ users, chats }: languageCodeboxProps) => {
+const LibraryCodebox = () => {
     const [consoleVisible, setConsoleVisible] = useState(false);
     const dispatch = useAppDispatch();
     const { sidebarComponent } = useAppSelector((state) => state.codebox);
@@ -88,7 +88,7 @@ const LibraryCodebox = ({ users, chats }: languageCodeboxProps) => {
                                                 All Users
                                             </Text>
                                         </Box>
-                                        <UserSide users={users} />
+                                        <UserSide />
                                     </>
                                 )}
                                 {sidebarComponent === 'Chat' && (
@@ -109,7 +109,7 @@ const LibraryCodebox = ({ users, chats }: languageCodeboxProps) => {
                                                 Chat Box
                                             </Text>
                                         </Box>
-                                        <ChatSide chats={chats} />
+                                        <ChatSide />
                                     </>
                                 )}
                                 {sidebarComponent === 'Collaborate' && (

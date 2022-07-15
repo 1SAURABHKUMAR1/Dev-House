@@ -12,6 +12,7 @@ import {
     setUserJoinedCodebox,
     ShareModal,
     resetCodeFn,
+    addUsers,
 } from 'features';
 import {
     Container as MainContainer,
@@ -19,7 +20,21 @@ import {
     NotFoundTemplate,
 } from 'Components';
 
-import useSocketCodebox from 'Hooks/useSocketCodebox';
+import {
+    ACTIONS_ADD_CODE_USER,
+    ACTIONS_CODE_CHAT,
+    ACTIONS_CODE_LEAVE,
+    ACTIONS_REMOVE_CODE_USER,
+    // ACTIONS_SEND_CODE_SERVER_CODE,
+} from 'Socket/actions';
+import {
+    socketAddUser,
+    socketChat,
+    // socketCode,
+    socketEmit,
+    socketRemoveUser,
+} from 'Socket/codeboxSocketHandler';
+import { socket } from 'Socket/socket';
 
 import { codeBoxCreateResponse } from 'Types';
 import { AxiosResponse } from 'axios';
@@ -28,18 +43,11 @@ import ErrorToast from 'Utils/Toast/Error';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType } = useAppSelector((state) => state.codebox);
+    const { codeBoxType, codebox_id } = useAppSelector(
+        (state) => state.codebox,
+    );
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const { users, chats } = useSocketCodebox(
-        // @ts-ignore
-        codeboxId,
-        {
-            photo,
-            userId,
-            username,
-        },
-    );
 
     const { isLoading, isError } = useQuery<
         AxiosResponse<codeBoxCreateResponse>,
@@ -69,7 +77,41 @@ const SingleCodebox = () => {
     );
 
     useEffect(() => {
+        const initalize = () => {
+            dispatch(addUsers({ user: { photo, userId, username } }));
+
+            socketEmit(codebox_id, { photo, userId, username });
+
+            socketAddUser({
+                dispatch,
+                currentUserId: userId,
+            });
+
+            socketRemoveUser({
+                dispatch,
+            });
+
+            socketChat({
+                dispatch,
+            });
+
+            // socketCode({
+            //     dispatch,
+            // });
+        };
+
+        codebox_id && initalize();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [codebox_id]);
+
+    useEffect(() => {
         return () => {
+            socket.emit(ACTIONS_CODE_LEAVE, { codeboxId });
+            socket.off(ACTIONS_ADD_CODE_USER);
+            socket.off(ACTIONS_REMOVE_CODE_USER);
+            socket.off(ACTIONS_CODE_CHAT);
+            // socket.off(ACTIONS_SEND_CODE_SERVER_CODE);
             dispatch(resetCodeboxState());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,9 +140,9 @@ const SingleCodebox = () => {
                     height="100%"
                 >
                     {codeBoxType === 'LIBRARY' ? (
-                        <LibraryCodebox users={users} chats={chats} />
+                        <LibraryCodebox />
                     ) : (
-                        <LanguageCodebox users={users} chats={chats} />
+                        <LanguageCodebox />
                     )}
                 </Flex>
 

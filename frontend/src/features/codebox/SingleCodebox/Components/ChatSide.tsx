@@ -9,10 +9,8 @@ import { socket } from 'Socket/socket';
 
 import { useAppSelector } from 'store/hooks';
 
-import { initialChatType } from 'Types';
-
-const ChatSide = ({ chats }: { chats: initialChatType }) => {
-    const { codebox_id } = useAppSelector((state) => state.codebox);
+const ChatSide = () => {
+    const { codebox_id, chats } = useAppSelector((state) => state.codebox);
     const { username } = useAppSelector((state) => state.auth);
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 

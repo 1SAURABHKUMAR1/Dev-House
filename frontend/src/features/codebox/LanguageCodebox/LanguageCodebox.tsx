@@ -18,7 +18,7 @@ import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 
 import { AxiosResponse } from 'axios';
-import { languageCodeboxProps, runCodeResponse, sidebarIcons } from 'Types';
+import { runCodeResponse, sidebarIcons } from 'Types';
 
 import ErrorToast from 'Utils/Toast/Error';
 
@@ -40,7 +40,7 @@ const sideBarIcons: sidebarIcons = [
     },
 ];
 
-const LanguageCodebox = ({ users, chats }: languageCodeboxProps) => {
+const LanguageCodebox = () => {
     const { language } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
     const outputContent = useRef<HTMLTextAreaElement | null>(null);
@@ -112,7 +112,7 @@ const LanguageCodebox = ({ users, chats }: languageCodeboxProps) => {
                                 >
                                     <Text textAlign="center">All Users</Text>
                                 </Box>
-                                <UserSide users={users} />
+                                <UserSide />
                             </>
                         )}
                         {sidebarComponent === 'Chat' && (
@@ -131,7 +131,7 @@ const LanguageCodebox = ({ users, chats }: languageCodeboxProps) => {
                                 >
                                     <Text textAlign="center">Chat Box</Text>
                                 </Box>
-                                <ChatSide chats={chats} />
+                                <ChatSide />
                             </>
                         )}
                         {sidebarComponent === 'Collaborate' && (

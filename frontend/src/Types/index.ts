@@ -442,6 +442,9 @@ export interface intialCodebox {
     consoleLogs: Message[];
     allFiles: fileFormat[];
     selectedFile: fileFormat;
+
+    users: socketCodeboxUser[];
+    chats: initialChatType;
 }
 
 export interface setLanguageAction {
@@ -540,10 +543,7 @@ export interface iconBoxProps {
 export type useSocketCodebox = (
     codeboxId: string,
     user: socketCodeboxUser,
-) => {
-    users: Array<socketCodeboxUser>;
-    chats: Array<chatType>;
-};
+) => void;
 
 export type socketCodeboxUser = {
     userId: string;

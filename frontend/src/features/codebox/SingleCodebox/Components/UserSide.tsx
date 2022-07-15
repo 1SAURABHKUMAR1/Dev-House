@@ -1,7 +1,9 @@
 import { Avatar, Box, Flex, Text, Tooltip } from '@chakra-ui/react';
-import { userSideProps } from 'Types';
+import { useAppSelector } from 'store/hooks';
 
-const UserSide = ({ users }: userSideProps) => {
+const UserSide = () => {
+    const { users } = useAppSelector((state) => state.codebox);
+
     return (
         <>
             <Box

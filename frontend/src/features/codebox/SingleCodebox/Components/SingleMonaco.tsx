@@ -26,7 +26,7 @@ const SingleMonaco = ({
 
     useEffect(() => {
         if (debouncedInput !== undefined || debouncedInput !== null) {
-            dispatch(changeCode({ code: input }));
+            dispatch(changeCode({ code: input, file }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedInput, dispatch]);

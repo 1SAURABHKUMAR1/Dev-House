@@ -49,9 +49,9 @@ const LibraryCodebox = () => {
 
                     <Allotment maxSize={Infinity}>
                         <Allotment.Pane
-                            minSize={150}
-                            maxSize={250}
-                            preferredSize={170}
+                            minSize={190}
+                            maxSize={280}
+                            preferredSize={190}
                             visible={sidebarComponent !== 'None'}
                         >
                             <Box

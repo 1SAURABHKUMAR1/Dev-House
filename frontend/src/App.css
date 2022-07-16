@@ -148,3 +148,9 @@ html {
         transform: rotate(360deg);
     }
 }
+
+.filetree:hover .actions {
+    width: fit-content;
+    opacity: 0.8;
+    pointer-events: all;
+}

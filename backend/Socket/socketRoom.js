@@ -19,6 +19,8 @@ const {
     ACTIONS_SEND_CODE_CHAT,
     ACTIONS_SEND_CODE_SERVER_CODE,
     ACTIONS_CODE_CLIENT_CODE,
+    ACTIONS_RESET_CODE_CLIENT,
+    ACTIONS_RESET_CODE_SERVER,
 } = require('./actions');
 const uuid = require('uuid').v4;
 
@@ -193,6 +195,17 @@ const socketRoom = (io) => {
                 file,
             });
         });
+
+        socket.on(
+            ACTIONS_RESET_CODE_CLIENT,
+            ({ language, codeBoxType, codebox_id }) => {
+                socket.in(codebox_id).emit(ACTIONS_RESET_CODE_SERVER, {
+                    language,
+                    codeBoxType,
+                    codebox_id,
+                });
+            },
+        );
     });
 };
 

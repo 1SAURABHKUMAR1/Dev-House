@@ -31,6 +31,8 @@ const SingleMonaco = ({
 
     useEffect(() => {
         if (debouncedInput !== undefined || debouncedInput !== null) {
+            if (file.code === debouncedInput) return;
+
             socket.emit(ACTIONS_CODE_CLIENT_CODE, {
                 codebox_id,
                 code: debouncedInput,

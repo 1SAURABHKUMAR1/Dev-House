@@ -14,7 +14,7 @@ const LibraryFooter = ({ handleConsoleVisiblity }: libraryFooterProps) => {
             <Flex
                 borderTop="2px solid hsl(210deg,14%,66%)"
                 justifyContent="flex-end"
-                px="0.5rem"
+                px="5"
                 py="0.3rem"
                 gap="2rem"
                 alignItems="center"
@@ -30,7 +30,13 @@ const LibraryFooter = ({ handleConsoleVisiblity }: libraryFooterProps) => {
                 >
                     <FiTerminal />
 
-                    <Text fontSize="1rem" fontWeight="700" lineHeight="25px">
+                    <Text
+                        fontSize="1rem"
+                        pr="0.2rem"
+                        fontWeight="700"
+                        lineHeight="25px"
+                        as="span"
+                    >
                         Console
                     </Text>
                 </Flex>

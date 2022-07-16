@@ -80,7 +80,13 @@ const OutputArea = ({
                         bg="rgb(249, 249, 249)"
                         p="0rem"
                         onClick={() =>
-                            resetCodeFn(true, dispatch, language, codeBoxType)
+                            resetCodeFn(
+                                true,
+                                dispatch,
+                                language,
+                                codeBoxType,
+                                codebox_id,
+                            )
                         }
                     >
                         <Image

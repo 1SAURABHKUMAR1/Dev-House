@@ -1,4 +1,4 @@
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Message } from 'console-feed/lib/definitions/Component';
 import {
     chatType,
@@ -17,7 +17,11 @@ import prettierParser from 'prettier/parser-babel';
 import ErrorToast from 'Utils/Toast/Error';
 
 import { socket } from 'Socket/socket';
-import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
+import {
+    ACTIONS_CODE_CLIENT_CODE,
+    ACTIONS_RESET_CODE_CLIENT,
+} from 'Socket/actions';
+import { AppDispatch } from 'store/store';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
@@ -259,9 +263,10 @@ const codeSlice = createSlice({
 
 export const resetCodeFn = (
     emit: boolean,
-    dispatch: Dispatch,
+    dispatch: AppDispatch,
     language: codeBoxType,
     codeBoxType: 'LIBRARY' | 'LANGUAGE',
+    codebox_id: string,
 ) => {
     dispatch(resetAllFiles());
 
@@ -272,8 +277,15 @@ export const resetCodeFn = (
         } else {
             if (language === 'VANILLA' && file.name === 'index.js') return file;
             // if (language === 'VANILLA TYPESCRIPT' && file.name === 'index.ts') return file;
-            if (language === 'REACT' && file.name === 'index.jsx') return file;
-            if (language === 'REACT TYPESCRIPT' && file.name === 'index.tsx')
+            if (
+                language === 'REACT' &&
+                (file.name === 'index.jsx' || file.name === 'index.js')
+            )
+                return file;
+            if (
+                language === 'REACT TYPESCRIPT' &&
+                (file.name === 'index.tsx' || file.name === 'index.ts')
+            )
                 return file;
         }
 
@@ -291,11 +303,17 @@ export const resetCodeFn = (
         }),
     );
 
-    // emit code //FIXME:
+    if (emit) {
+        socket.emit(ACTIONS_RESET_CODE_CLIENT, {
+            language,
+            codeBoxType,
+            codebox_id,
+        });
+    }
 };
 
 export const formatCode = (
-    dispatch: Dispatch,
+    dispatch: AppDispatch,
     language: codeBoxType | 'js' | 'ts' | 'tsx' | 'jsx',
     selectedFile: fileFormat,
     codebox_id: string,
@@ -331,13 +349,28 @@ export const formatCode = (
 
         socket.emit(ACTIONS_CODE_CLIENT_CODE, {
             codebox_id,
-            code: selectedFile.code,
+            code: prettifiedCode,
             file: selectedFile,
         });
     } else {
         ErrorToast('Failed');
     }
 };
+
+export const selectFile = (file: fileFormat, dispatch: AppDispatch) =>
+    dispatch(setSelectedFile({ file: file }));
+
+// const createFile = (file: fileFormat , disptach : AppDisptach) => {
+//     //
+// };
+
+// const removeFile = (file: fileFormat , disptach : AppDisptach) => {
+//     //
+// };
+
+// const renameFile = (file: fileFormat , disptach : AppDisptach) => {
+//     //
+// };
 
 export const codeReducer = codeSlice.reducer;
 export const {

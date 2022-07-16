@@ -10,7 +10,7 @@ import { SiPrettier } from 'react-icons/si';
 import { Hook } from 'console-feed';
 
 import {
-    formatCode,
+    formatCode as formatCodeFn,
     resetCodeFn,
     setConsoleLogs,
 } from 'features/codebox/codeboxSlice';
@@ -62,6 +62,18 @@ const Preview = () => {
         // ); //TODO:
     }, [dispatch]);
 
+    const resetCode = () =>
+        resetCodeFn(true, dispatch, language, codeBoxType, codebox_id);
+
+    const formatCode = () =>
+        formatCodeFn(
+            dispatch,
+            (selectedFile.name.split('.').at(-1) as codeBoxType) ??
+                'JAVASCRIPT',
+            selectedFile,
+            codebox_id,
+        );
+
     return (
         <>
             <Flex flex="1" flexDir="column" height="100%" width="100%">
@@ -100,16 +112,7 @@ const Preview = () => {
                             icon={SiPrettier}
                             tooltipLabel="Format"
                             key="format code"
-                            onClick={() =>
-                                formatCode(
-                                    dispatch,
-                                    (selectedFile.name
-                                        .split('.')
-                                        .at(-1) as codeBoxType) ?? 'JAVASCRIPT',
-                                    selectedFile,
-                                    codebox_id,
-                                )
-                            }
+                            onClick={formatCode}
                         />
 
                         <PreviewIcon
@@ -117,14 +120,7 @@ const Preview = () => {
                             icon={FiSkipBack}
                             tooltipLabel="Reset"
                             key="reset code"
-                            onClick={() =>
-                                resetCodeFn(
-                                    true,
-                                    dispatch,
-                                    language,
-                                    codeBoxType,
-                                )
-                            }
+                            onClick={resetCode}
                         />
                     </Flex>
                 </Flex>

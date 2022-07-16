@@ -19,3 +19,5 @@ exports.ACTIONS_CODE_CHAT = 'code_chat';
 exports.ACTIONS_SEND_CODE_CHAT = 'code_send_chat';
 exports.ACTIONS_CODE_CLIENT_CODE = 'code_client_event';
 exports.ACTIONS_SEND_CODE_SERVER_CODE = 'code_server_code';
+exports.ACTIONS_RESET_CODE_CLIENT = 'code_reset_client_code';
+exports.ACTIONS_RESET_CODE_SERVER = 'code_reset_server_code';

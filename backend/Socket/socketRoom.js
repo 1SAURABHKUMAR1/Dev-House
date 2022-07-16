@@ -187,9 +187,10 @@ const socketRoom = (io) => {
             },
         );
 
-        socket.on(ACTIONS_CODE_CLIENT_CODE, ({ codebox_id, code }) => {
+        socket.on(ACTIONS_CODE_CLIENT_CODE, ({ codebox_id, code, file }) => {
             socket.in(codebox_id).emit(ACTIONS_SEND_CODE_SERVER_CODE, {
-                code: code,
+                code,
+                file,
             });
         });
     });

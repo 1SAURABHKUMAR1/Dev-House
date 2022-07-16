@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { changeCode } from 'features/codebox/codeboxSlice';
 
 import { ContainerLoader } from 'Components';
@@ -12,12 +12,17 @@ import { codeBoxType, fileFormat } from 'Types';
 import { useAppDispatch } from 'store/hooks';
 import useDebouce from 'Hooks/useDebounce';
 
+import { socket } from 'Socket/socket';
+import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
+
 const SingleMonaco = ({
     file,
     language,
+    codebox_id,
 }: {
     file: fileFormat;
     language: codeBoxType;
+    codebox_id: string;
 }) => {
     const [input, setInput] = useState(file.code ?? '');
     const debouncedInput = useDebouce(input, 700);
@@ -26,7 +31,13 @@ const SingleMonaco = ({
 
     useEffect(() => {
         if (debouncedInput !== undefined || debouncedInput !== null) {
-            dispatch(changeCode({ code: input, file }));
+            socket.emit(ACTIONS_CODE_CLIENT_CODE, {
+                codebox_id,
+                code: debouncedInput,
+                file,
+            });
+
+            dispatch(changeCode({ code: debouncedInput, file }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedInput, dispatch]);
@@ -67,4 +78,4 @@ const SingleMonaco = ({
     );
 };
 
-export default memo(SingleMonaco);
+export default SingleMonaco;

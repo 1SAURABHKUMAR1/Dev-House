@@ -25,12 +25,12 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_LEAVE,
     ACTIONS_REMOVE_CODE_USER,
-    // ACTIONS_SEND_CODE_SERVER_CODE,
+    ACTIONS_SEND_CODE_SERVER_CODE,
 } from 'Socket/actions';
 import {
     socketAddUser,
     socketChat,
-    // socketCode,
+    socketCode,
     socketEmit,
     socketRemoveUser,
 } from 'Socket/codeboxSocketHandler';
@@ -95,9 +95,9 @@ const SingleCodebox = () => {
                 dispatch,
             });
 
-            // socketCode({
-            //     dispatch,
-            // });
+            socketCode({
+                dispatch,
+            });
         };
 
         codebox_id && initalize();
@@ -111,7 +111,7 @@ const SingleCodebox = () => {
             socket.off(ACTIONS_ADD_CODE_USER);
             socket.off(ACTIONS_REMOVE_CODE_USER);
             socket.off(ACTIONS_CODE_CHAT);
-            // socket.off(ACTIONS_SEND_CODE_SERVER_CODE);
+            socket.off(ACTIONS_SEND_CODE_SERVER_CODE);
             dispatch(resetCodeboxState());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

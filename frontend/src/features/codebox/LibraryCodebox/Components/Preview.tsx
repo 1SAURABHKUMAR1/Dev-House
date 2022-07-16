@@ -14,11 +14,12 @@ import {
     resetCodeFn,
     setConsoleLogs,
 } from 'features/codebox/codeboxSlice';
+import { codeBoxType } from 'Types';
 
 const Preview = () => {
     const dispatch = useAppDispatch();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const { language, selectedFile, codeBoxType } = useAppSelector(
+    const { language, selectedFile, codeBoxType, codebox_id } = useAppSelector(
         (state) => state.codebox,
     );
 
@@ -33,7 +34,7 @@ const Preview = () => {
             //     iframeRef.current.contentWindow.postMessage,
             //     '*',
             // );
-            // FIXME:
+            //TODO:
         }
 
         setTimeout(() => {
@@ -58,7 +59,7 @@ const Preview = () => {
         //     // '(()=>{document.getElementById("app").innerHtml=`<h1>Vanilla</h1><div>Bare minimal javascript template</div>`;})();',
         //     // 'document.querySelector("#app").innerHTML = "app"',
         //     '*',
-        // ); //FIXME:
+        // ); //TODO:
     }, [dispatch]);
 
     return (
@@ -102,9 +103,11 @@ const Preview = () => {
                             onClick={() =>
                                 formatCode(
                                     dispatch,
-                                    language,
-                                    'LIBRARY',
+                                    (selectedFile.name
+                                        .split('.')
+                                        .at(-1) as codeBoxType) ?? 'JAVASCRIPT',
                                     selectedFile,
+                                    codebox_id,
                                 )
                             }
                         />
@@ -143,7 +146,7 @@ const Preview = () => {
                         frameBorder="0"
                         loading="lazy"
                         ref={iframeRef}
-                        // srcDoc={code} //FIXME:
+                        // srcDoc={code} //TODO:
                         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads allow-pointer-lock"
                         onLoad={() => {

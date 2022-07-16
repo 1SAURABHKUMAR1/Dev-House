@@ -3,7 +3,11 @@ import { useAppSelector } from 'store/hooks';
 import { codeBoxType } from 'Types';
 
 const MonacoEditorBox = () => {
-    const { selectedFile, allFiles } = useAppSelector((state) => state.codebox);
+    const { selectedFile, allFiles, codebox_id } = useAppSelector(
+        (state) => state.codebox,
+    );
+
+    console.log(allFiles);
 
     return (
         <>
@@ -20,6 +24,7 @@ const MonacoEditorBox = () => {
                                     ?.toUpperCase() as codeBoxType) ??
                                 'JAVASCRIPT'
                             }
+                            codebox_id={codebox_id}
                             key={`monaoc ${file.id}`}
                         />
                     ),

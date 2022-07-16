@@ -1,4 +1,4 @@
-import { addChats, addUsers, removeUsers } from 'features';
+import { addChats, addUsers, changeCode, removeUsers } from 'features';
 import { Dispatch } from 'redux';
 
 import SuccessToast from 'Utils/Toast/Success';
@@ -7,11 +7,11 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_JOIN,
     ACTIONS_REMOVE_CODE_USER,
-    // ACTIONS_SEND_CODE_SERVER_CODE,
+    ACTIONS_SEND_CODE_SERVER_CODE,
 } from './actions';
 import { socket } from './socket';
 
-import { chatType, socketCodeboxUser } from 'Types';
+import { chatType, fileFormat, socketCodeboxUser } from 'Types';
 
 export const socketEmit = (codebox_id: string, user: socketCodeboxUser) =>
     socket.emit(ACTIONS_CODE_JOIN, { codebox_id, user });
@@ -53,14 +53,11 @@ export const socketChat = ({ dispatch }: { dispatch: Dispatch }) => {
     );
 };
 
-export const socketCode = ({
-    // setMonacoCode,
-    dispatch,
-}: {
-    dispatch: Dispatch;
-    // setMonacoCode: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-    // socket.on(ACTIONS_SEND_CODE_SERVER_CODE, ({ code }: { code: string }) => {
-    //     // setMonacoCode(code); //FIXME:
-    // });
+export const socketCode = ({ dispatch }: { dispatch: Dispatch }) => {
+    socket.on(
+        ACTIONS_SEND_CODE_SERVER_CODE,
+        ({ code, file }: { code: string; file: fileFormat }) => {
+            dispatch(changeCode({ code, file }));
+        },
+    );
 };

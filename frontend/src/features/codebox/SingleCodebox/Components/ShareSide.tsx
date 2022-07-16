@@ -134,7 +134,6 @@ const ShareSide = () => {
                     toolTipLabel="Share Room Id"
                     clipboardValue={codebox_id}
                 />
-                {/* FIXME: */}
                 <IconBox
                     bgColor="inherit"
                     buttonText="Exit Room"

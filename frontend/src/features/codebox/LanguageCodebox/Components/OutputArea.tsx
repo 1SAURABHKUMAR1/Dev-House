@@ -12,7 +12,7 @@ const OutputArea = ({
     setInputContent,
     isExecutingCode,
 }: outputMonacoArea) => {
-    const { language, selectedFile, codeBoxType } = useAppSelector(
+    const { language, selectedFile, codeBoxType, codebox_id } = useAppSelector(
         (state) => state.codebox,
     );
     const dispatch = useAppDispatch();
@@ -59,8 +59,8 @@ const OutputArea = ({
                             formatCode(
                                 dispatch,
                                 language,
-                                'LANGUAGE',
                                 selectedFile,
+                                codebox_id,
                             )
                         }
                         disabled={language !== 'JAVASCRIPT'}

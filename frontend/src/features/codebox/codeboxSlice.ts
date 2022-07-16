@@ -13,7 +13,11 @@ import { codes } from 'Utils/Code';
 
 import Prettier from 'prettier';
 import prettierParser from 'prettier/parser-babel';
+
 import ErrorToast from 'Utils/Toast/Error';
+
+import { socket } from 'Socket/socket';
+import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
@@ -187,9 +191,12 @@ const codeSlice = createSlice({
             state: intialCodebox,
             action: PayloadAction<{ code: string; file: fileFormat }>,
         ) => {
-            state.selectedFile.code = action.payload.code;
+            if (state.selectedFile.id === action.payload.file.id) {
+                state.selectedFile.code = action.payload.code;
+            }
+
             state.allFiles = state.allFiles.map((file) =>
-                file.id === state.selectedFile.id
+                file.id === action.payload.file.id
                     ? {
                           ...file,
                           code: action.payload.code,
@@ -289,11 +296,17 @@ export const resetCodeFn = (
 
 export const formatCode = (
     dispatch: Dispatch,
-    language: codeBoxType,
-    codeBoxType: 'LIBRARY' | 'LANGUAGE',
+    language: codeBoxType | 'js' | 'ts' | 'tsx' | 'jsx',
     selectedFile: fileFormat,
+    codebox_id: string,
 ) => {
-    if (language === 'JAVASCRIPT' || codeBoxType === 'LIBRARY') {
+    if (
+        language === 'JAVASCRIPT' ||
+        language === 'js' ||
+        language === 'jsx' ||
+        language === 'ts' ||
+        language === 'tsx'
+    ) {
         const prettifiedCode = Prettier.format(selectedFile.code ?? '', {
             parser: 'babel',
             plugins: [prettierParser],
@@ -315,7 +328,12 @@ export const formatCode = (
         }).replace(/\n$/, '');
 
         dispatch(changeCode({ code: prettifiedCode, file: selectedFile }));
-        // FIXME:
+
+        socket.emit(ACTIONS_CODE_CLIENT_CODE, {
+            codebox_id,
+            code: selectedFile.code,
+            file: selectedFile,
+        });
     } else {
         ErrorToast('Failed');
     }

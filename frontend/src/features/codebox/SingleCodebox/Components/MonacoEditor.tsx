@@ -7,8 +7,6 @@ const MonacoEditorBox = () => {
         (state) => state.codebox,
     );
 
-    console.log(allFiles);
-
     return (
         <>
             {allFiles.map(

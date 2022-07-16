@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { changeCode } from 'features/codebox/codeboxSlice';
 
 import { ContainerLoader } from 'Components';
@@ -42,6 +42,13 @@ const SingleMonaco = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedInput, dispatch]);
 
+    useEffect(() => {
+        if (file.code !== input) {
+            setInput(file.code ?? '');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [file.code]);
+
     const beforeMount = (
         monaco: typeof import('D:/web dev/projects/Dev-House/frontend/node_modules/monaco-editor/esm/vs/editor/editor.api'),
     ) => {
@@ -78,4 +85,4 @@ const SingleMonaco = ({
     );
 };
 
-export default SingleMonaco;
+export default memo(SingleMonaco);

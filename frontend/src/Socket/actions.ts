@@ -21,3 +21,5 @@ export const ACTIONS_CODE_CLIENT_CODE = 'code_client_event';
 export const ACTIONS_SEND_CODE_SERVER_CODE = 'code_server_code';
 export const ACTIONS_RESET_CODE_CLIENT = 'code_reset_client_code';
 export const ACTIONS_RESET_CODE_SERVER = 'code_reset_server_code';
+export const ACTIONS_RENAME_CODE_FILE_CLIENT = 'code_rename_file_client';
+export const ACTIONS_RENAME_CODE_FILE_SERVER = 'code_rename_file_server';

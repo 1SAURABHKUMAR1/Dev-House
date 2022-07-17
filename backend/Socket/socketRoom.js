@@ -21,6 +21,8 @@ const {
     ACTIONS_CODE_CLIENT_CODE,
     ACTIONS_RESET_CODE_CLIENT,
     ACTIONS_RESET_CODE_SERVER,
+    ACTIONS_RENAME_CODE_FILE_CLIENT,
+    ACTIONS_RENAME_CODE_FILE_SERVER,
 } = require('./actions');
 const uuid = require('uuid').v4;
 
@@ -203,6 +205,16 @@ const socketRoom = (io) => {
                     language,
                     codeBoxType,
                     codebox_id,
+                });
+            },
+        );
+
+        socket.on(
+            ACTIONS_RENAME_CODE_FILE_CLIENT,
+            ({ file, fileName, codebox_id }) => {
+                socket.in(codebox_id).emit(ACTIONS_RENAME_CODE_FILE_SERVER, {
+                    file,
+                    fileName,
                 });
             },
         );

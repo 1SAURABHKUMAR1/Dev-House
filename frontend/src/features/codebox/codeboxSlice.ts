@@ -19,6 +19,7 @@ import ErrorToast from 'Utils/Toast/Error';
 import { socket } from 'Socket/socket';
 import {
     ACTIONS_CODE_CLIENT_CODE,
+    ACTIONS_RENAME_CODE_FILE_CLIENT,
     ACTIONS_RESET_CODE_CLIENT,
 } from 'Socket/actions';
 import { AppDispatch } from 'store/store';
@@ -255,6 +256,19 @@ const codeSlice = createSlice({
                 }
             }
         },
+        changeFileName: (
+            state: intialCodebox,
+            action: PayloadAction<{ file: fileFormat; fileName: string }>,
+        ) => {
+            state.allFiles = state.allFiles.map((file) =>
+                file.id === action.payload.file.id
+                    ? {
+                          ...file,
+                          name: action.payload.fileName,
+                      }
+                    : file,
+            );
+        },
     },
     extraReducers: (builder) => {
         //
@@ -360,15 +374,26 @@ export const formatCode = (
 export const selectFile = (file: fileFormat, dispatch: AppDispatch) =>
     dispatch(setSelectedFile({ file: file }));
 
+export const renameFile = (
+    file: fileFormat,
+    dispatch: AppDispatch,
+    fileName: string,
+    codebox_id: string,
+) => {
+    dispatch(changeFileName({ file, fileName }));
+
+    socket.emit(ACTIONS_RENAME_CODE_FILE_CLIENT, {
+        file,
+        fileName,
+        codebox_id,
+    });
+};
+
 // const createFile = (file: fileFormat , disptach : AppDisptach) => {
 //     //
 // };
 
 // const removeFile = (file: fileFormat , disptach : AppDisptach) => {
-//     //
-// };
-
-// const renameFile = (file: fileFormat , disptach : AppDisptach) => {
 //     //
 // };
 
@@ -386,4 +411,5 @@ export const {
     addUsers,
     removeUsers,
     addChats,
+    changeFileName,
 } = codeSlice.actions;

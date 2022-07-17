@@ -258,8 +258,8 @@ const FileIcon = ({
             <>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="1.1rem"
-                    height="1.1rem"
+                    width="1rem"
+                    height="1rem"
                     fill="none"
                     viewBox="0 0 16 16"
                 >
@@ -277,8 +277,8 @@ const FileIcon = ({
             <>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="1.1rem"
-                    height="1.1rem"
+                    width="1rem"
+                    height="1rem"
                     fill="none"
                     viewBox="0 0 16 16"
                 >
@@ -298,8 +298,8 @@ const FileIcon = ({
             <>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="1.1rem"
-                    height="1.1rem"
+                    width="1rem"
+                    height="1rem"
                     fill="none"
                     viewBox="0 0 16 16"
                 >
@@ -317,8 +317,8 @@ const FileIcon = ({
             <>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    height="1.1rem"
-                    width="1.1rem"
+                    height="1rem"
+                    width="1rem"
                     fill="none"
                     viewBox="0 0 40 40"
                 >

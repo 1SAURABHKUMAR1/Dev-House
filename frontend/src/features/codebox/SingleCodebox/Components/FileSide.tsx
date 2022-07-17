@@ -110,6 +110,7 @@ const Folder = memo(
                     selectedFile={selectedFile}
                     currentFile={currentFile}
                     onClick={toggleOpen}
+                    setIsOpen={setIsOpen}
                 />
                 {isOpen && (
                     <RenderFileTree

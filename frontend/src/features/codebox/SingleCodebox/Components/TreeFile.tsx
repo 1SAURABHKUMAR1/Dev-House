@@ -26,6 +26,7 @@ const TreeFile = ({
     currentFile,
     icon,
     setIsOpen,
+    setNewFileFolder,
 }: {
     allFiles: Array<fileFormat>;
     selectedFile: fileFormat | null;
@@ -33,6 +34,9 @@ const TreeFile = ({
     icon: codeboxIcons;
     onClick?: () => void;
     setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    setNewFileFolder?: React.Dispatch<
+        React.SetStateAction<'file' | 'directory' | 'none'>
+    >;
 }) => {
     const isSelected = selectedFile && selectedFile.id === currentFile.id;
     const depth = getFileDepth(allFiles, currentFile);
@@ -74,12 +78,6 @@ const TreeFile = ({
         setFileName(currentFile.name);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentFile.name]);
-
-    // new file
-    // set render file state as true and isediting as true and create new file on focus change set new file and is editing as false
-
-    // new folder
-    // set render file state as true and isediting as true and create new folder same as new file and is editing as false
 
     // delete folder or file
     // create and new prompt of delete before delete
@@ -150,15 +148,45 @@ const TreeFile = ({
                     />
                 </Flex>
 
-                <EditableControls currentFile={currentFile} />
+                <EditableControls
+                    currentFile={currentFile}
+                    setIsOpen={setIsOpen}
+                    setNewFileFolder={setNewFileFolder}
+                />
             </Editable>
         </>
     );
 };
 
 const EditableControls = memo(
-    ({ currentFile }: { currentFile: fileFormat }) => {
+    ({
+        currentFile,
+        setIsOpen,
+        setNewFileFolder,
+    }: {
+        currentFile: fileFormat;
+        setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+        setNewFileFolder?: React.Dispatch<
+            React.SetStateAction<'file' | 'directory' | 'none'>
+        >;
+    }) => {
         const { getEditButtonProps, isEditing } = useEditableControls();
+
+        const createFile = () => {
+            setIsOpen && setIsOpen((prev) => true);
+
+            setNewFileFolder &&
+                setNewFileFolder((prev) => (prev === 'file' ? 'none' : 'file'));
+        };
+
+        const createFolder = () => {
+            setIsOpen && setIsOpen((prev) => true);
+
+            setNewFileFolder &&
+                setNewFileFolder((prev) =>
+                    prev === 'directory' ? 'none' : 'directory',
+                );
+        };
 
         return (
             <>
@@ -197,7 +225,7 @@ const EditableControls = memo(
                                             transform: 'scale(1.35)',
                                         }}
                                         transition="0.2s all linear"
-                                        // onClick={handleFileCreation}
+                                        onClick={createFile}
                                     >
                                         <FileIcon file="create_file" />
                                     </Box>
@@ -213,7 +241,7 @@ const EditableControls = memo(
                                             transform: 'scale(1.35)',
                                         }}
                                         transition="0.2s all linear"
-                                        // onClick={handleFolderCreation}
+                                        onClick={createFolder}
                                     >
                                         <FileIcon file="create_directory" />
                                     </Box>

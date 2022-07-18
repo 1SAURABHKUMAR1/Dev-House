@@ -52,6 +52,7 @@ import LibraryFooter from './codebox/LibraryCodebox/Components/LibraryFooter';
 import SingleMonaco from './codebox/SingleCodebox/Components/SingleMonaco';
 import FileIcon from './codebox/SingleCodebox/Components/FileIcon';
 import TreeFile from './codebox/SingleCodebox/Components/TreeFile';
+import NewFileFolder from './codebox/SingleCodebox/Components/NewFileFolder';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -113,4 +114,5 @@ export {
     SingleMonaco,
     FileIcon,
     TreeFile,
+    NewFileFolder,
 };

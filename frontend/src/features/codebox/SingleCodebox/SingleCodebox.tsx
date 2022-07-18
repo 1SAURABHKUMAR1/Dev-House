@@ -22,6 +22,7 @@ import {
 
 import {
     ACTIONS_ADD_CODE_USER,
+    ACTIONS_ADD_FILES_CODE_SERVER,
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_LEAVE,
     ACTIONS_REMOVE_CODE_USER,
@@ -33,6 +34,7 @@ import {
     socketAddUser,
     socketChat,
     socketCode,
+    socketCodeFileAdd,
     socketCodeRename,
     socketCodeReset,
     socketEmit,
@@ -111,6 +113,10 @@ const SingleCodebox = () => {
             socketCodeRename({
                 dispatch,
             });
+
+            socketCodeFileAdd({
+                dispatch,
+            });
         };
 
         codebox_id && initalize();
@@ -127,6 +133,7 @@ const SingleCodebox = () => {
             socket.off(ACTIONS_SEND_CODE_SERVER_CODE);
             socket.off(ACTIONS_RESET_CODE_SERVER);
             socket.off(ACTIONS_RENAME_CODE_FILE_SERVER);
+            socket.off(ACTIONS_ADD_FILES_CODE_SERVER);
             dispatch(resetCodeboxState());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

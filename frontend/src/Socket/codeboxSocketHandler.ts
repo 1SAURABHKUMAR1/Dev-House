@@ -1,5 +1,6 @@
 import {
     addChats,
+    addFiles,
     addUsers,
     changeCode,
     changeFileName,
@@ -10,6 +11,7 @@ import {
 import SuccessToast from 'Utils/Toast/Success';
 import {
     ACTIONS_ADD_CODE_USER,
+    ACTIONS_ADD_FILES_CODE_SERVER,
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_JOIN,
     ACTIONS_REMOVE_CODE_USER,
@@ -93,6 +95,15 @@ export const socketCodeRename = ({ dispatch }: { dispatch: AppDispatch }) => {
         ACTIONS_RENAME_CODE_FILE_SERVER,
         ({ file, fileName }: { file: fileFormat; fileName: string }) => {
             dispatch(changeFileName({ file, fileName }));
+        },
+    );
+};
+
+export const socketCodeFileAdd = ({ dispatch }: { dispatch: AppDispatch }) => {
+    socket.on(
+        ACTIONS_ADD_FILES_CODE_SERVER,
+        ({ file }: { file: fileFormat }) => {
+            dispatch(addFiles({ file }));
         },
     );
 };

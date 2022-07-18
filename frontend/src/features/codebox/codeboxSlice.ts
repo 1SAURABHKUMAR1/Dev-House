@@ -18,6 +18,7 @@ import ErrorToast from 'Utils/Toast/Error';
 
 import { socket } from 'Socket/socket';
 import {
+    ACTIONS_ADD_FILES_CODE_CLIENT,
     ACTIONS_CODE_CLIENT_CODE,
     ACTIONS_RENAME_CODE_FILE_CLIENT,
     ACTIONS_RESET_CODE_CLIENT,
@@ -269,6 +270,23 @@ const codeSlice = createSlice({
                     : file,
             );
         },
+        addFiles: (
+            state: intialCodebox,
+            action: PayloadAction<{ file: fileFormat | fileFormat[] }>,
+        ) => {
+            if (Array.isArray(action.payload.file)) {
+                state.allFiles = action.payload.file;
+            } else {
+                const isPresent = state.allFiles.find(
+                    // @ts-ignore
+                    (file) => file.name === action.payload.file?.name,
+                );
+
+                if (!isPresent) {
+                    state.allFiles = [...state.allFiles, action.payload.file];
+                }
+            }
+        },
     },
     extraReducers: (builder) => {
         //
@@ -389,9 +407,18 @@ export const renameFile = (
     });
 };
 
-// const createFile = (file: fileFormat , disptach : AppDisptach) => {
-//     //
-// };
+export const createFileFolder = (
+    dispatch: AppDispatch,
+    file: fileFormat,
+    codebox_id: string,
+) => {
+    dispatch(addFiles({ file }));
+
+    socket.emit(ACTIONS_ADD_FILES_CODE_CLIENT, {
+        file,
+        codebox_id,
+    });
+};
 
 // const removeFile = (file: fileFormat , disptach : AppDisptach) => {
 //     //
@@ -412,4 +439,5 @@ export const {
     removeUsers,
     addChats,
     changeFileName,
+    addFiles,
 } = codeSlice.actions;

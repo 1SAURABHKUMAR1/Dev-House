@@ -66,7 +66,13 @@ const LibraryCodebox = () => {
                                 width="100%"
                             >
                                 {sidebarComponent === 'Files' && (
-                                    <Box flex="0" pt="4" pb="4">
+                                    <Box
+                                        flex="1"
+                                        pt="4"
+                                        pb="4"
+                                        overflowY="auto"
+                                        className="hide-scrollbar"
+                                    >
                                         <FileSide />
                                     </Box>
                                 )}

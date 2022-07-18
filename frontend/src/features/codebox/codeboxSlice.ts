@@ -278,8 +278,11 @@ const codeSlice = createSlice({
                 state.allFiles = action.payload.file;
             } else {
                 const isPresent = state.allFiles.find(
-                    // @ts-ignore
-                    (file) => file.name === action.payload.file?.name,
+                    (file) =>
+                        // @ts-ignore
+                        file.name === action.payload?.file?.name &&
+                        // @ts-ignore
+                        file.directory === action.payload?.file?.directory,
                 );
 
                 if (!isPresent) {

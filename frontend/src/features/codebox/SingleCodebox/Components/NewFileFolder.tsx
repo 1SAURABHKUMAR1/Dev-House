@@ -45,7 +45,13 @@ const NewFileFolder = ({
             return;
         }
 
-        if (allFiles.find((file) => file.name === newFile.name)) {
+        if (
+            allFiles.find(
+                (file) =>
+                    file.name === newFile.name &&
+                    file.directory === newFile.directory,
+            )
+        ) {
             ErrorToast('File name already present');
             setNewFileFolder && setNewFileFolder('none');
             return;

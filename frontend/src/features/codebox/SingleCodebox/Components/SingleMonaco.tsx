@@ -52,7 +52,7 @@ const SingleMonaco = ({
     }, [file.code]);
 
     const beforeMount = (
-        monaco: typeof import('D:/web dev/projects/Dev-House/frontend/node_modules/monaco-editor/esm/vs/editor/editor.api'),
+        monaco: typeof import('monaco-editor/esm/vs/editor/editor.api'),
     ) => {
         language === 'JAVASCRIPT' &&
             monaco.languages.typescript.javascriptDefaults.setCompilerOptions({

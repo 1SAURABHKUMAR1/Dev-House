@@ -1,9 +1,9 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, Text, Tooltip } from '@chakra-ui/react';
 import React, { memo, useEffect, useState } from 'react';
 
 import { isFileOpenedInDirectory, isRootLevel, sortFiles } from 'Utils/Files';
 
-import { TreeFile, NewFileFolder } from 'features';
+import { TreeFile, NewFileFolder, FileIcon } from 'features';
 
 import { useAppSelector } from 'store/hooks';
 
@@ -13,10 +13,105 @@ import { customAlphabet } from 'nanoid';
 
 const FileSide = () => {
     const { allFiles } = useAppSelector((state) => state.codebox);
+    const [createNewFileFolder, setCreateNewFileFolder] = useState<
+        'file' | 'directory' | 'none'
+    >('none');
+
+    const createFileFolder = (type: 'file' | 'directory') => {
+        setCreateNewFileFolder((prev) => (prev === type ? 'none' : type));
+    };
 
     return (
         <>
-            <RenderFileTree files={allFiles} />
+            <Box
+                justifyContent="space-between"
+                alignItems="center"
+                display="flex"
+                borderBottom="2px solid"
+                borderColor="gray.300"
+                margin="0 0 0.8rem 0"
+                p="0.3rem 0.7rem"
+                gap="2rem"
+            >
+                <Text as="span" fontWeight="600" lineHeight="20px">
+                    Files
+                </Text>
+                <Flex
+                    className="tracking-overflow actions"
+                    alignItems="center"
+                    flexWrap="nowrap"
+                    gap="0.4rem"
+                    width="fit-content"
+                    transition="0.2s"
+                >
+                    <Tooltip label="New File" placement="top">
+                        <Box
+                            as="span"
+                            _hover={{
+                                opacity: '1',
+                                transform: 'scale(1.35)',
+                            }}
+                            transition="0.2s all linear"
+                            cursor="pointer"
+                            opacity="0.8"
+                            onClick={() => createFileFolder('file')}
+                        >
+                            <FileIcon file="create_file" />
+                        </Box>
+                    </Tooltip>
+
+                    <Tooltip label="New Directory" placement="top">
+                        <Box
+                            as="span"
+                            _hover={{
+                                opacity: '1',
+                                transform: 'scale(1.35)',
+                            }}
+                            transition="0.2s all linear"
+                            cursor="pointer"
+                            opacity="0.8"
+                            onClick={() => createFileFolder('directory')}
+                        >
+                            <FileIcon file="create_directory" />
+                        </Box>
+                    </Tooltip>
+                </Flex>
+            </Box>
+
+            <RenderFileTree
+                files={
+                    createNewFileFolder === 'directory'
+                        ? [
+                              ...allFiles,
+                              {
+                                  directory: null,
+                                  id: customAlphabet(
+                                      'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                                      5,
+                                  )(),
+                                  name: '',
+                                  type: 'directory',
+                              },
+                          ]
+                        : createNewFileFolder === 'file'
+                        ? [
+                              ...allFiles,
+                              {
+                                  directory: null,
+                                  id: customAlphabet(
+                                      'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                                      5,
+                                  )(),
+                                  name: '',
+                                  type: 'file',
+                                  code: '',
+                              },
+                          ]
+                        : allFiles
+                }
+                createFileFolder={createNewFileFolder}
+                setNewFileFolder={setCreateNewFileFolder}
+            />
         </>
     );
 };
@@ -36,45 +131,43 @@ const RenderFileTree = memo(
         return (
             <>
                 <Box overflowY="auto" className="hide-scrollbar">
-                    <>
-                        {files
-                            ?.filter((file) => isRootLevel(files, file))
-                            ?.sort((file1, file2) => sortFiles(file1, file2))
-                            ?.map((file) => (
-                                <React.Fragment key={file.id}>
-                                    {file.name === '' &&
-                                    createFileFolder !== 'none' ? (
-                                        <NewFileFolder
-                                            currentFile={file}
-                                            setNewFileFolder={setNewFileFolder}
-                                        />
-                                    ) : (
-                                        <>
-                                            {file.type === 'directory' ? (
-                                                <Folder
+                    {files
+                        ?.filter((file) => isRootLevel(files, file))
+                        ?.sort((file1, file2) => sortFiles(file1, file2))
+                        ?.map((file) => (
+                            <React.Fragment key={file.id}>
+                                {file.name === '' &&
+                                createFileFolder !== 'none' ? (
+                                    <NewFileFolder
+                                        currentFile={file}
+                                        setNewFileFolder={setNewFileFolder}
+                                    />
+                                ) : (
+                                    <>
+                                        {file.type === 'directory' ? (
+                                            <Folder
+                                                currentFile={file}
+                                                key={file.id}
+                                            />
+                                        ) : (
+                                            <>
+                                                <TreeFile
+                                                    icon={
+                                                        file.name
+                                                            .split('.')
+                                                            .at(
+                                                                -1,
+                                                            ) as codeboxIcons
+                                                    }
                                                     currentFile={file}
                                                     key={file.id}
                                                 />
-                                            ) : (
-                                                <>
-                                                    <TreeFile
-                                                        icon={
-                                                            file.name
-                                                                .split('.')
-                                                                .at(
-                                                                    -1,
-                                                                ) as codeboxIcons
-                                                        }
-                                                        currentFile={file}
-                                                        key={file.id}
-                                                    />
-                                                </>
-                                            )}
-                                        </>
-                                    )}
-                                </React.Fragment>
-                            ))}
-                    </>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </React.Fragment>
+                        ))}
                 </Box>
             </>
         );

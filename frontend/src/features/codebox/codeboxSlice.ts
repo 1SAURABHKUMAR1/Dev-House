@@ -282,7 +282,9 @@ const codeSlice = createSlice({
                         // @ts-ignore
                         file.name === action.payload?.file?.name &&
                         // @ts-ignore
-                        file.directory === action.payload?.file?.directory,
+                        file.directory === action.payload?.file?.directory &&
+                        // @ts-ignore
+                        file.type === action.payload.file?.type,
                 );
 
                 if (!isPresent) {

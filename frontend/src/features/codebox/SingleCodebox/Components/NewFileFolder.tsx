@@ -49,7 +49,8 @@ const NewFileFolder = ({
             allFiles.find(
                 (file) =>
                     file.name === newFile.name &&
-                    file.directory === newFile.directory,
+                    file.directory === newFile.directory &&
+                    file.type === newFile.type,
             )
         ) {
             ErrorToast('File name already present');

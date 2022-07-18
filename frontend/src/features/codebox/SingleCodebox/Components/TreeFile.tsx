@@ -20,16 +20,12 @@ import { getFileDepth } from 'Utils/Files';
 import ErrorToast from 'Utils/Toast/Error';
 
 const TreeFile = ({
-    allFiles,
-    selectedFile,
     onClick,
     currentFile,
     icon,
     setIsOpen,
     setNewFileFolder,
 }: {
-    allFiles: Array<fileFormat>;
-    selectedFile: fileFormat | null;
     currentFile: fileFormat;
     icon: codeboxIcons;
     onClick?: () => void;
@@ -38,9 +34,11 @@ const TreeFile = ({
         React.SetStateAction<'file' | 'directory' | 'none'>
     >;
 }) => {
+    const { codebox_id, allFiles, selectedFile } = useAppSelector(
+        (state) => state.codebox,
+    );
     const isSelected = selectedFile && selectedFile.id === currentFile.id;
     const depth = getFileDepth(allFiles, currentFile);
-    const { codebox_id } = useAppSelector((state) => state.codebox);
     const [fileName, setFileName] = useState(currentFile.name);
 
     const disptach = useAppDispatch();

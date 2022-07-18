@@ -12,15 +12,11 @@ import { codeboxIcons, fileFormat } from 'Types';
 import { customAlphabet } from 'nanoid';
 
 const FileSide = () => {
-    const { allFiles, selectedFile } = useAppSelector((state) => state.codebox);
+    const { allFiles } = useAppSelector((state) => state.codebox);
 
     return (
         <>
-            <RenderFileTree
-                files={allFiles}
-                allFiles={allFiles}
-                selectedFile={selectedFile}
-            />
+            <RenderFileTree files={allFiles} />
         </>
     );
 };
@@ -28,14 +24,10 @@ const FileSide = () => {
 const RenderFileTree = memo(
     ({
         files,
-        allFiles,
-        selectedFile,
         createFileFolder,
         setNewFileFolder,
     }: {
         files: Array<fileFormat>;
-        allFiles: Array<fileFormat>;
-        selectedFile: fileFormat | null;
         createFileFolder?: 'file' | 'directory' | 'none';
         setNewFileFolder?: React.Dispatch<
             React.SetStateAction<'file' | 'directory' | 'none'>
@@ -60,8 +52,6 @@ const RenderFileTree = memo(
                                         <>
                                             {file.type === 'directory' ? (
                                                 <Folder
-                                                    allFiles={allFiles}
-                                                    selectedFile={selectedFile}
                                                     currentFile={file}
                                                     key={file.id}
                                                 />
@@ -75,12 +65,8 @@ const RenderFileTree = memo(
                                                                     -1,
                                                                 ) as codeboxIcons
                                                         }
-                                                        allFiles={allFiles}
-                                                        selectedFile={
-                                                            selectedFile
-                                                        }
-                                                        key={file.id}
                                                         currentFile={file}
+                                                        key={file.id}
                                                     />
                                                 </>
                                             )}
@@ -95,96 +81,79 @@ const RenderFileTree = memo(
     },
 );
 
-const Folder = memo(
-    ({
-        allFiles,
-        selectedFile,
-        currentFile,
-    }: {
-        allFiles: Array<fileFormat>;
-        selectedFile: fileFormat | null;
-        currentFile: fileFormat;
-    }) => {
-        const subFiles = allFiles.filter(
-            (file) => file.directory === currentFile.id,
-        );
+const Folder = memo(({ currentFile }: { currentFile: fileFormat }) => {
+    const { allFiles, selectedFile } = useAppSelector((state) => state.codebox);
+    const subFiles = allFiles.filter(
+        (file) => file.directory === currentFile.id,
+    );
 
-        const [isOpen, setIsOpen] = useState<boolean>(false);
-        const [createNewFileFolder, setCreateNewFileFolder] = useState<
-            'file' | 'directory' | 'none'
-        >('none');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [createNewFileFolder, setCreateNewFileFolder] = useState<
+        'file' | 'directory' | 'none'
+    >('none');
 
-        const toggleOpen = () => setIsOpen(!isOpen);
+    const toggleOpen = () => setIsOpen(!isOpen);
 
-        useEffect(() => {
-            if (!isOpen) {
-                setIsOpen(() =>
-                    isFileOpenedInDirectory(
-                        allFiles,
-                        currentFile,
-                        selectedFile,
-                    ),
-                );
-            }
+    useEffect(() => {
+        if (!isOpen) {
+            setIsOpen(() =>
+                isFileOpenedInDirectory(allFiles, currentFile, selectedFile),
+            );
+        }
 
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [allFiles, currentFile]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allFiles, currentFile]);
 
-        return (
-            <>
-                <TreeFile
-                    icon={isOpen ? 'OPEN DIRECTORY' : 'CLOSED DIRECTORY'}
-                    allFiles={allFiles}
-                    selectedFile={selectedFile}
-                    currentFile={currentFile}
-                    onClick={toggleOpen}
-                    setIsOpen={setIsOpen}
-                    setNewFileFolder={setCreateNewFileFolder}
-                />
-                {isOpen && (
-                    <>
-                        <RenderFileTree
-                            files={
-                                createNewFileFolder === 'directory'
-                                    ? [
-                                          ...subFiles,
-                                          {
-                                              directory: currentFile.id,
-                                              id: customAlphabet(
-                                                  'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                                  5,
-                                              )(),
-                                              name: '',
-                                              type: 'directory',
-                                          },
-                                      ]
-                                    : createNewFileFolder === 'file'
-                                    ? [
-                                          ...subFiles,
-                                          {
-                                              directory: currentFile.id,
-                                              id: customAlphabet(
-                                                  'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                                  5,
-                                              )(),
-                                              name: '',
-                                              type: 'file',
-                                              code: '',
-                                          },
-                                      ]
-                                    : [...subFiles]
-                            }
-                            allFiles={allFiles}
-                            selectedFile={selectedFile}
-                            key={currentFile.id}
-                            createFileFolder={createNewFileFolder}
-                            setNewFileFolder={setCreateNewFileFolder}
-                        />
-                    </>
-                )}
-            </>
-        );
-    },
-);
+    return (
+        <>
+            <TreeFile
+                icon={isOpen ? 'OPEN DIRECTORY' : 'CLOSED DIRECTORY'}
+                currentFile={currentFile}
+                onClick={toggleOpen}
+                setIsOpen={setIsOpen}
+                setNewFileFolder={setCreateNewFileFolder}
+            />
+            {isOpen && (
+                <>
+                    <RenderFileTree
+                        files={
+                            createNewFileFolder === 'directory'
+                                ? [
+                                      ...subFiles,
+                                      {
+                                          directory: currentFile.id,
+                                          id: customAlphabet(
+                                              'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                                              5,
+                                          )(),
+                                          name: '',
+                                          type: 'directory',
+                                      },
+                                  ]
+                                : createNewFileFolder === 'file'
+                                ? [
+                                      ...subFiles,
+                                      {
+                                          directory: currentFile.id,
+                                          id: customAlphabet(
+                                              'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                                              5,
+                                          )(),
+                                          name: '',
+                                          type: 'file',
+                                          code: '',
+                                      },
+                                  ]
+                                : [...subFiles]
+                        }
+                        createFileFolder={createNewFileFolder}
+                        setNewFileFolder={setCreateNewFileFolder}
+                        key={currentFile.id}
+                    />
+                </>
+            )}
+        </>
+    );
+});
 
 export default memo(FileSide);

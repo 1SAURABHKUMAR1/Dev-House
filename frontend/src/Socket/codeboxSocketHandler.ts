@@ -120,9 +120,6 @@ export const socketCodeFileRemove = ({
     socket.on(
         ACTIONS_REMOVE_FILES_CODE_SERVER,
         ({ file }: { file: fileFormat }) => {
-            console.log(file);
-            console.log(allFiles);
-
             removeFile(dispatch, '', file, allFiles, false);
         },
     );

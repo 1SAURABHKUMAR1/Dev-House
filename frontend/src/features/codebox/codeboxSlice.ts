@@ -443,7 +443,6 @@ export const removeFile = (
         files = files.filter((singleFile) => singleFile.id !== file.id);
     }
 
-    console.log(files);
     dispatch(addFiles({ file: files }));
 
     if (emit) {

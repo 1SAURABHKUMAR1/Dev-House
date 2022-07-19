@@ -20,10 +20,12 @@ import { socket } from 'Socket/socket';
 import {
     ACTIONS_ADD_FILES_CODE_CLIENT,
     ACTIONS_CODE_CLIENT_CODE,
+    ACTIONS_REMOVE_FILES_CODE_CLIENT,
     ACTIONS_RENAME_CODE_FILE_CLIENT,
     ACTIONS_RESET_CODE_CLIENT,
 } from 'Socket/actions';
 import { AppDispatch } from 'store/store';
+import { removeFolder } from 'Utils/Files';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
@@ -425,9 +427,32 @@ export const createFileFolder = (
     });
 };
 
-// const removeFile = (file: fileFormat , disptach : AppDisptach) => {
-//     //
-// };
+export const removeFile = (
+    dispatch: AppDispatch,
+    codebox_id: string,
+    file: fileFormat,
+    allFiles: fileFormat[],
+    emit: boolean,
+) => {
+    let files: fileFormat[] = [];
+
+    if (file.type === 'file') {
+        files = allFiles.filter((singleFile) => singleFile.id !== file.id);
+    } else {
+        files = removeFolder(file, allFiles);
+        files = files.filter((singleFile) => singleFile.id !== file.id);
+    }
+
+    console.log(files);
+    dispatch(addFiles({ file: files }));
+
+    if (emit) {
+        socket.emit(ACTIONS_REMOVE_FILES_CODE_CLIENT, {
+            file,
+            codebox_id,
+        });
+    }
+};
 
 export const codeReducer = codeSlice.reducer;
 export const {

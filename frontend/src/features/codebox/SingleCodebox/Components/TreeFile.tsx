@@ -6,11 +6,12 @@ import {
     Flex,
     Input,
     Tooltip,
+    useDisclosure,
     useEditableControls,
 } from '@chakra-ui/react';
 import React, { memo, useLayoutEffect, useState } from 'react';
 
-import { selectFile, FileIcon, renameFile } from 'features';
+import { selectFile, FileIcon, DeleteFileModel, renameFile } from 'features';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
@@ -76,9 +77,6 @@ const TreeFile = ({
         setFileName(currentFile.name);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentFile.name]);
-
-    // delete folder or file
-    // create and new prompt of delete before delete
 
     return (
         <>
@@ -169,6 +167,7 @@ const EditableControls = memo(
         >;
     }) => {
         const { getEditButtonProps, isEditing } = useEditableControls();
+        const { isOpen, onClose, onOpen } = useDisclosure();
 
         const createFile = () => {
             setIsOpen && setIsOpen((prev) => true);
@@ -254,12 +253,19 @@ const EditableControls = memo(
                                         transform: 'scale(1.35)',
                                     }}
                                     transition="0.2s all linear"
-                                    //  onClick={handleDeleteFolder}
+                                    onClick={onOpen}
                                 >
                                     <FileIcon file="delete_file" />
                                 </Box>
                             </Tooltip>
                         </Flex>
+
+                        {/* delete file modal */}
+                        <DeleteFileModel
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            currentFile={currentFile}
+                        />
                     </>
                 )}
             </>

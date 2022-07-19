@@ -26,6 +26,7 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_LEAVE,
     ACTIONS_REMOVE_CODE_USER,
+    ACTIONS_REMOVE_FILES_CODE_SERVER,
     ACTIONS_RENAME_CODE_FILE_SERVER,
     ACTIONS_RESET_CODE_SERVER,
     ACTIONS_SEND_CODE_SERVER_CODE,
@@ -35,6 +36,7 @@ import {
     socketChat,
     socketCode,
     socketCodeFileAdd,
+    socketCodeFileRemove,
     socketCodeRename,
     socketCodeReset,
     socketEmit,
@@ -49,7 +51,7 @@ import ErrorToast from 'Utils/Toast/Error';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType, codebox_id } = useAppSelector(
+    const { codeBoxType, codebox_id, allFiles } = useAppSelector(
         (state) => state.codebox,
     );
     const { photo, username, userId } = useAppSelector((state) => state.auth);
@@ -121,10 +123,6 @@ const SingleCodebox = () => {
 
         codebox_id && initalize();
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [codebox_id]);
-
-    useEffect(() => {
         return () => {
             socket.emit(ACTIONS_CODE_LEAVE, { codeboxId });
             socket.off(ACTIONS_ADD_CODE_USER);
@@ -134,6 +132,25 @@ const SingleCodebox = () => {
             socket.off(ACTIONS_RESET_CODE_SERVER);
             socket.off(ACTIONS_RENAME_CODE_FILE_SERVER);
             socket.off(ACTIONS_ADD_FILES_CODE_SERVER);
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [codebox_id]);
+
+    useEffect(() => {
+        socketCodeFileRemove({
+            dispatch,
+            allFiles,
+        });
+
+        return () => {
+            socket.off(ACTIONS_REMOVE_FILES_CODE_SERVER);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allFiles]);
+
+    useEffect(() => {
+        return () => {
             dispatch(resetCodeboxState());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

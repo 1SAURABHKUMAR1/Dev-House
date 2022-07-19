@@ -81,4 +81,31 @@ const getFileDepth = (allFiles: fileFormat[], file: fileFormat) => {
     return depth;
 };
 
-export { isRootLevel, sortFiles, isFileOpenedInDirectory, getFileDepth };
+// remove all root files
+// find all folder
+// iterate and repeat
+const removeFolder: (
+    currentFile: fileFormat,
+    allFiles: fileFormat[],
+) => fileFormat[] = (currentFile: fileFormat, allFiles: fileFormat[]) => {
+    let files = allFiles.filter((file) => file.directory !== currentFile.id);
+
+    let currentFileFolder = allFiles.filter(
+        (file) =>
+            file.directory === currentFile.id && file.type === 'directory',
+    );
+
+    currentFileFolder.forEach((singleFile) => {
+        files = removeFolder(singleFile, files);
+    });
+
+    return files;
+};
+
+export {
+    isRootLevel,
+    sortFiles,
+    isFileOpenedInDirectory,
+    getFileDepth,
+    removeFolder,
+};

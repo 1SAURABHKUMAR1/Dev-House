@@ -25,3 +25,5 @@ exports.ACTIONS_RENAME_CODE_FILE_CLIENT = 'code_rename_file_client';
 exports.ACTIONS_RENAME_CODE_FILE_SERVER = 'code_rename_file_server';
 exports.ACTIONS_ADD_FILES_CODE_CLIENT = 'code_add_file_client';
 exports.ACTIONS_ADD_FILES_CODE_SERVER = 'code_add_file_server';
+exports.ACTIONS_REMOVE_FILES_CODE_CLIENT = 'code_remove_file_client';
+exports.ACTIONS_REMOVE_FILES_CODE_SERVER = 'code_remove_file_server';

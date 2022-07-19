@@ -4,6 +4,7 @@ import {
     addUsers,
     changeCode,
     changeFileName,
+    removeFile,
     removeUsers,
     resetCodeFn,
 } from 'features';
@@ -15,6 +16,7 @@ import {
     ACTIONS_CODE_CHAT,
     ACTIONS_CODE_JOIN,
     ACTIONS_REMOVE_CODE_USER,
+    ACTIONS_REMOVE_FILES_CODE_SERVER,
     ACTIONS_RENAME_CODE_FILE_SERVER,
     ACTIONS_RESET_CODE_SERVER,
     ACTIONS_SEND_CODE_SERVER_CODE,
@@ -104,6 +106,24 @@ export const socketCodeFileAdd = ({ dispatch }: { dispatch: AppDispatch }) => {
         ACTIONS_ADD_FILES_CODE_SERVER,
         ({ file }: { file: fileFormat }) => {
             dispatch(addFiles({ file }));
+        },
+    );
+};
+
+export const socketCodeFileRemove = ({
+    dispatch,
+    allFiles,
+}: {
+    dispatch: AppDispatch;
+    allFiles: fileFormat[];
+}) => {
+    socket.on(
+        ACTIONS_REMOVE_FILES_CODE_SERVER,
+        ({ file }: { file: fileFormat }) => {
+            console.log(file);
+            console.log(allFiles);
+
+            removeFile(dispatch, '', file, allFiles, false);
         },
     );
 };

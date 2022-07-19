@@ -53,6 +53,7 @@ import SingleMonaco from './codebox/SingleCodebox/Components/SingleMonaco';
 import FileIcon from './codebox/SingleCodebox/Components/FileIcon';
 import TreeFile from './codebox/SingleCodebox/Components/TreeFile';
 import NewFileFolder from './codebox/SingleCodebox/Components/NewFileFolder';
+import DeleteFileModel from './codebox/SingleCodebox/Components/DeleteFileModel';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -115,4 +116,5 @@ export {
     FileIcon,
     TreeFile,
     NewFileFolder,
+    DeleteFileModel,
 };

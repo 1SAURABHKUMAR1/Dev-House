@@ -5,9 +5,11 @@ import {
     codeBoxResponseType,
     codeBoxType,
     fileFormat,
+    formatCodeType,
     intialCodebox,
     setLanguageAction,
     socketCodeboxUser,
+    templateFormat,
 } from 'Types';
 import { codes } from 'Utils/Code';
 
@@ -25,7 +27,7 @@ import {
     ACTIONS_RESET_CODE_CLIENT,
 } from 'Socket/actions';
 import { AppDispatch } from 'store/store';
-import { removeFolder } from 'Utils/Files';
+import { checkFileExists, makeFilePath } from 'Utils/Files';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
@@ -54,20 +56,12 @@ const initialState: intialCodebox = {
     sidebarComponent: 'None',
     compiling: false,
     consoleLogs: [],
-    allFiles: [
-        {
-            id: 'loading',
-            directory: null,
-            name: 'Loading....',
-            type: 'directory',
+    allFiles: {
+        'Loading....': {
+            code: '',
         },
-    ],
-    selectedFile: {
-        id: '',
-        directory: null,
-        name: '',
-        type: 'directory',
     },
+    selectedFile: '',
 
     users: [],
     chats: [],
@@ -144,20 +138,12 @@ const codeSlice = createSlice({
             state.compiling = false;
             state.consoleLogs = [];
 
-            state.allFiles = [
-                {
-                    id: 'loading',
-                    directory: null,
-                    name: 'Loading....',
-                    type: 'directory',
+            state.allFiles = {
+                'Loading....': {
+                    code: '',
                 },
-            ];
-            state.selectedFile = {
-                id: '',
-                directory: null,
-                name: '',
-                type: 'directory',
             };
+            state.selectedFile = '';
 
             state.users = [];
             state.chats = [];
@@ -181,36 +167,25 @@ const codeSlice = createSlice({
         },
         setSelectedFile: (
             state: intialCodebox,
-            action: PayloadAction<{ file: fileFormat }>,
+            action: PayloadAction<{ filePath: string }>,
         ) => {
-            state.selectedFile = action.payload.file;
+            state.selectedFile = action.payload.filePath;
         },
         resetAllFiles: (state: intialCodebox) => {
-            state.allFiles = codes[state.language] ?? [
-                {
-                    id: 'error',
-                    directory: null,
-                    name: 'Error',
-                    type: 'directory',
+            state.allFiles = codes[state.language] ?? {
+                'Loading....': {
+                    code: '',
                 },
-            ];
+            };
         },
         changeCode: (
             state: intialCodebox,
-            action: PayloadAction<{ code: string; file: fileFormat }>,
+            action: PayloadAction<{ code: string; filePath: string }>,
         ) => {
-            if (state.selectedFile.id === action.payload.file.id) {
-                state.selectedFile.code = action.payload.code;
-            }
+            if (!Object.keys(state.allFiles).includes(action.payload.filePath))
+                return state;
 
-            state.allFiles = state.allFiles.map((file) =>
-                file.id === action.payload.file.id
-                    ? {
-                          ...file,
-                          code: action.payload.code,
-                      }
-                    : file,
-            );
+            state.allFiles[action.payload.filePath].code = action.payload.code;
         },
         addUsers: (
             state: intialCodebox,
@@ -263,36 +238,87 @@ const codeSlice = createSlice({
             state: intialCodebox,
             action: PayloadAction<{ file: fileFormat; fileName: string }>,
         ) => {
-            state.allFiles = state.allFiles.map((file) =>
-                file.id === action.payload.file.id
-                    ? {
-                          ...file,
-                          name: action.payload.fileName,
-                      }
-                    : file,
+            // make new file path
+            const newFileName = makeFilePath(
+                action.payload.file,
+                action.payload.fileName,
             );
-        },
-        addFiles: (
-            state: intialCodebox,
-            action: PayloadAction<{ file: fileFormat | fileFormat[] }>,
-        ) => {
-            if (Array.isArray(action.payload.file)) {
-                state.allFiles = action.payload.file;
-            } else {
-                const isPresent = state.allFiles.find(
-                    (file) =>
-                        // @ts-ignore
-                        file.name === action.payload?.file?.name &&
-                        // @ts-ignore
-                        file.directory === action.payload?.file?.directory &&
-                        // @ts-ignore
-                        file.type === action.payload.file?.type,
-                );
 
-                if (!isPresent) {
-                    state.allFiles = [...state.allFiles, action.payload.file];
-                }
+            // change file path
+            state.allFiles = Object.fromEntries(
+                Object.entries(state.allFiles).map(([key, value]) => {
+                    if (
+                        action.payload.file.type === 'file'
+                            ? key === action.payload.file.id
+                            : key.indexOf(action.payload.file.id) === 0
+                    ) {
+                        return [
+                            key.replace(action.payload.file.id, newFileName),
+                            value,
+                        ];
+                    }
+
+                    return [key, value];
+                }),
+            );
+
+            state.selectedFile === action.payload.file.id &&
+                (state.selectedFile = newFileName);
+        },
+        addFile: (
+            state: intialCodebox,
+            action: PayloadAction<{ file: fileFormat }>,
+        ) => {
+            const isPresent = checkFileExists(
+                action.payload.file,
+                state.allFiles,
+            );
+
+            if (!!!isPresent) {
+                state.allFiles = {
+                    ...state.allFiles,
+                    [action.payload.file.id as string]: {
+                        code: '',
+                    },
+                };
             }
+        },
+        removeFile: (
+            state: intialCodebox,
+            action: PayloadAction<{
+                file: fileFormat;
+                allFiles: templateFormat;
+            }>,
+        ) => {
+            let finalObj = null;
+
+            // remove files
+            if (action.payload.file.type === 'file') {
+                finalObj = Object.keys(state.allFiles)
+                    .map((key) => {
+                        if (key.indexOf(action.payload.file.id) === 0) {
+                            return makeFilePath(action.payload.file, '');
+                        }
+                        return key;
+                    })
+                    .filter((key) => !!key.match(/\w/));
+            } else {
+                finalObj = Object.keys(state.allFiles).filter(
+                    (key) => key.indexOf(action.payload.file.id) !== 0,
+                );
+            }
+
+            // make obj
+            finalObj = finalObj.reduce((acc, key) => {
+                return {
+                    ...acc,
+                    [key]: action.payload.allFiles[key] ?? {
+                        code: '',
+                    },
+                };
+            }, {});
+
+            state.allFiles = finalObj;
         },
     },
     extraReducers: (builder) => {
@@ -309,36 +335,40 @@ export const resetCodeFn = (
 ) => {
     dispatch(resetAllFiles());
 
-    const selectFile = codes[language].find((file) => {
-        if (codeBoxType === 'LANGUAGE') {
-            if (file.name === 'index.cpp') return file;
-            if (file.name === 'index.py') return file;
-        } else {
-            if (language === 'VANILLA' && file.name === 'index.js') return file;
-            // if (language === 'VANILLA TYPESCRIPT' && file.name === 'index.ts') return file;
-            if (
-                language === 'REACT' &&
-                (file.name === 'index.jsx' || file.name === 'index.js')
-            )
-                return file;
-            if (
-                language === 'REACT TYPESCRIPT' &&
-                (file.name === 'index.tsx' || file.name === 'index.ts')
-            )
-                return file;
-        }
+    const selectFile = codes[language];
 
-        return file;
-    });
+    let initalFilePath = Object.keys(selectFile)[0];
+
+    if (codeBoxType === 'LIBRARY') {
+        const ObjectKeys = Object.keys(selectFile);
+
+        if (language === 'VANILLA')
+            initalFilePath = selectFile['/index.html']
+                ? '/index.html'
+                : ObjectKeys[0];
+
+        // if (language === 'VANILLA TYPESCRIPT') return file;
+
+        if (language === 'REACT')
+            ObjectKeys.map(
+                (key) =>
+                    key.includes('/index.jsx') ||
+                    (key.includes('/index.js') && (initalFilePath = key)),
+            );
+
+        if (language === 'REACT TYPESCRIPT')
+            ObjectKeys.map(
+                (key) =>
+                    key.includes('/index.tsx') ||
+                    key.includes('/index.ts') ||
+                    key.includes('/index.jsx') ||
+                    (key.includes('/index.js') && (initalFilePath = key)),
+            );
+    }
 
     dispatch(
         setSelectedFile({
-            file: selectFile ?? {
-                id: '',
-                directory: '',
-                name: '',
-                type: 'directory',
-            },
+            filePath: initalFilePath,
         }),
     );
 
@@ -351,12 +381,15 @@ export const resetCodeFn = (
     }
 };
 
-export const formatCode = (
-    dispatch: AppDispatch,
-    language: codeBoxType | 'js' | 'ts' | 'tsx' | 'jsx',
-    selectedFile: fileFormat,
-    codebox_id: string,
+export const formatCode: formatCodeType = (
+    dispatch,
+    selectedFilePath,
+    codebox_id,
+    allFiles,
 ) => {
+    const language =
+        selectedFilePath.split('/').at(-1)?.split('.').at(-1) ?? 'JAVASCRIPT';
+
     if (
         language === 'JAVASCRIPT' ||
         language === 'js' ||
@@ -364,44 +397,54 @@ export const formatCode = (
         language === 'ts' ||
         language === 'tsx'
     ) {
-        const prettifiedCode = Prettier.format(selectedFile.code ?? '', {
-            parser: 'babel',
-            plugins: [prettierParser],
-            arrowParens: 'always',
-            bracketSameLine: true,
-            singleQuote: true,
-            semi: true,
-            jsxSingleQuote: false,
-            tabWidth: 4,
-            endOfLine: 'lf',
-            htmlWhitespaceSensitivity: 'css',
-            jsxBracketSameLine: false,
-            printWidth: 80,
-            proseWrap: 'preserve',
-            quoteProps: 'as-needed',
-            requirePragma: false,
-            trailingComma: 'all',
-            useTabs: false,
-        }).replace(/\n$/, '');
+        const prettifiedCode = Prettier.format(
+            allFiles[selectedFilePath].code ?? '',
+            {
+                parser: 'babel',
+                plugins: [prettierParser],
+                arrowParens: 'always',
+                bracketSameLine: true,
+                singleQuote: true,
+                semi: true,
+                jsxSingleQuote: false,
+                tabWidth: 4,
+                endOfLine: 'lf',
+                htmlWhitespaceSensitivity: 'css',
+                jsxBracketSameLine: false,
+                printWidth: 80,
+                proseWrap: 'preserve',
+                quoteProps: 'as-needed',
+                requirePragma: false,
+                trailingComma: 'all',
+                useTabs: false,
+            },
+        ).replace(/\n$/, '');
 
-        dispatch(changeCode({ code: prettifiedCode, file: selectedFile }));
+        dispatch(
+            changeCode({ code: prettifiedCode, filePath: selectedFilePath }),
+        );
 
         socket.emit(ACTIONS_CODE_CLIENT_CODE, {
             codebox_id,
             code: prettifiedCode,
-            file: selectedFile,
+            filePath: selectedFilePath,
         });
     } else {
         ErrorToast('Failed');
     }
 };
 
-export const selectFile = (file: fileFormat, dispatch: AppDispatch) =>
-    dispatch(setSelectedFile({ file: file }));
+export const selectFile = (
+    filePath: string,
+    dispatch: AppDispatch,
+    allFiles: templateFormat,
+) =>
+    Object.keys(allFiles).includes(filePath) &&
+    dispatch(setSelectedFile({ filePath }));
 
 export const renameFile = (
-    file: fileFormat,
     dispatch: AppDispatch,
+    file: fileFormat,
     fileName: string,
     codebox_id: string,
 ) => {
@@ -419,7 +462,7 @@ export const createFileFolder = (
     file: fileFormat,
     codebox_id: string,
 ) => {
-    dispatch(addFiles({ file }));
+    dispatch(addFile({ file }));
 
     socket.emit(ACTIONS_ADD_FILES_CODE_CLIENT, {
         file,
@@ -427,30 +470,20 @@ export const createFileFolder = (
     });
 };
 
-export const removeFile = (
+export const removeFileFolder = (
     dispatch: AppDispatch,
     codebox_id: string,
     file: fileFormat,
-    allFiles: fileFormat[],
-    emit: boolean,
+    allFiles: templateFormat,
 ) => {
-    let files: fileFormat[] = [];
+    if (!checkFileExists(file, allFiles)) return;
 
-    if (file.type === 'file') {
-        files = allFiles.filter((singleFile) => singleFile.id !== file.id);
-    } else {
-        files = removeFolder(file, allFiles);
-        files = files.filter((singleFile) => singleFile.id !== file.id);
-    }
+    dispatch(removeFile({ file, allFiles }));
 
-    dispatch(addFiles({ file: files }));
-
-    if (emit) {
-        socket.emit(ACTIONS_REMOVE_FILES_CODE_CLIENT, {
-            file,
-            codebox_id,
-        });
-    }
+    socket.emit(ACTIONS_REMOVE_FILES_CODE_CLIENT, {
+        file,
+        codebox_id,
+    });
 };
 
 export const codeReducer = codeSlice.reducer;
@@ -468,5 +501,6 @@ export const {
     removeUsers,
     addChats,
     changeFileName,
-    addFiles,
+    addFile,
+    removeFile,
 } = codeSlice.actions;

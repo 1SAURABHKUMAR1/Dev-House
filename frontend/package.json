@@ -20,6 +20,7 @@
     "allotment": "^1.14.2",
     "axios": "^0.27.2",
     "console-feed": "^3.4.0",
+    "esbuild-wasm": "^0.14.49",
     "framer-motion": "^6.3.10",
     "freeice": "^2.2.2",
     "monaco-editor": "^0.33.0",

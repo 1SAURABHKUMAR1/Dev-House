@@ -9,21 +9,22 @@ const MonacoEditorBox = () => {
 
     return (
         <>
-            {allFiles.map(
-                (file) =>
-                    file.type === 'file' &&
-                    file.id === selectedFile.id && (
+            {Object.keys(allFiles).map(
+                (filePath) =>
+                    filePath &&
+                    filePath === selectedFile && (
                         <SingleMonaco
-                            file={file}
+                            filePath={filePath}
                             language={
-                                (file.name
+                                (filePath
                                     .split('.')
                                     .at(-1)
                                     ?.toUpperCase() as codeBoxType) ??
                                 'JAVASCRIPT'
                             }
                             codebox_id={codebox_id}
-                            key={`monaoc ${file.id}`}
+                            allFiles={allFiles}
+                            key={`monaoc ${filePath}`}
                         />
                     ),
             )}

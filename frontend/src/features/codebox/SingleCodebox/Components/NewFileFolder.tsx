@@ -1,13 +1,13 @@
 import { Editable, EditableInput, Flex, Input } from '@chakra-ui/react';
-import { memo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { createFileFolder, FileIcon } from 'features';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getFileDepth } from 'Utils/Files';
 
 import { fileFormat } from 'Types';
 
 import ErrorToast from 'Utils/Toast/Error';
+import { checkFileExists, makeFilePath } from 'Utils/Files';
 
 const NewFileFolder = ({
     currentFile,
@@ -19,13 +19,20 @@ const NewFileFolder = ({
     >;
 }) => {
     const { allFiles, codebox_id } = useAppSelector((state) => state.codebox);
-    const [newFile, setNewFile] = useState<fileFormat>(currentFile);
-    const depth = getFileDepth(allFiles, currentFile);
+    const [newFile, setNewFile] = useState<fileFormat>({
+        ...currentFile,
+        name: '',
+    });
     const disptach = useAppDispatch();
 
-    const onSubmit = () => {
+    const depth = useCallback(
+        () => currentFile.id.split('/').filter(Boolean).length,
+        [currentFile.id],
+    );
+
+    const onSubmit = useCallback(() => {
         if (newFile.name === '' || newFile.name.split('.').at(0) === '') {
-            ErrorToast('Name cannot be empty');
+            ErrorToast('Name not valid');
             setNewFileFolder && setNewFileFolder('none');
             return;
         }
@@ -45,14 +52,7 @@ const NewFileFolder = ({
             return;
         }
 
-        if (
-            allFiles.find(
-                (file) =>
-                    file.name === newFile.name &&
-                    file.directory === newFile.directory &&
-                    file.type === newFile.type,
-            )
-        ) {
+        if (checkFileExists(newFile, allFiles)) {
             ErrorToast('File name already present');
             setNewFileFolder && setNewFileFolder('none');
             return;
@@ -60,14 +60,21 @@ const NewFileFolder = ({
 
         setNewFileFolder && setNewFileFolder('none');
         createFileFolder(disptach, newFile, codebox_id);
-    };
+    }, [
+        allFiles,
+        codebox_id,
+        currentFile.type,
+        disptach,
+        newFile,
+        setNewFileFolder,
+    ]);
 
     return (
         <>
             <Editable
                 display="flex"
                 alignItems="center"
-                paddingLeft={`${depth === 0 ? 0.6 : (depth + 1) * 0.75}rem`}
+                paddingLeft={`${depth() === 1 ? 0.7 : (depth() + 1) * 0.45}rem`}
                 cursor="pointer"
                 paddingRight="0.6rem"
                 gap="0.5rem"
@@ -85,6 +92,7 @@ const NewFileFolder = ({
                 onChange={(nextValue: string) => {
                     setNewFile((prev) => ({
                         ...prev,
+                        id: makeFilePath(newFile, nextValue),
                         name: nextValue,
                     }));
                 }}
@@ -124,4 +132,4 @@ const NewFileFolder = ({
     );
 };
 
-export default memo(NewFileFolder);
+export default NewFileFolder;

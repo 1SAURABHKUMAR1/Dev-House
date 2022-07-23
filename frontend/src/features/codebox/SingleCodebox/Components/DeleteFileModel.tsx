@@ -11,7 +11,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 
-import { removeFile } from 'features';
+import { removeFileFolder } from 'features';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
@@ -26,12 +26,12 @@ const DeleteFileModel = ({
     onClose: () => void;
     currentFile: fileFormat;
 }) => {
-    const disptach = useAppDispatch();
+    const dispatch = useAppDispatch();
     const { codebox_id, allFiles } = useAppSelector((state) => state.codebox);
 
     const handleFileDelete = () => {
         onClose();
-        removeFile(disptach, codebox_id, currentFile, allFiles, true);
+        removeFileFolder(dispatch, codebox_id, currentFile, allFiles);
     };
 
     return (

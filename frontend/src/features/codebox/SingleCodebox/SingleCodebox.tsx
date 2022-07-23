@@ -13,6 +13,7 @@ import {
     ShareModal,
     resetCodeFn,
     addUsers,
+    setSelectedFile,
 } from 'features';
 import {
     Container as MainContainer,
@@ -51,7 +52,7 @@ import ErrorToast from 'Utils/Toast/Error';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType, codebox_id, allFiles } = useAppSelector(
+    const { codeBoxType, codebox_id, allFiles, selectedFile } = useAppSelector(
         (state) => state.codebox,
     );
     const { photo, username, userId } = useAppSelector((state) => state.auth);
@@ -142,6 +143,16 @@ const SingleCodebox = () => {
             dispatch,
             allFiles,
         });
+
+        !Object.keys(allFiles)
+            .map((filePath) => selectedFile === filePath)
+            .filter(Boolean)
+            .pop() &&
+            dispatch(
+                setSelectedFile({
+                    filePath: Object.keys(allFiles)[0],
+                }),
+            );
 
         return () => {
             socket.off(ACTIONS_REMOVE_FILES_CODE_SERVER);

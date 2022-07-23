@@ -1,15 +1,13 @@
 import { Box, Flex, Text, Tooltip } from '@chakra-ui/react';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
-import { isFileOpenedInDirectory, isRootLevel, sortFiles } from 'Utils/Files';
+import { sortFiles } from 'Utils/Files';
 
 import { TreeFile, NewFileFolder, FileIcon } from 'features';
 
 import { useAppSelector } from 'store/hooks';
 
-import { codeboxIcons, fileFormat } from 'Types';
-
-import { customAlphabet } from 'nanoid';
+import { codeboxIcons, fileFormat, templateFormat } from 'Types';
 
 const FileSide = () => {
     const { allFiles } = useAppSelector((state) => state.codebox);
@@ -17,9 +15,11 @@ const FileSide = () => {
         'file' | 'directory' | 'none'
     >('none');
 
-    const createFileFolder = (type: 'file' | 'directory') => {
-        setCreateNewFileFolder((prev) => (prev === type ? 'none' : type));
-    };
+    const createFileFolder = useCallback(
+        (type: 'file' | 'directory') =>
+            setCreateNewFileFolder((prev) => (prev === type ? 'none' : type)),
+        [],
+    );
 
     return (
         <>
@@ -81,36 +81,26 @@ const FileSide = () => {
             <RenderFileTree
                 files={
                     createNewFileFolder === 'directory'
-                        ? [
+                        ? {
                               ...allFiles,
-                              {
-                                  directory: null,
-                                  id: customAlphabet(
-                                      'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                      5,
-                                  )(),
-                                  name: '',
-                                  type: 'directory',
-                              },
-                          ]
+                              '/t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_o_l_d_e_r_n_a_m_e/':
+                                  {
+                                      code: '',
+                                  },
+                          }
                         : createNewFileFolder === 'file'
-                        ? [
+                        ? {
                               ...allFiles,
-                              {
-                                  directory: null,
-                                  id: customAlphabet(
-                                      'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                      5,
-                                  )(),
-                                  name: '',
-                                  type: 'file',
-                                  code: '',
-                              },
-                          ]
+                              '/t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_i_l_e_n_a_m_e.js':
+                                  {
+                                      code: '',
+                                  },
+                          }
                         : allFiles
                 }
                 createFileFolder={createNewFileFolder}
                 setNewFileFolder={setCreateNewFileFolder}
+                prefixPath="/"
             />
         </>
     );
@@ -121,53 +111,87 @@ const RenderFileTree = memo(
         files,
         createFileFolder,
         setNewFileFolder,
+        prefixPath,
     }: {
-        files: Array<fileFormat>;
+        files: templateFormat;
         createFileFolder?: 'file' | 'directory' | 'none';
         setNewFileFolder?: React.Dispatch<
             React.SetStateAction<'file' | 'directory' | 'none'>
         >;
+        prefixPath: string;
     }) => {
+        const fileListWithoutPrefix = Object.keys(files)
+            .filter((file) => file.startsWith(prefixPath))
+            .map((file) => file.substring(prefixPath.length));
+
+        const filesToShow: fileFormat[] = fileListWithoutPrefix
+            .filter((file) => !file.includes('/'))
+            .filter((file) => file.includes('.'))
+            .map((file) => ({
+                id: `${prefixPath}${file}`,
+                name: file,
+                type: 'file',
+            }));
+
+        const directoryToShow: fileFormat[] = [
+            ...new Set(
+                fileListWithoutPrefix
+                    .filter((file) => file.includes('/'))
+                    .map((file) => `${prefixPath}${file.split('/')[0]}/`),
+            ),
+        ].map((file) => ({
+            id: file,
+            name: file.split('/').filter(Boolean).pop() ?? '',
+            type: 'directory',
+        }));
+
+        const finalFiles: fileFormat[] = [...filesToShow, ...directoryToShow];
+
         return (
             <>
                 <Box overflowY="auto" className="hide-scrollbar">
-                    {files
-                        ?.filter((file) => isRootLevel(files, file))
-                        ?.sort((file1, file2) => sortFiles(file1, file2))
-                        ?.map((file) => (
-                            <React.Fragment key={file.id}>
-                                {file.name === '' &&
-                                createFileFolder !== 'none' ? (
-                                    <NewFileFolder
-                                        currentFile={file}
-                                        setNewFileFolder={setNewFileFolder}
-                                    />
-                                ) : (
-                                    <>
-                                        {file.type === 'directory' ? (
-                                            <Folder
-                                                currentFile={file}
-                                                key={file.id}
-                                            />
-                                        ) : (
-                                            <>
-                                                <TreeFile
-                                                    icon={
-                                                        file.name
-                                                            .split('.')
-                                                            .at(
-                                                                -1,
-                                                            ) as codeboxIcons
-                                                    }
+                    {finalFiles &&
+                        finalFiles
+                            ?.sort((file1, file2) => sortFiles(file1, file2))
+                            ?.map((file) => (
+                                <React.Fragment key={`fragment${file.id}`}>
+                                    {(file.id.includes(
+                                        '/t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_i_l_e_n_a_m_e.js',
+                                    ) ||
+                                        file.id.includes(
+                                            '/t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_o_l_d_e_r_n_a_m_e/',
+                                        )) &&
+                                    createFileFolder !== 'none' ? (
+                                        <NewFileFolder
+                                            currentFile={file}
+                                            setNewFileFolder={setNewFileFolder}
+                                        />
+                                    ) : (
+                                        <>
+                                            {file.type === 'directory' ? (
+                                                <Folder
                                                     currentFile={file}
                                                     key={file.id}
                                                 />
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </React.Fragment>
-                        ))}
+                                            ) : (
+                                                <>
+                                                    <TreeFile
+                                                        icon={
+                                                            file.name
+                                                                .split('.')
+                                                                .at(
+                                                                    -1,
+                                                                ) as codeboxIcons
+                                                        }
+                                                        currentFile={file}
+                                                        key={file.id}
+                                                    />
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                </React.Fragment>
+                            ))}
                 </Box>
             </>
         );
@@ -176,21 +200,19 @@ const RenderFileTree = memo(
 
 const Folder = memo(({ currentFile }: { currentFile: fileFormat }) => {
     const { allFiles, selectedFile } = useAppSelector((state) => state.codebox);
-    const subFiles = allFiles.filter(
-        (file) => file.directory === currentFile.id,
-    );
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const [createNewFileFolder, setCreateNewFileFolder] = useState<
         'file' | 'directory' | 'none'
     >('none');
 
-    const toggleOpen = () => setIsOpen(!isOpen);
+    const toggleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
     useEffect(() => {
         if (!isOpen) {
             setIsOpen(() =>
-                isFileOpenedInDirectory(allFiles, currentFile, selectedFile),
+                selectedFile.indexOf(currentFile.id) === 0 ? true : false,
             );
         }
 
@@ -211,36 +233,34 @@ const Folder = memo(({ currentFile }: { currentFile: fileFormat }) => {
                     <RenderFileTree
                         files={
                             createNewFileFolder === 'directory'
-                                ? [
-                                      ...subFiles,
-                                      {
-                                          directory: currentFile.id,
-                                          id: customAlphabet(
-                                              'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                              5,
-                                          )(),
-                                          name: '',
-                                          type: 'directory',
-                                      },
-                                  ]
+                                ? {
+                                      ...allFiles,
+                                      [`${currentFile.id}${
+                                          currentFile.type === 'directory'
+                                              ? ''
+                                              : '/'
+                                      }t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_o_l_d_e_r_n_a_m_e/`]:
+                                          {
+                                              code: '',
+                                          },
+                                  }
                                 : createNewFileFolder === 'file'
-                                ? [
-                                      ...subFiles,
-                                      {
-                                          directory: currentFile.id,
-                                          id: customAlphabet(
-                                              'abcdefghijklmnopqrstuviwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                                              5,
-                                          )(),
-                                          name: '',
-                                          type: 'file',
-                                          code: '',
-                                      },
-                                  ]
-                                : [...subFiles]
+                                ? {
+                                      ...allFiles,
+                                      [`${currentFile.id}${
+                                          currentFile.type === 'directory'
+                                              ? ''
+                                              : '/'
+                                      }t_h_i_s_i_s_a_p_r_i_v_a_t_e_f_i_l_e_n_a_m_e.js`]:
+                                          {
+                                              code: '',
+                                          },
+                                  }
+                                : allFiles
                         }
                         createFileFolder={createNewFileFolder}
                         setNewFileFolder={setCreateNewFileFolder}
+                        prefixPath={currentFile.id}
                         key={currentFile.id}
                     />
                 </>

@@ -1,6 +1,6 @@
 import {
     addChats,
-    addFiles,
+    addFile,
     addUsers,
     changeCode,
     changeFileName,
@@ -23,7 +23,13 @@ import {
 } from './actions';
 import { socket } from './socket';
 
-import { chatType, codeBoxType, fileFormat, socketCodeboxUser } from 'Types';
+import {
+    chatType,
+    codeBoxType,
+    fileFormat,
+    socketCodeboxUser,
+    templateFormat,
+} from 'Types';
 import { AppDispatch } from 'store/store';
 
 export const socketEmit = (codebox_id: string, user: socketCodeboxUser) =>
@@ -69,8 +75,8 @@ export const socketChat = ({ dispatch }: { dispatch: AppDispatch }) => {
 export const socketCode = ({ dispatch }: { dispatch: AppDispatch }) => {
     socket.on(
         ACTIONS_SEND_CODE_SERVER_CODE,
-        ({ code, file }: { code: string; file: fileFormat }) => {
-            dispatch(changeCode({ code, file }));
+        ({ code, filePath }: { code: string; filePath: string }) => {
+            dispatch(changeCode({ code, filePath }));
         },
     );
 };
@@ -105,7 +111,7 @@ export const socketCodeFileAdd = ({ dispatch }: { dispatch: AppDispatch }) => {
     socket.on(
         ACTIONS_ADD_FILES_CODE_SERVER,
         ({ file }: { file: fileFormat }) => {
-            dispatch(addFiles({ file }));
+            dispatch(addFile({ file }));
         },
     );
 };
@@ -115,12 +121,12 @@ export const socketCodeFileRemove = ({
     allFiles,
 }: {
     dispatch: AppDispatch;
-    allFiles: fileFormat[];
+    allFiles: templateFormat;
 }) => {
     socket.on(
         ACTIONS_REMOVE_FILES_CODE_SERVER,
         ({ file }: { file: fileFormat }) => {
-            removeFile(dispatch, '', file, allFiles, false);
+            dispatch(removeFile({ file, allFiles }));
         },
     );
 };

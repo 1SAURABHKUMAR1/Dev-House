@@ -9,7 +9,7 @@ import {
     useDisclosure,
     useEditableControls,
 } from '@chakra-ui/react';
-import React, { memo, useLayoutEffect, useState } from 'react';
+import React, { memo, useCallback, useLayoutEffect, useState } from 'react';
 
 import { selectFile, FileIcon, DeleteFileModel, renameFile } from 'features';
 
@@ -17,8 +17,8 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { codeboxIcons, fileFormat } from 'Types';
 
-import { getFileDepth } from 'Utils/Files';
 import ErrorToast from 'Utils/Toast/Error';
+import { checkFileExists } from 'Utils/Files';
 
 const TreeFile = ({
     onClick,
@@ -38,16 +38,20 @@ const TreeFile = ({
     const { codebox_id, allFiles, selectedFile } = useAppSelector(
         (state) => state.codebox,
     );
-    const isSelected = selectedFile && selectedFile.id === currentFile.id;
-    const depth = getFileDepth(allFiles, currentFile);
+    const dispatch = useAppDispatch();
+    const isSelected = selectedFile && selectedFile === currentFile.id;
     const [fileName, setFileName] = useState(currentFile.name);
 
-    const disptach = useAppDispatch();
-    const onClickFn = () => {
-        onClick ? onClick() : disptach(selectFile(currentFile, disptach));
-    };
+    const depth = useCallback(
+        () => currentFile.id.split('/').filter(Boolean).length,
+        [currentFile.id],
+    );
 
-    const onSubmit = () => {
+    const onClickFn = useCallback(() => {
+        onClick ? onClick() : selectFile(currentFile.id, dispatch, allFiles);
+    }, [allFiles, currentFile.id, dispatch, onClick]);
+
+    const onSubmit = useCallback(() => {
         if (fileName === '' || fileName === currentFile.name) {
             setFileName(currentFile.name);
             return;
@@ -69,12 +73,20 @@ const TreeFile = ({
             return;
         }
 
-        renameFile(currentFile, disptach, fileName, codebox_id);
-    };
+        if (checkFileExists(currentFile, allFiles, fileName)) {
+            setFileName(currentFile.name);
+            ErrorToast('File name already present');
+            return;
+        }
+
+        renameFile(dispatch, currentFile, fileName, codebox_id);
+    }, [allFiles, codebox_id, currentFile, dispatch, fileName]);
 
     useLayoutEffect(() => {
         if (fileName === currentFile.name) return;
+
         setFileName(currentFile.name);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentFile.name]);
 
@@ -83,7 +95,7 @@ const TreeFile = ({
             <Editable
                 display="flex"
                 alignItems="center"
-                paddingLeft={`${depth === 0 ? 0.6 : (depth + 1) * 0.75}rem`}
+                paddingLeft={`${depth() === 1 ? 0.7 : (depth() + 1) * 0.45}rem`}
                 cursor="pointer"
                 paddingRight="0.6rem"
                 gap="0.5rem"
@@ -169,21 +181,21 @@ const EditableControls = memo(
         const { getEditButtonProps, isEditing } = useEditableControls();
         const { isOpen, onClose, onOpen } = useDisclosure();
 
-        const createFile = () => {
+        const createFile = useCallback(() => {
             setIsOpen && setIsOpen((prev) => true);
 
             setNewFileFolder &&
                 setNewFileFolder((prev) => (prev === 'file' ? 'none' : 'file'));
-        };
+        }, [setIsOpen, setNewFileFolder]);
 
-        const createFolder = () => {
-            setIsOpen && setIsOpen((prev) => true);
+        const createFolder = useCallback(() => {
+            setIsOpen && setIsOpen(() => true);
 
             setNewFileFolder &&
                 setNewFileFolder((prev) =>
                     prev === 'directory' ? 'none' : 'directory',
                 );
-        };
+        }, [setIsOpen, setNewFileFolder]);
 
         return (
             <>
@@ -273,4 +285,5 @@ const EditableControls = memo(
     },
 );
 
-export default memo(TreeFile);
+// export default memo(TreeFile);
+export default TreeFile;

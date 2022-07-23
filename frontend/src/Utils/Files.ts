@@ -1,15 +1,4 @@
-import { fileFormat } from 'Types';
-
-// check if the file is root level or not
-const isRootLevel = (files: fileFormat[], child: fileFormat) => {
-    const parentId = child.directory;
-    if (!parentId) return true;
-
-    const parent = files.find((file) => file.id === parentId);
-    if (!parent) return true;
-
-    return false;
-};
+import { fileFormat, templateFormat } from 'Types';
 
 const sortFiles = (file1: fileFormat, file2: fileFormat) => {
     let first;
@@ -26,86 +15,29 @@ const sortFiles = (file1: fileFormat, file2: fileFormat) => {
     return first === file1 ? -1 : 1;
 };
 
-const isFileOpenedInDirectory = (
-    allFiles: fileFormat[],
-    directory: fileFormat,
-    selectedFile: fileFormat | null,
-) => {
-    const currentFolderTreeFiles = getAllFilesInCurrentSubtree(
-        allFiles,
-        selectedFile,
-    );
-
-    return currentFolderTreeFiles.find((file) => file.id === directory.id)
-        ? true
-        : false;
+const makeFilePath = (file: fileFormat, newFilePath: string): string => {
+    let filePath: string[] | string = file.id.split('/');
+    filePath[filePath.length - Number(`${file.type === 'directory' ? 2 : 1}`)] =
+        newFilePath;
+    filePath = filePath.join('/');
+    return filePath;
 };
 
-const getAllFilesInCurrentSubtree = (
-    allFiles: fileFormat[],
-    selectedFile: fileFormat | null,
-) => {
-    if (!selectedFile) return [];
+const checkFileExists = (
+    file: fileFormat,
+    allFiles: templateFormat,
+    newFileName?: string,
+): boolean => {
+    const newFilePath = newFileName ? makeFilePath(file, newFileName) : file.id;
 
-    const currentTree = [selectedFile];
-
-    let parentDirectory = getParentDirectory(allFiles, selectedFile);
-
-    while (!!parentDirectory) {
-        currentTree.push(parentDirectory);
-
-        parentDirectory = getParentDirectory(allFiles, parentDirectory);
-    }
-
-    return currentTree;
+    return !!Object.keys(allFiles)
+        .map((filePath) =>
+            file.type === 'file'
+                ? filePath === newFilePath
+                : filePath.indexOf(newFilePath) === 0,
+        )
+        .filter(Boolean)
+        .pop();
 };
 
-const getParentDirectory = (
-    allFiles: fileFormat[],
-    selectedFile: fileFormat,
-) => {
-    if (selectedFile.directory)
-        return allFiles.find((file) => file.id === selectedFile.directory);
-};
-
-const getFileDepth = (allFiles: fileFormat[], file: fileFormat) => {
-    let depth = 0;
-
-    let parentFolder = getParentDirectory(allFiles, file);
-
-    while (parentFolder) {
-        depth++;
-        parentFolder = getParentDirectory(allFiles, parentFolder);
-    }
-
-    return depth;
-};
-
-// remove all root files
-// find all folder
-// iterate and repeat
-const removeFolder: (
-    currentFile: fileFormat,
-    allFiles: fileFormat[],
-) => fileFormat[] = (currentFile: fileFormat, allFiles: fileFormat[]) => {
-    let files = allFiles.filter((file) => file.directory !== currentFile.id);
-
-    let currentFileFolder = allFiles.filter(
-        (file) =>
-            file.directory === currentFile.id && file.type === 'directory',
-    );
-
-    currentFileFolder.forEach((singleFile) => {
-        files = removeFolder(singleFile, files);
-    });
-
-    return files;
-};
-
-export {
-    isRootLevel,
-    sortFiles,
-    isFileOpenedInDirectory,
-    getFileDepth,
-    removeFolder,
-};
+export { sortFiles, makeFilePath, checkFileExists };

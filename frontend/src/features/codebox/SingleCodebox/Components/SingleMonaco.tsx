@@ -1,13 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
-import { changeCode } from 'features/codebox/codeboxSlice';
 
 import { ContainerLoader } from 'Components';
+import { changeCode } from 'features';
 import Editor from '@monaco-editor/react';
 
 import { editorConfig } from 'Utils/EditorConfig';
 
-import { codeBoxType, fileFormat } from 'Types';
+import { codeBoxType, templateFormat } from 'Types';
 
 import { useAppDispatch } from 'store/hooks';
 import useDebouce from 'Hooks/useDebounce';
@@ -16,40 +16,42 @@ import { socket } from 'Socket/socket';
 import { ACTIONS_CODE_CLIENT_CODE } from 'Socket/actions';
 
 const SingleMonaco = ({
-    file,
+    filePath,
     language,
     codebox_id,
+    allFiles,
 }: {
-    file: fileFormat;
+    filePath: string;
     language: codeBoxType;
     codebox_id: string;
+    allFiles: templateFormat;
 }) => {
-    const [input, setInput] = useState(file.code ?? '');
+    const [input, setInput] = useState(allFiles[filePath].code ?? '');
     const debouncedInput = useDebouce(input, 700);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (debouncedInput !== undefined || debouncedInput !== null) {
-            if (file.code === debouncedInput) return;
+            if (allFiles[filePath].code === debouncedInput) return;
 
             socket.emit(ACTIONS_CODE_CLIENT_CODE, {
                 codebox_id,
                 code: debouncedInput,
-                file,
+                filePath,
             });
 
-            dispatch(changeCode({ code: debouncedInput, file }));
+            dispatch(changeCode({ code: debouncedInput, filePath: filePath }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedInput, dispatch]);
 
     useEffect(() => {
-        if (file.code !== input) {
-            setInput(file.code ?? '');
+        if (allFiles[filePath].code !== input) {
+            setInput(allFiles[filePath].code ?? '');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [file.code]);
+    }, [allFiles[filePath].code]);
 
     const beforeMount = (
         monaco: typeof import('monaco-editor/esm/vs/editor/editor.api'),

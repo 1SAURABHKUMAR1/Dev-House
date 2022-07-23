@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 import { Message } from 'console-feed/lib/definitions/Component';
+import { AppDispatch } from 'store/store';
 
 export interface Children {
     children: React.ReactNode;
@@ -440,8 +441,8 @@ export interface intialCodebox {
     sidebarComponent: 'Files' | 'Users' | 'Chat' | 'Collaborate' | 'None';
     compiling: boolean;
     consoleLogs: Message[];
-    allFiles: fileFormat[];
-    selectedFile: fileFormat;
+    allFiles: templateFormat;
+    selectedFile: string;
 
     users: socketCodeboxUser[];
     chats: initialChatType;
@@ -567,9 +568,13 @@ export interface libraryFooterProps {
 export type fileFormat = {
     id: string;
     name: string;
-    directory: null | string;
     type: 'file' | 'directory';
-    code?: string;
+};
+
+export type templateFormat = {
+    [key: string]: {
+        code: string;
+    };
 };
 
 export type codeboxIcons =
@@ -583,3 +588,10 @@ export type codeboxIcons =
     | 'py'
     | 'CLOSED DIRECTORY'
     | 'OPEN DIRECTORY';
+
+export type formatCodeType = (
+    dispatch: AppDispatch,
+    selectedFilePath: string,
+    codebox_id: string,
+    allFiles: templateFormat,
+) => void;

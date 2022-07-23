@@ -14,14 +14,12 @@ import {
     resetCodeFn,
     setConsoleLogs,
 } from 'features/codebox/codeboxSlice';
-import { codeBoxType } from 'Types';
 
 const Preview = () => {
     const dispatch = useAppDispatch();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const { language, selectedFile, codeBoxType, codebox_id } = useAppSelector(
-        (state) => state.codebox,
-    );
+    const { language, selectedFile, codeBoxType, codebox_id, allFiles } =
+        useAppSelector((state) => state.codebox);
 
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -66,13 +64,7 @@ const Preview = () => {
         resetCodeFn(true, dispatch, language, codeBoxType, codebox_id);
 
     const formatCode = () =>
-        formatCodeFn(
-            dispatch,
-            (selectedFile.name.split('.').at(-1) as codeBoxType) ??
-                'JAVASCRIPT',
-            selectedFile,
-            codebox_id,
-        );
+        formatCodeFn(dispatch, selectedFile, codebox_id, allFiles);
 
     return (
         <>

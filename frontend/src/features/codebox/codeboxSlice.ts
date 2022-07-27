@@ -540,9 +540,19 @@ export const initializeEsbuild = async (dispatch: AppDispatch) => {
             wasmURL: 'https://www.unpkg.com/esbuild-wasm@0.14.49/esbuild.wasm',
         })
         .then(() => dispatch(initEsbuildSuccess()))
-        .catch((error: Error) =>
-            dispatch(initEsbuildFailure({ message: error.message })),
-        );
+        .catch(async (error) => {
+            let output = `Build failed with ${error?.errors?.length} error(s):\n\n`;
+
+            let formatted = await esbuild.formatMessages(error?.errors, {
+                kind: 'error',
+            });
+
+            formatted.forEach((str) => {
+                output += str;
+            });
+
+            dispatch(initEsbuildFailure({ message: output ?? error.message }));
+        });
 };
 
 export const compileCode = async (
@@ -565,7 +575,7 @@ export const compileCode = async (
 
         dispatch(compileSuccess({ code: result?.outputFiles[0].text ?? '' }));
     } catch (error) {
-        let output = `Build failed with ${error?.errors?.length} error(s): \n \n`;
+        let output = `Build failed with ${error?.errors?.length} error(s):\n\n`;
 
         let formatted = await esbuild.formatMessages(error?.errors, {
             kind: 'error',

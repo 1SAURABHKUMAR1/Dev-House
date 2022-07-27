@@ -67,6 +67,17 @@ const Preview = () => {
         }
     }, [dispatch, esbuildReady, outputCode]);
 
+    useEffect(() => {
+        if (
+            allFiles &&
+            esbuildReady &&
+            initializationCompilationState !== 'COMPILING'
+        ) {
+            compileCode(dispatch, allFiles, ''); //TODO:
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allFiles, esbuildReady]);
+
     const resetCode = () =>
         resetCodeFn(true, dispatch, language, codeBoxType, codebox_id);
 
@@ -86,13 +97,14 @@ const Preview = () => {
                     justifyContent="space-between"
                     alignItems="center"
                     color="hsl(210deg,10%,40%)"
-                    borderBottom="2px solid hsl(210deg,14%,66%)"
+                    borderBottom="2px  solid  hsl(210deg,14%,66%)"
                     padding="0.2rem 0.8rem"
                     overflowY="hidden"
                     overflowX="auto"
                     className="hide-scrollbar"
                     gap="2rem"
                     pos="relative"
+                    minHeight="2.1rem"
                 >
                     <Text
                         textTransform="uppercase"
@@ -131,8 +143,6 @@ const Preview = () => {
                     </Flex>
                 </Flex>
 
-                {/* {initializationCompilationState !== 'COMPILING' && */}
-                {/* outputInitError === '' && ( */}
                 <Flex
                     height="100%"
                     flex="1"
@@ -150,7 +160,7 @@ const Preview = () => {
 
                     {outputInitError &&
                         initializationCompilationState === 'COMPILED' && (
-                            <PreviewError />
+                            <PreviewError iframeRef={iframeRef} />
                         )}
 
                     <iframe
@@ -161,30 +171,23 @@ const Preview = () => {
                         ref={iframeRef}
                         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads allow-pointer-lock"
-                        onLoadCapture={() => {
-                            console.log(
-                                'console',
-                                iframeRef.current?.contentWindow,
-                            );
+                        onLoad={() =>
                             iframeRef.current &&
-                                Hook(
-                                    // @ts-ignore
-                                    iframeRef.current.contentWindow?.console,
-                                    (log: any) => {
-                                        dispatch(setConsoleLogs(log));
-                                    },
-                                    false,
-                                );
-                        }}
+                            Hook(
+                                // @ts-ignore
+                                iframeRef.current.contentWindow?.console,
+                                (log: any) => {
+                                    dispatch(setConsoleLogs(log));
+                                },
+                                false,
+                            )
+                        }
                     ></iframe>
                 </Flex>
-                {/* )} */}
             </Flex>
         </>
     );
 };
-
-export default Preview;
 
 const PreviewIcon = memo(
     ({
@@ -222,3 +225,5 @@ const PreviewIcon = memo(
         );
     },
 );
+
+export default Preview;

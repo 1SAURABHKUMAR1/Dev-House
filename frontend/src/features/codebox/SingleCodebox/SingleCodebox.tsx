@@ -14,6 +14,7 @@ import {
     resetCodeFn,
     addUsers,
     setSelectedFile,
+    initializeEsbuild,
 } from 'features';
 import {
     Container as MainContainer,
@@ -52,9 +53,8 @@ import ErrorToast from 'Utils/Toast/Error';
 
 const SingleCodebox = () => {
     const { codeboxId } = useParams();
-    const { codeBoxType, codebox_id, allFiles, selectedFile } = useAppSelector(
-        (state) => state.codebox,
-    );
+    const { codeBoxType, codebox_id, allFiles, selectedFile, esbuildReady } =
+        useAppSelector((state) => state.codebox);
     const { photo, username, userId } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
@@ -166,6 +166,12 @@ const SingleCodebox = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (!esbuildReady) {
+            initializeEsbuild(dispatch);
+        }
+    }, [dispatch, esbuildReady]);
 
     if (isLoading) {
         return <MainLoader />;

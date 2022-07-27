@@ -446,6 +446,11 @@ export interface intialCodebox {
 
     users: socketCodeboxUser[];
     chats: initialChatType;
+
+    initializationCompilationState: 'IDLE' | 'COMPILING' | 'COMPILED';
+    outputCode: string;
+    esbuildReady: boolean;
+    outputInitError: string;
 }
 
 export interface setLanguageAction {

@@ -13,27 +13,32 @@ import {
     formatCode as formatCodeFn,
     resetCodeFn,
     setConsoleLogs,
-} from 'features/codebox/codeboxSlice';
+    PreviewError,
+    PreviewLoader,
+    compileCode,
+} from 'features';
 
 const Preview = () => {
     const dispatch = useAppDispatch();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const { language, selectedFile, codeBoxType, codebox_id, allFiles } =
-        useAppSelector((state) => state.codebox);
+    const {
+        language,
+        selectedFile,
+        codeBoxType,
+        codebox_id,
+        allFiles,
+        outputCode,
+        initializationCompilationState,
+        esbuildReady,
+        outputInitError,
+    } = useAppSelector((state) => state.codebox);
 
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
     const refreshPanel = () => {
         setIsRefreshing(true);
-        if (iframeRef?.current?.contentWindow) {
-            iframeRef.current.contentWindow.location.reload();
 
-            // iframeRef.current.contentWindow.postMessage(
-            //     iframeRef.current.contentWindow.postMessage,
-            //     '*',
-            // );
-            //TODO:
-        }
+        compileCode(dispatch, allFiles, ''); //TODO:
 
         setTimeout(() => {
             setIsRefreshing(false);
@@ -53,12 +58,14 @@ const Preview = () => {
             }
         };
 
-        // iframeRef.current?.contentWindow?.postMessage(
-        //     // '(()=>{document.getElementById("app").innerHtml=`<h1>Vanilla</h1><div>Bare minimal javascript template</div>`;})();',
-        //     // 'document.querySelector("#app").innerHTML = "app"',
-        //     '*',
-        // ); //TODO:
-    }, [dispatch]);
+        if (iframeRef.current && esbuildReady) {
+            iframeRef.current.srcdoc = '' ?? ''; //TODO:
+            iframeRef.current?.contentWindow?.postMessage(
+                outputCode ?? '',
+                '*',
+            );
+        }
+    }, [dispatch, esbuildReady, outputCode]);
 
     const resetCode = () =>
         resetCodeFn(true, dispatch, language, codeBoxType, codebox_id);
@@ -68,7 +75,13 @@ const Preview = () => {
 
     return (
         <>
-            <Flex flex="1" flexDir="column" height="100%" width="100%">
+            <Flex
+                flex="1"
+                flexDir="column"
+                height="100%"
+                width="100%"
+                pos="relative"
+            >
                 <Flex
                     justifyContent="space-between"
                     alignItems="center"
@@ -79,6 +92,7 @@ const Preview = () => {
                     overflowX="auto"
                     className="hide-scrollbar"
                     gap="2rem"
+                    pos="relative"
                 >
                     <Text
                         textTransform="uppercase"
@@ -117,6 +131,8 @@ const Preview = () => {
                     </Flex>
                 </Flex>
 
+                {/* {initializationCompilationState !== 'COMPILING' && */}
+                {/* outputInitError === '' && ( */}
                 <Flex
                     height="100%"
                     flex="1"
@@ -128,27 +144,41 @@ const Preview = () => {
                     h="100%"
                     margin="0"
                 >
+                    {initializationCompilationState === 'COMPILING' && (
+                        <PreviewLoader />
+                    )}
+
+                    {outputInitError &&
+                        initializationCompilationState === 'COMPILED' && (
+                            <PreviewError />
+                        )}
+
                     <iframe
                         className="iframe"
                         title="code-runner"
                         frameBorder="0"
                         loading="lazy"
                         ref={iframeRef}
-                        // srcDoc={code} //TODO:
                         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads allow-pointer-lock"
-                        onLoad={() => {
-                            Hook(
-                                // @ts-ignore
-                                iframeRef?.current?.contentWindow?.console,
-                                (log: any) => {
-                                    dispatch(setConsoleLogs(log));
-                                },
-                                false,
+                        onLoadCapture={() => {
+                            console.log(
+                                'console',
+                                iframeRef.current?.contentWindow,
                             );
+                            iframeRef.current &&
+                                Hook(
+                                    // @ts-ignore
+                                    iframeRef.current.contentWindow?.console,
+                                    (log: any) => {
+                                        dispatch(setConsoleLogs(log));
+                                    },
+                                    false,
+                                );
                         }}
                     ></iframe>
                 </Flex>
+                {/* )} */}
             </Flex>
         </>
     );

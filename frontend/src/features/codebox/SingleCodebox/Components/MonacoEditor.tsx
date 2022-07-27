@@ -1,11 +1,28 @@
-import { SingleMonaco } from 'features';
-import { useAppSelector } from 'store/hooks';
+import { SingleMonaco, compileCode } from 'features';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { codeBoxType } from 'Types';
 
 const MonacoEditorBox = () => {
-    const { selectedFile, allFiles, codebox_id } = useAppSelector(
-        (state) => state.codebox,
-    );
+    const {
+        selectedFile,
+        allFiles,
+        codebox_id,
+        esbuildReady,
+        initializationCompilationState,
+    } = useAppSelector((state) => state.codebox);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (
+            allFiles &&
+            esbuildReady &&
+            initializationCompilationState !== 'COMPILING'
+        ) {
+            compileCode(dispatch, allFiles, ''); //TODO:
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allFiles, esbuildReady]);
 
     return (
         <>

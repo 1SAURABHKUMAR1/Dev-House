@@ -54,6 +54,8 @@ import FileIcon from './codebox/SingleCodebox/Components/FileIcon';
 import TreeFile from './codebox/SingleCodebox/Components/TreeFile';
 import NewFileFolder from './codebox/SingleCodebox/Components/NewFileFolder';
 import DeleteFileModel from './codebox/SingleCodebox/Components/DeleteFileModel';
+import PreviewLoader from './codebox/LibraryCodebox/Components/PreviewLoader';
+import PreviewError from './codebox/LibraryCodebox/Components/PreviewError';
 
 export * from './auth/authSlice';
 export * from './auth/activateSlice';
@@ -117,4 +119,6 @@ export {
     TreeFile,
     NewFileFolder,
     DeleteFileModel,
+    PreviewError,
+    PreviewLoader,
 };

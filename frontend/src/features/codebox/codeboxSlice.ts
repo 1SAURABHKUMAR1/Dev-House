@@ -16,6 +16,8 @@ import { codes } from 'Utils/Code';
 import Prettier from 'prettier';
 import prettierParser from 'prettier/parser-babel';
 
+import * as esbuild from 'esbuild-wasm';
+
 import ErrorToast from 'Utils/Toast/Error';
 
 import { socket } from 'Socket/socket';
@@ -65,6 +67,11 @@ const initialState: intialCodebox = {
 
     users: [],
     chats: [],
+
+    esbuildReady: false,
+    initializationCompilationState: 'IDLE',
+    outputCode: '',
+    outputInitError: '',
 };
 
 const codeSlice = createSlice({
@@ -320,6 +327,44 @@ const codeSlice = createSlice({
 
             state.allFiles = finalObj;
         },
+        initEsbuild: (state: intialCodebox) => {
+            state.initializationCompilationState = 'COMPILING';
+            state.outputInitError = '';
+        },
+        initEsbuildSuccess: (state: intialCodebox) => {
+            state.initializationCompilationState = 'COMPILED';
+            state.esbuildReady = true;
+            state.outputInitError = '';
+        },
+        initEsbuildFailure: (
+            state: intialCodebox,
+            action: PayloadAction<{ message: string }>,
+        ) => {
+            state.esbuildReady = false;
+            state.outputInitError = action.payload.message;
+            state.initializationCompilationState = 'COMPILED';
+        },
+        compileStart: (state: intialCodebox) => {
+            state.initializationCompilationState = 'COMPILING';
+            state.outputInitError = '';
+            state.outputCode = '';
+        },
+        compileSuccess: (
+            state: intialCodebox,
+            action: PayloadAction<{ code: string }>,
+        ) => {
+            state.initializationCompilationState = 'COMPILED';
+            state.outputInitError = '';
+            state.outputCode = action.payload.code;
+        },
+        compileError: (
+            state: intialCodebox,
+            action: PayloadAction<{ message: string }>,
+        ) => {
+            state.initializationCompilationState = 'COMPILED';
+            state.outputCode = '';
+            state.outputInitError = action.payload.message;
+        },
     },
     extraReducers: (builder) => {
         //
@@ -486,6 +531,54 @@ export const removeFileFolder = (
     });
 };
 
+export const initializeEsbuild = async (dispatch: AppDispatch) => {
+    dispatch(initEsbuild());
+
+    await esbuild
+        .initialize({
+            worker: true,
+            wasmURL: 'https://www.unpkg.com/esbuild-wasm@0.14.49/esbuild.wasm',
+        })
+        .then(() => dispatch(initEsbuildSuccess()))
+        .catch((error: Error) =>
+            dispatch(initEsbuildFailure({ message: error.message })),
+        );
+};
+
+export const compileCode = async (
+    dispatch: AppDispatch,
+    rawCode: templateFormat,
+    entryPoint: string | string[],
+) => {
+    dispatch(compileStart());
+    //TODO:
+
+    try {
+        const result = await esbuild.build({
+            entryPoints: [``],
+            bundle: true,
+            minify: true,
+            write: false,
+            outdir: '/codebox',
+            plugins: [],
+        });
+
+        dispatch(compileSuccess({ code: result?.outputFiles[0].text ?? '' }));
+    } catch (error) {
+        let output = `Build failed with ${error?.errors?.length} error(s): \n \n`;
+
+        let formatted = await esbuild.formatMessages(error?.errors, {
+            kind: 'error',
+        });
+
+        formatted.forEach((str) => {
+            output += str;
+        });
+
+        dispatch(compileError({ message: output ?? error.message }));
+    }
+};
+
 export const codeReducer = codeSlice.reducer;
 export const {
     setLanguage,
@@ -503,4 +596,10 @@ export const {
     changeFileName,
     addFile,
     removeFile,
+    initEsbuild,
+    initEsbuildFailure,
+    initEsbuildSuccess,
+    compileStart,
+    compileError,
+    compileSuccess,
 } = codeSlice.actions;

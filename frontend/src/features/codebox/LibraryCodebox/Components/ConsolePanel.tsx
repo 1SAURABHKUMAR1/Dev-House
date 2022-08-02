@@ -20,6 +20,7 @@ const ConsolePanel = () => {
                 pos="relative"
                 height="100%"
                 flex="1"
+                pb="2rem"
             >
                 <Flex
                     alignItems="center"

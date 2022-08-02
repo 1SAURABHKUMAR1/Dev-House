@@ -29,7 +29,9 @@ import {
     ACTIONS_RESET_CODE_CLIENT,
 } from 'Socket/actions';
 import { AppDispatch } from 'store/store';
+
 import { checkFileExists, makeFilePath } from 'Utils/Files';
+import { fileImportFetchPlugin } from 'Utils/plugins/fileImportFetchPlugin';
 
 const initialState: intialCodebox = {
     codeBoxType: 'LIBRARY',
@@ -537,7 +539,7 @@ export const initializeEsbuild = async (dispatch: AppDispatch) => {
     await esbuild
         .initialize({
             worker: true,
-            wasmURL: 'https://www.unpkg.com/esbuild-wasm@0.14.49/esbuild.wasm',
+            wasmURL: 'https://www.unpkg.com/esbuild-wasm@0.14.51/esbuild.wasm',
         })
         .then(() => dispatch(initEsbuildSuccess()))
         .catch(async (error) => {
@@ -561,19 +563,34 @@ export const compileCode = async (
     entryPoint: string | string[],
 ) => {
     dispatch(compileStart());
-    //TODO:
 
     try {
         const result = await esbuild.build({
-            entryPoints: [``],
+            entryPoints: ['index.js'], // TODO:
             bundle: true,
             minify: true,
             write: false,
             outdir: '/codebox',
-            plugins: [],
+            format: 'iife',
+            plugins: [
+                fileImportFetchPlugin({
+                    allFiles: rawCode,
+                }),
+            ],
+            target: 'esnext',
+            // @ts-ignore
+            jsx: 'automatic',
+            jsxImportSource: 'react',
+            // mainFields: [`dependencies`],
         });
 
-        dispatch(compileSuccess({ code: result?.outputFiles[0].text ?? '' }));
+        console.log(result.outputFiles[1]?.text);
+
+        dispatch(
+            compileSuccess({
+                code: result?.outputFiles[0]?.text ?? '',
+            }),
+        );
     } catch (error) {
         let output = `Build failed with ${error?.errors?.length} error(s):\n\n`;
 

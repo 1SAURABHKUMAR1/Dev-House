@@ -20,12 +20,13 @@
     "allotment": "^1.14.2",
     "axios": "^0.27.2",
     "console-feed": "^3.4.0",
-    "esbuild-wasm": "^0.14.49",
+    "esbuild-wasm": "^0.14.51",
     "framer-motion": "^6.3.10",
     "freeice": "^2.2.2",
     "monaco-editor": "^0.33.0",
     "monaco-themes": "^0.4.2",
     "nanoid": "^3.3.4",
+    "path-browserify": "^1.0.1",
     "prettier": "^2.7.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -63,5 +64,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/path-browserify": "^1.0.0"
+  }
 }

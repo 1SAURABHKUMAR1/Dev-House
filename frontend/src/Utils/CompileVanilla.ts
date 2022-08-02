@@ -24,6 +24,7 @@ const compileVanilla = ({
         <style>${css}</style>
         </head>
         <body>
+        <div id='root'></div>
         ${html}
         <script>
         window.onerror = function (err) {

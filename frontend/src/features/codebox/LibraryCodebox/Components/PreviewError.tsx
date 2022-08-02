@@ -35,6 +35,7 @@ const PreviewError = ({
                 fontWeight="700"
                 backgroundColor="rgba(0,0,0,0.04)"
                 backdropFilter="blur(3px)"
+                overflow="auto"
             >
                 <Box as="pre" className="pre-word">
                     {outputInitError}

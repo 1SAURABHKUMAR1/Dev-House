@@ -17,6 +17,7 @@ import {
     PreviewLoader,
     compileCode,
 } from 'features';
+import compileVanilla from 'Utils/CompileVanilla';
 
 const Preview = () => {
     const dispatch = useAppDispatch();
@@ -58,13 +59,24 @@ const Preview = () => {
             }
         };
 
+        let previewPostCode: ReturnType<typeof setTimeout> | null = null;
+
         if (iframeRef.current && esbuildReady) {
-            iframeRef.current.srcdoc = '' ?? ''; //TODO:
-            iframeRef.current?.contentWindow?.postMessage(
-                outputCode ?? '',
-                '*',
-            );
+            iframeRef.current.srcdoc =
+                compileVanilla({
+                    css: ``,
+                    html: ``,
+                    javascript: ``,
+                }) ?? ''; //TODO:
+
+            previewPostCode = setTimeout(() => {
+                iframeRef.current?.contentWindow?.postMessage(outputCode, '*');
+            }, 100);
         }
+
+        return () => {
+            previewPostCode && clearTimeout(previewPostCode);
+        };
     }, [dispatch, esbuildReady, outputCode]);
 
     useEffect(() => {
@@ -153,6 +165,7 @@ const Preview = () => {
                     maxWidth="100%"
                     h="100%"
                     margin="0"
+                    overflow="auto"
                 >
                     {initializationCompilationState === 'COMPILING' && (
                         <PreviewLoader />
@@ -170,7 +183,7 @@ const Preview = () => {
                         loading="lazy"
                         ref={iframeRef}
                         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-                        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads allow-pointer-lock"
+                        sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
                         onLoad={() =>
                             iframeRef.current &&
                             Hook(
@@ -182,6 +195,7 @@ const Preview = () => {
                                 false,
                             )
                         }
+                        scrolling="auto"
                     ></iframe>
                 </Flex>
             </Flex>

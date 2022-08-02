@@ -10,6 +10,7 @@ export const fileImportFetchPlugin = ({
     allFiles: Record<string, { code: string }>;
 }): esbuild.Plugin => {
     const fileTree = new Map(Object.entries(allFiles));
+    const RESOLVE_EXTENSIONS = ['.tsx', '.ts', '.jsx', '.js', '.css', '.json'];
 
     return {
         name: 'plugin',
@@ -98,24 +99,54 @@ export const fileImportFetchPlugin = ({
             build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
                 // if path exists in folder structure
                 // take the content from fileTree and content
+                const haveRelativePath = fileTree.has(args.path);
 
-                if (fileTree.has(args.path)) {
-                    const ext = pathservice.extname(args.path);
+                if (haveRelativePath || args.path[0] === '/') {
+                    // if file tree has already extesnion assocaited
+                    if (haveRelativePath) {
+                        const ext = pathservice.extname(args.path);
+                        const loader =
+                            ext === '.ts'
+                                ? 'ts'
+                                : ext === '.tsx'
+                                ? 'tsx'
+                                : ext === '.js'
+                                ? 'jsx'
+                                : ext === '.jsx'
+                                ? 'jsx'
+                                : 'default';
 
-                    const contents = fileTree.get(args.path)?.code ?? ``;
+                        return {
+                            contents: fileTree.get(args.path)?.code,
+                            loader,
+                        };
+                    }
 
-                    const loader =
-                        ext === '.ts'
-                            ? 'ts'
-                            : ext === '.tsx'
-                            ? 'tsx'
-                            : ext === '.js'
-                            ? 'jsx'
-                            : ext === '.jsx'
-                            ? 'jsx'
-                            : 'default';
+                    // if no file extesnion is ascciated check for every extesnion
+                    for (const ext of RESOLVE_EXTENSIONS) {
+                        if (fileTree.has(String(args.path + ext))) {
+                            const loader =
+                                ext === '.ts'
+                                    ? 'ts'
+                                    : ext === '.tsx'
+                                    ? 'tsx'
+                                    : ext === '.js'
+                                    ? 'jsx'
+                                    : ext === '.jsx'
+                                    ? 'jsx'
+                                    : ext === '.css'
+                                    ? 'css'
+                                    : ext === '.json'
+                                    ? 'json'
+                                    : 'default';
 
-                    return { contents, loader };
+                            return {
+                                contents: fileTree.get(String(args.path + ext))
+                                    ?.code,
+                                loader,
+                            };
+                        }
+                    }
                 }
 
                 // if path is doesnot exists folder structure get the module code from axios

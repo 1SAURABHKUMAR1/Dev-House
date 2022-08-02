@@ -449,6 +449,7 @@ export interface intialCodebox {
 
     initializationCompilationState: 'IDLE' | 'COMPILING' | 'COMPILED';
     outputCode: string;
+    outputCss: string;
     esbuildReady: boolean;
     outputInitError: string;
 }

@@ -16,6 +16,7 @@ import {
     PreviewError,
     PreviewLoader,
     compileCode,
+    compileError,
 } from 'features';
 import compileVanilla from 'Utils/CompileVanilla';
 
@@ -29,6 +30,7 @@ const Preview = () => {
         codebox_id,
         allFiles,
         outputCode,
+        outputCss,
         initializationCompilationState,
         esbuildReady,
         outputInitError,
@@ -50,6 +52,12 @@ const Preview = () => {
         window.onmessage = (message: MessageEvent) => {
             if (message.data && message.data.source === 'iframe') {
                 dispatch(
+                    compileError({
+                        message: message.data.message,
+                    }),
+                );
+
+                dispatch(
                     setConsoleLogs({
                         data: [`${message.data.message}`],
                         id: `${message.timeStamp}`,
@@ -58,13 +66,15 @@ const Preview = () => {
                 );
             }
         };
+    }, [dispatch]);
 
+    useEffect(() => {
         let previewPostCode: ReturnType<typeof setTimeout> | null = null;
 
         if (iframeRef.current && esbuildReady) {
             iframeRef.current.srcdoc =
                 compileVanilla({
-                    css: ``,
+                    css: outputCss,
                     html: ``,
                     javascript: ``,
                 }) ?? ''; //TODO:
@@ -77,7 +87,7 @@ const Preview = () => {
         return () => {
             previewPostCode && clearTimeout(previewPostCode);
         };
-    }, [dispatch, esbuildReady, outputCode]);
+    }, [dispatch, esbuildReady, outputCode, outputCss]);
 
     useEffect(() => {
         if (

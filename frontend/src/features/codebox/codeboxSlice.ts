@@ -73,6 +73,7 @@ const initialState: intialCodebox = {
     esbuildReady: false,
     initializationCompilationState: 'IDLE',
     outputCode: '',
+    outputCss: '',
     outputInitError: '',
 };
 
@@ -350,14 +351,16 @@ const codeSlice = createSlice({
             state.initializationCompilationState = 'COMPILING';
             state.outputInitError = '';
             state.outputCode = '';
+            state.outputCss = '';
         },
         compileSuccess: (
             state: intialCodebox,
-            action: PayloadAction<{ code: string }>,
+            action: PayloadAction<{ code: string; css: string }>,
         ) => {
             state.initializationCompilationState = 'COMPILED';
             state.outputInitError = '';
             state.outputCode = action.payload.code;
+            state.outputCss = action.payload.css;
         },
         compileError: (
             state: intialCodebox,
@@ -365,6 +368,7 @@ const codeSlice = createSlice({
         ) => {
             state.initializationCompilationState = 'COMPILED';
             state.outputCode = '';
+            state.outputCss = '';
             state.outputInitError = action.payload.message;
         },
     },
@@ -584,11 +588,10 @@ export const compileCode = async (
             // mainFields: [`dependencies`],
         });
 
-        console.log(result.outputFiles[1]?.text);
-
         dispatch(
             compileSuccess({
-                code: result?.outputFiles[0]?.text ?? '',
+                code: result.outputFiles[0]?.text ?? '',
+                css: result.outputFiles[1]?.text ?? '',
             }),
         );
     } catch (error) {

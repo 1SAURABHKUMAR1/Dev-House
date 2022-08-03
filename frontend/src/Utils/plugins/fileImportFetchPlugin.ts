@@ -1,8 +1,13 @@
 import esbuild from 'esbuild-wasm';
 import axios from 'axios';
 import pathservice from 'path-browserify';
+import localforage from 'localforage';
 
 import { builtinModules } from './builtInModules';
+
+const fileCache = localforage.createInstance({
+    name: 'fileCache',
+});
 
 export const fileImportFetchPlugin = ({
     allFiles,
@@ -97,6 +102,13 @@ export const fileImportFetchPlugin = ({
             );
 
             build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
+                // cache files in user local
+                const cacheResult =
+                    await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+                if (cacheResult) {
+                    return cacheResult;
+                }
+
                 // if path exists in folder structure
                 // take the content from fileTree and content
                 const haveRelativePath = fileTree.has(args.path);
@@ -153,6 +165,13 @@ export const fileImportFetchPlugin = ({
                 // pass on request.responseURL for production ready code via calling it recurivly
                 try {
                     const { data, request } = await axios.get(args.path);
+
+                    // cache user files
+                    await fileCache.setItem(args.path, {
+                        loader: 'jsx',
+                        contents: data,
+                        resolveDir: new URL('./', request.responseURL).pathname,
+                    });
 
                     return {
                         loader: 'jsx',

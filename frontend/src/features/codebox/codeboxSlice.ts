@@ -585,7 +585,6 @@ export const compileCode = async (
             // @ts-ignore
             jsx: 'automatic',
             jsxImportSource: 'react',
-            // mainFields: [`dependencies`],
         });
 
         dispatch(

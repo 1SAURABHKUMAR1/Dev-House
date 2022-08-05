@@ -96,7 +96,6 @@ root.render(
                 />
                 <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
                 <title>Dev - House</title>
-                <style></style>
                 </head>
                 <body>
                 <div id='root'></div>
@@ -159,7 +158,6 @@ root.render(
                 />
                 <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
                 <title>Dev - House</title>
-                <style></style>
                 </head>
                 <body>
                 <div id='root'></div>

@@ -4,7 +4,6 @@ import {
     Stack,
     useColorModeValue,
     useDisclosure,
-    Avatar,
 } from '@chakra-ui/react';
 
 import { useMutation } from 'react-query';
@@ -23,8 +22,7 @@ interface NavItem {
 }
 
 const MobileNav = () => {
-    const greyColor = useColorModeValue('gray.600', 'gray.200');
-    const { login, photo, username } = useAppSelector((state) => state.auth);
+    const { login } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const { onToggle } = useDisclosure();
 
@@ -50,25 +48,6 @@ const MobileNav = () => {
             <MobileNavItem label={'Code Box'} href="/code-box" />
 
             <MobileNavItem label={'Meetp'} href="/meetp" />
-
-            {login && (
-                <Flex
-                    borderRadius="0.3rem"
-                    _hover={{
-                        bg: 'main.light.blue.hover',
-                    }}
-                    gap={'1rem'}
-                    p={2}
-                    align={'center'}
-                >
-                    <Avatar size={'sm'} name="User Profile" src={photo} />
-                    <Text fontWeight={600} color={greyColor}>
-                        @{username}
-                    </Text>
-                </Flex>
-            )}
-
-            {login && <MobileNavItem label={'Profile Settings'} href="/" />}
 
             {login && (
                 <Link to="/">

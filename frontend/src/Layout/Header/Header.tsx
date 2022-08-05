@@ -206,12 +206,6 @@ const Header = () => {
                                 </MenuButton>
 
                                 <MenuList zIndex={'9999'}>
-                                    <Link to="/profile">
-                                        <MenuItem>View Profile</MenuItem>
-                                    </Link>
-                                    <Link to="/">
-                                        <MenuItem>Change Password</MenuItem>
-                                    </Link>
                                     <Link to="/" onClick={handleLogout}>
                                         <MenuItem>Logout</MenuItem>
                                     </Link>

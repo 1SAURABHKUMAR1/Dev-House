@@ -80,13 +80,21 @@ const Preview = () => {
                 JSON.parse(allFiles['/buildConfig.json'].code)?.entry_html_file
             ]?.code
         ) {
-            // create style
-            let style: HTMLStyleElement = document.createElement('style');
-            style.innerHTML = outputCss;
-
-            // create script tag for messsage
-            let script: HTMLScriptElement = document.createElement('script');
-            script.innerHTML = `window.onerror = function (err) {
+            //   add html style and script
+            iframeRef.current.contentWindow.document.open();
+            iframeRef.current.contentWindow.document.writeln(
+                allFiles[
+                    JSON.parse(allFiles['/buildConfig.json'].code)
+                        .entry_html_file
+                ].code,
+            );
+            iframeRef.current.contentWindow.document.head
+                .appendChild(document.createElement('style'))
+                .appendChild(document.createTextNode(outputCss));
+            iframeRef.current.contentWindow.document.body
+                .appendChild(document.createElement('script'))
+                .appendChild(
+                    document.createTextNode(`window.onerror = function (err) {
                 window.parent.postMessage(
                   { source: "iframe", type: "iframe_error", message: err },
                   "*"
@@ -106,18 +114,8 @@ const Preview = () => {
                 } catch (error) {
                   throw error;
                 }
-              };`;
-
-            //   add html style and script
-            iframeRef.current.contentWindow.document.open();
-            iframeRef.current.contentWindow.document.writeln(
-                allFiles[
-                    JSON.parse(allFiles['/buildConfig.json'].code)
-                        .entry_html_file
-                ].code,
-            );
-            iframeRef.current.contentWindow.document.head.appendChild(style);
-            iframeRef.current.contentWindow.document.body.appendChild(script);
+              };`),
+                );
             iframeRef.current.contentWindow.document.close();
 
             // add js

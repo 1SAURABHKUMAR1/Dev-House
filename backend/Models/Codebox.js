@@ -34,8 +34,6 @@ const codeboxSchema = new mongoose.Schema({
                 'CPP',
                 'JAVA',
                 'PYTHON',
-                'VANILLA',
-                'VANILLA TYPESCRIPT',
                 'REACT',
                 'REACT TYPESCRIPT',
                 'NEXTJS',

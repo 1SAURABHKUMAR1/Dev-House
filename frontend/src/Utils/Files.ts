@@ -40,4 +40,12 @@ const checkFileExists = (
         .pop();
 };
 
-export { sortFiles, makeFilePath, checkFileExists };
+const isJSON = (str: string) => {
+    try {
+        return JSON.parse(str) && !!str;
+    } catch (e) {
+        return false;
+    }
+};
+
+export { sortFiles, makeFilePath, checkFileExists, isJSON };

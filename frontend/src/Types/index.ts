@@ -413,7 +413,6 @@ export type codeBoxType =
     | 'JAVASCRIPT'
     | 'CPP'
     | 'PYTHON'
-    | 'VANILLA'
     | 'REACT'
     | 'REACT TYPESCRIPT';
 
@@ -592,6 +591,7 @@ export type codeboxIcons =
     | 'tsx'
     | 'cpp'
     | 'py'
+    | 'json'
     | 'CLOSED DIRECTORY'
     | 'OPEN DIRECTORY';
 

@@ -9,8 +9,6 @@ export const codes: {
     PYTHON: templateFormat;
     JAVASCRIPT: templateFormat;
     TYPESCRIPT: templateFormat;
-    VANILLA: templateFormat;
-    'VANILLA TYPESCRIPT': templateFormat;
     REACT: templateFormat;
     'REACT TYPESCRIPT': templateFormat;
 } = {
@@ -27,46 +25,25 @@ export const codes: {
         'index.js': {
             code: `console.log("Hello World")`,
         },
+        '/buildConfig.json': {
+            code: `{
+  "entry_file":"index.js"
+}`,
+        },
     },
     TYPESCRIPT: {
         'index.ts': {
             code: `console.log('hello')`,
         },
+        '/buildConfig.json': {
+            code: `{
+  "entry_file":"index.ts"
+}`,
+        },
     },
     PYTHON: {
         'index.py': {
             code: `print('Hello World')`,
-        },
-    },
-    VANILLA: {
-        '/src/index.js': {
-            code: `import "./styles.css";
-    document.getElementById("app").innerHTML = \`
-    <h1>Hello World</h1>
-    <div>
-      We use the same configuration as Parcel to bundle this sandbox, you can find more
-      info about Parcel
-      <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-    </div>
-    \`;
-    `,
-        },
-        '/src/styles.css': {
-            code: `body { font-family: sans-serif;}`,
-        },
-        '/index.html': {
-            code: `<!DOCTYPE html>
-    <html>
-    <head>
-      <title>Parcel Sandbox</title>
-      <meta charset="UTF-8" />
-    </head>
-    <body>
-      <div id="app"></div>
-      <script src="src/index.js">
-      </script>
-    </body>
-    </html>`,
         },
     },
     REACT: {
@@ -107,51 +84,31 @@ root.render(
       }`,
         },
         '/public/index.html': {
-            code: `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Document</title>
-        </head>
-        <body>
-          <div id="root"></div>
-        </body>
-      </html>`,
-        },
-    },
-    'VANILLA TYPESCRIPT': {
-        '/src/index.ts': {
-            code: `import "./styles.css";
-      document.getElementById("app").innerHTML = \`
-      <h1>Hello World</h1>
-      <div>
-        We use the same configuration as Parcel to bundle this sandbox, you can find more
-        info about Parcel
-        <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-      </div>
-      \`;
-      `,
-        },
-        '/src/styles.css': {
-            code: `body {
-        font-family: sans-serif;
-      }
+            code: ` <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8" />
+               <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="theme-color" content="#000000" />
+                <meta
+                  name="description"
+                  content="Web site created using create-react-app"
+                />
+                <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+                <title>Dev - House</title>
+                <style></style>
+                </head>
+                <body>
+                <div id='root'></div>
+              </body>
+            </html>
             `,
         },
-        '/index.html': {
-            code: `<!DOCTYPE html>
-      <html>
-      <head>
-        <title>Parcel Sandbox</title>
-        <meta charset="UTF-8" />
-      </head>
-      <body>
-        <div id="app"></div>
-        <script src="src/index.ts">
-        </script>
-      </body>
-      </html>`,
+        '/buildConfig.json': {
+            code: `{
+  "entry_file":"index.js",
+  "entry_html_file": "/public/index.html"
+}`,
         },
     },
     'REACT TYPESCRIPT': {
@@ -190,17 +147,49 @@ root.render(
         }`,
         },
         '/public/index.html': {
-            code: `<!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-          </head>
-          <body>
-            <div id="root"></div>
-          </body>
-        </html>`,
+            code: ` <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8" />
+               <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="theme-color" content="#000000" />
+                <meta
+                  name="description"
+                  content="Web site created using create-react-app"
+                />
+                <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+                <title>Dev - House</title>
+                <style></style>
+                </head>
+                <body>
+                <div id='root'></div>
+              </body>
+            </html>
+            `,
+        },
+        '/buildConfig.json': {
+            code: `{
+  "entry_file":"index.tsx",
+  "entry_html_file": "/public/index.html"
+}`,
+        },
+        '/tsconfig.json': {
+            code: `{
+              "compilerOptions": {
+                  "allowJs": true,
+                  "esModuleInterop": true,
+                  "forceConsistentCasingInFileNames": true,
+                  "isolatedModules": true,
+                  "lib": ["DOM", "DOM.Iterable", "ESNext"],
+                  "module": "ESNext",
+                  "noEmit": true,
+                  "resolveJsonModule": true,
+                  "skipLibCheck": true,
+                  "strict": true,
+                  "useUnknownInCatchVariables": false,
+                  "target": "ESNext",
+              },
+            }`,
         },
     },
 };

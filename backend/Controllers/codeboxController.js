@@ -23,8 +23,6 @@ exports.createBox = BigPromise(async (req, res, next) => {
         language !== 'CPP' &&
         language !== 'JAVA' &&
         language !== 'PYTHON' &&
-        language !== 'VANILLA' &&
-        language !== 'VANILLA TYPESCRIPT' &&
         language !== 'REACT' &&
         language !== 'REACT TYPESCRIPT' &&
         language !== 'NEXTJS' &&

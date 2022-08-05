@@ -23,7 +23,6 @@ const languageList: Array<codeBoxType> = [
     'JAVASCRIPT',
     'CPP',
     'PYTHON',
-    'VANILLA',
     'REACT',
     'REACT TYPESCRIPT',
 ];

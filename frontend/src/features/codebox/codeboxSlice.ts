@@ -30,7 +30,7 @@ import {
 } from 'Socket/actions';
 import { AppDispatch } from 'store/store';
 
-import { checkFileExists, makeFilePath } from 'Utils/Files';
+import { checkFileExists, makeFilePath, isJSON } from 'Utils/Files';
 import { fileImportFetchPlugin } from 'Utils/plugins/fileImportFetchPlugin';
 
 const initialState: intialCodebox = {
@@ -393,13 +393,6 @@ export const resetCodeFn = (
     if (codeBoxType === 'LIBRARY') {
         const ObjectKeys = Object.keys(selectFile);
 
-        if (language === 'VANILLA')
-            initalFilePath = selectFile['/index.html']
-                ? '/index.html'
-                : ObjectKeys[0];
-
-        // if (language === 'VANILLA TYPESCRIPT') return file;
-
         if (language === 'REACT')
             ObjectKeys.map(
                 (key) =>
@@ -564,13 +557,16 @@ export const initializeEsbuild = async (dispatch: AppDispatch) => {
 export const compileCode = async (
     dispatch: AppDispatch,
     rawCode: templateFormat,
-    entryPoint: string | string[],
 ) => {
     dispatch(compileStart());
 
     try {
         const result = await esbuild.build({
-            entryPoints: ['index.js'], // TODO:
+            entryPoints: [
+                isJSON(rawCode?.['/buildConfig.json']?.code)
+                    ? JSON.parse(rawCode['/buildConfig.json'].code).entry_file
+                    : 'index',
+            ],
             bundle: true,
             minify: true,
             write: false,
@@ -581,16 +577,37 @@ export const compileCode = async (
                     allFiles: rawCode,
                 }),
             ],
+            loader: { '.svg': 'text', '.png': 'binary' },
             target: 'esnext',
-            // @ts-ignore
+            // // @ts-ignore
             jsx: 'automatic',
             jsxImportSource: 'react',
+            tsconfig:
+                rawCode['/tsconfig.json'] &&
+                isJSON(rawCode?.['/tsconfig.json']?.code)
+                    ? JSON.parse(rawCode['/tsconfig.json'].code)
+                    : `{
+                "compilerOptions": {
+                    "allowJs": true,
+                    "esModuleInterop": true,
+                    "forceConsistentCasingInFileNames": true,
+                    "isolatedModules": true,
+                    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+                    "module": "ESNext",
+                    "noEmit": true,
+                    "resolveJsonModule": true,
+                    "skipLibCheck": true,
+                    "strict": true,
+                    "useUnknownInCatchVariables": false,
+                    "target": "ESNext",
+                },
+              }`,
         });
 
         dispatch(
             compileSuccess({
-                code: result.outputFiles[0]?.text ?? '',
-                css: result.outputFiles[1]?.text ?? '',
+                code: result.outputFiles?.[0]?.text ?? '',
+                css: result.outputFiles?.[1]?.text ?? '',
             }),
         );
     } catch (error) {

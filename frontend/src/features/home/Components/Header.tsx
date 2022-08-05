@@ -78,7 +78,6 @@ const Header = () => {
                         }}
                         flexWrap="wrap"
                     >
-                        <SingleIcon iconName="vanilla" />
                         <SingleIcon iconName="cpp" />
                         <SingleIcon iconName="javascript" />
                         <SingleIcon iconName="react" />

@@ -7,7 +7,7 @@ import Editor from '@monaco-editor/react';
 
 import { editorConfig } from 'Utils/EditorConfig';
 
-import { codeBoxType, templateFormat } from 'Types';
+import { templateFormat } from 'Types';
 
 import { useAppDispatch } from 'store/hooks';
 import useDebouce from 'Hooks/useDebounce';
@@ -22,7 +22,7 @@ const SingleMonaco = ({
     allFiles,
 }: {
     filePath: string;
-    language: codeBoxType;
+    language: 'js' | 'jsx' | 'ts' | 'tsx' | 'html' | 'css' | 'json';
     codebox_id: string;
     allFiles: templateFormat;
 }) => {
@@ -56,7 +56,7 @@ const SingleMonaco = ({
     const beforeMount = (
         monaco: typeof import('monaco-editor/esm/vs/editor/editor.api'),
     ) => {
-        language === 'JAVASCRIPT' &&
+        language === 'js' &&
             monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
                 target: monaco.languages.typescript.ScriptTarget.Latest,
                 module: monaco.languages.typescript.ModuleKind.ES2015,
@@ -80,7 +80,23 @@ const SingleMonaco = ({
                     height="100%"
                     loading={<ContainerLoader />}
                     onChange={handleChange}
-                    language={language}
+                    language={
+                        language === 'js'
+                            ? 'javascript'
+                            : language === 'css'
+                            ? 'css'
+                            : language === 'html'
+                            ? 'html'
+                            : language === 'json'
+                            ? 'json'
+                            : language === 'jsx'
+                            ? 'javascript'
+                            : language === 'ts'
+                            ? 'typescript'
+                            : language === 'tsx'
+                            ? 'typescript'
+                            : 'javascript'
+                    }
                     options={editorConfig(language)}
                     beforeMount={beforeMount}
                 />

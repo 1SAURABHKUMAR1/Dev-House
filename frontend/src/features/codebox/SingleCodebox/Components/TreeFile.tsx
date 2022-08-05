@@ -66,7 +66,10 @@ const TreeFile = ({
             fileLastExt !== 'ts' &&
             fileLastExt !== 'js' &&
             fileLastExt !== 'css' &&
-            fileLastExt !== 'html'
+            fileLastExt !== 'html' &&
+            fileLastExt !== 'json'
+            // &&
+            // fileLastExt !== 'svg'
         ) {
             setFileName(currentFile.name);
             ErrorToast('File name is not valid');

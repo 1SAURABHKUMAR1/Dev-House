@@ -18,7 +18,7 @@ import {
     compileCode,
     compileError,
 } from 'features';
-import compileVanilla from 'Utils/CompileVanilla';
+import { isJSON } from 'Utils/Files';
 
 const Preview = () => {
     const dispatch = useAppDispatch();
@@ -41,7 +41,7 @@ const Preview = () => {
     const refreshPanel = () => {
         setIsRefreshing(true);
 
-        compileCode(dispatch, allFiles, ''); //TODO:
+        compileCode(dispatch, allFiles);
 
         setTimeout(() => {
             setIsRefreshing(false);
@@ -71,22 +71,71 @@ const Preview = () => {
     useEffect(() => {
         let previewPostCode: ReturnType<typeof setTimeout> | null = null;
 
-        if (iframeRef.current && esbuildReady) {
-            iframeRef.current.srcdoc =
-                compileVanilla({
-                    css: outputCss,
-                    html: ``,
-                    javascript: ``,
-                }) ?? ''; //TODO:
+        // check if file exists
+        if (
+            iframeRef.current?.contentWindow &&
+            esbuildReady &&
+            isJSON(allFiles?.['/buildConfig.json']?.code) &&
+            allFiles?.[
+                JSON.parse(allFiles['/buildConfig.json'].code)?.entry_html_file
+            ]?.code
+        ) {
+            // create style
+            let style: HTMLStyleElement = document.createElement('style');
+            style.innerHTML = outputCss;
 
+            // create script tag for messsage
+            let script: HTMLScriptElement = document.createElement('script');
+            script.innerHTML = `window.onerror = function (err) {
+                window.parent.postMessage(
+                  { source: "iframe", type: "iframe_error", message: err },
+                  "*"
+                );
+              };
+        
+              window.onunhandledrejection = function (err) {
+                window.parent.postMessage(
+                  { source: "iframe", type: "iframe_error", message: err.reason },
+                  "*"
+                );
+              };
+        
+              window.onmessage = function (event) {
+                try {
+                  eval(event.data);
+                } catch (error) {
+                  throw error;
+                }
+              };`;
+
+            //   add html style and script
+            iframeRef.current.contentWindow.document.open();
+            iframeRef.current.contentWindow.document.writeln(
+                allFiles[
+                    JSON.parse(allFiles['/buildConfig.json'].code)
+                        .entry_html_file
+                ].code,
+            );
+            iframeRef.current.contentWindow.document.head.appendChild(style);
+            iframeRef.current.contentWindow.document.body.appendChild(script);
+            iframeRef.current.contentWindow.document.close();
+
+            // add js
             previewPostCode = setTimeout(() => {
                 iframeRef.current?.contentWindow?.postMessage(outputCode, '*');
             }, 100);
+        } else {
+            dispatch(
+                compileError({
+                    message: 'Check buildConfig.json for entry_html_file',
+                }),
+            );
         }
 
         return () => {
             previewPostCode && clearTimeout(previewPostCode);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, esbuildReady, outputCode, outputCss]);
 
     useEffect(() => {
@@ -95,7 +144,7 @@ const Preview = () => {
             esbuildReady &&
             initializationCompilationState !== 'COMPILING'
         ) {
-            compileCode(dispatch, allFiles, ''); //TODO:
+            compileCode(dispatch, allFiles);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allFiles, esbuildReady]);
@@ -191,6 +240,7 @@ const Preview = () => {
                         title="code-runner"
                         frameBorder="0"
                         loading="lazy"
+                        src="about:blank"
                         ref={iframeRef}
                         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                         sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"

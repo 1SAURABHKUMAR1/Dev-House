@@ -14,6 +14,10 @@ export const store = configureStore({
         rooms: roomsReducer,
         codebox: codeReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

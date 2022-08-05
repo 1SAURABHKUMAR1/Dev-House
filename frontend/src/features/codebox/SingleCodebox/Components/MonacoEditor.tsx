@@ -1,6 +1,5 @@
 import { SingleMonaco } from 'features';
 import { useAppSelector } from 'store/hooks';
-import { codeBoxType } from 'Types';
 
 const MonacoEditorBox = () => {
     const { selectedFile, allFiles, codebox_id } = useAppSelector(
@@ -16,11 +15,14 @@ const MonacoEditorBox = () => {
                         <SingleMonaco
                             filePath={filePath}
                             language={
-                                (filePath
-                                    .split('.')
-                                    .at(-1)
-                                    ?.toUpperCase() as codeBoxType) ??
-                                'JAVASCRIPT'
+                                (filePath.split('.').at(-1)?.toLowerCase() as
+                                    | 'js'
+                                    | 'jsx'
+                                    | 'ts'
+                                    | 'tsx'
+                                    | 'html'
+                                    | 'css'
+                                    | 'json') ?? 'javascript'
                             }
                             codebox_id={codebox_id}
                             allFiles={allFiles}

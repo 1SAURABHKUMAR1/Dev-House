@@ -126,6 +126,10 @@ export const fileImportFetchPlugin = ({
                                 ? 'jsx'
                                 : ext === '.jsx'
                                 ? 'jsx'
+                                : ext === '.html'
+                                ? 'file'
+                                : ext === '.css'
+                                ? 'css'
                                 : 'default';
 
                         return {

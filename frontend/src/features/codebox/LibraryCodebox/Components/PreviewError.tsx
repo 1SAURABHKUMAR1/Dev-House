@@ -1,26 +1,8 @@
 import { Box } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { useAppSelector } from 'store/hooks';
 
-const PreviewError = ({
-    iframeRef,
-}: {
-    iframeRef: React.MutableRefObject<HTMLIFrameElement | null>;
-}) => {
+const PreviewError = () => {
     const { outputInitError } = useAppSelector((state) => state.codebox);
-
-    useEffect(() => {
-        if (outputInitError && iframeRef?.current?.contentWindow) {
-            iframeRef.current.contentWindow?.parent?.postMessage(
-                {
-                    source: 'iframe',
-                    type: 'iframe_error',
-                    message: outputInitError,
-                },
-                '*',
-            );
-        }
-    }, [iframeRef, outputInitError]);
 
     return (
         <>

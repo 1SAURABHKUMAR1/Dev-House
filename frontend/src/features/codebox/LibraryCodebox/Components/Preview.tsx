@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, Tooltip } from '@chakra-ui/react';
+import { Button, Flex, Icon, Text, Tooltip } from '@chakra-ui/react';
 import { memo, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
@@ -7,7 +7,9 @@ import { FiSkipBack } from 'react-icons/fi';
 import { RiRefreshLine } from 'react-icons/ri';
 import { SiPrettier } from 'react-icons/si';
 
-import { Hook } from 'console-feed';
+import { ErrorBoundary } from 'react-error-boundary';
+
+import { Hook, Unhook } from 'console-feed';
 
 import {
     formatCode as formatCodeFn,
@@ -53,10 +55,9 @@ const Preview = () => {
             if (message.data && message.data.source === 'iframe') {
                 dispatch(
                     compileError({
-                        message: message.data.message,
+                        message: message.data.message.toString(),
                     }),
                 );
-
                 dispatch(
                     setConsoleLogs({
                         data: [`${message.data.message}`],
@@ -65,6 +66,23 @@ const Preview = () => {
                     }),
                 );
             }
+        };
+
+        iframeRef.current?.contentWindow &&
+            Hook(
+                // @ts-ignore
+                iframeRef.current.contentWindow?.console,
+                (log: any) => {
+                    dispatch(setConsoleLogs(log));
+                },
+                false,
+            );
+
+        return () => {
+            iframeRef.current?.contentWindow &&
+                // @ts-ignore
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                Unhook(iframeRef.current.contentWindow?.console);
         };
     }, [dispatch]);
 
@@ -75,6 +93,7 @@ const Preview = () => {
         if (
             iframeRef.current?.contentWindow &&
             esbuildReady &&
+            (outputCode || outputCss) &&
             isJSON(allFiles?.['/buildConfig.json']?.code) &&
             allFiles?.[
                 JSON.parse(allFiles['/buildConfig.json'].code)?.entry_html_file
@@ -94,27 +113,28 @@ const Preview = () => {
             iframeRef.current.contentWindow.document.body
                 .appendChild(document.createElement('script'))
                 .appendChild(
-                    document.createTextNode(`window.onerror = function (err) {
-                window.parent.postMessage(
-                  { source: "iframe", type: "iframe_error", message: err },
-                  "*"
-                );
-              };
+                    document.createTextNode(`
+                    window.onerror = function (err) {
+                        window.parent.postMessage(
+                          { source: "iframe", type: "iframe_error", message: err },
+                          "*"
+                        );
+                      };
         
-              window.onunhandledrejection = function (err) {
-                window.parent.postMessage(
-                  { source: "iframe", type: "iframe_error", message: err.reason },
-                  "*"
-                );
-              };
+                    window.onunhandledrejection = function (err) {
+                        window.parent.postMessage(
+                            { source: "iframe", type: "iframe_error", message: err.reason },
+                            "*"
+                        );
+                    };
         
-              window.onmessage = function (event) {
-                try {
-                  eval(event.data);
-                } catch (error) {
-                  throw error;
-                }
-              };`),
+                    window.onmessage = function (event) {
+                        try {
+                          eval(event.data);
+                        } catch (error) {
+                           throw error;
+                        }
+                    };`),
                 );
             iframeRef.current.contentWindow.document.close();
 
@@ -123,11 +143,13 @@ const Preview = () => {
                 iframeRef.current?.contentWindow?.postMessage(outputCode, '*');
             }, 100);
         } else {
-            dispatch(
-                compileError({
-                    message: 'Check buildConfig.json for entry_html_file',
-                }),
-            );
+            esbuildReady &&
+                iframeRef.current &&
+                dispatch(
+                    compileError({
+                        message: 'Check buildConfig.json for entry_html_file',
+                    }),
+                );
         }
 
         return () => {
@@ -230,31 +252,28 @@ const Preview = () => {
 
                     {outputInitError &&
                         initializationCompilationState === 'COMPILED' && (
-                            <PreviewError iframeRef={iframeRef} />
+                            <>
+                                <PreviewError />
+                            </>
                         )}
 
-                    <iframe
-                        className="iframe"
-                        title="code-runner"
-                        frameBorder="0"
-                        loading="lazy"
-                        src="about:blank"
-                        ref={iframeRef}
-                        allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-                        sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-                        onLoad={() =>
-                            iframeRef.current &&
-                            Hook(
-                                // @ts-ignore
-                                iframeRef.current.contentWindow?.console,
-                                (log: any) => {
-                                    dispatch(setConsoleLogs(log));
-                                },
-                                false,
-                            )
-                        }
-                        scrolling="auto"
-                    ></iframe>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallback}
+                        onReset={() => compileCode(dispatch, allFiles)}
+                        resetKeys={[outputCode, outputCss]}
+                    >
+                        <iframe
+                            className="iframe"
+                            title="code-runner"
+                            frameBorder="0"
+                            loading="lazy"
+                            scrolling="auto"
+                            src="about:blank"
+                            ref={iframeRef}
+                            allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write"
+                            sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+                        ></iframe>
+                    </ErrorBoundary>
                 </Flex>
             </Flex>
         </>
@@ -306,4 +325,23 @@ const PreviewIcon = memo(
     },
 );
 
-export default Preview;
+const ErrorFallback = memo(
+    ({
+        error,
+        resetErrorBoundary,
+    }: {
+        error: Error;
+        resetErrorBoundary: () => void;
+    }) => {
+        return (
+            <Flex p="4" flexDir="column" textAlign="center" gap="2">
+                <Text as="span" color="red">
+                    Something went wrong
+                </Text>
+                <Button onClick={resetErrorBoundary}>Try again</Button>
+            </Flex>
+        );
+    },
+);
+
+export default memo(Preview);

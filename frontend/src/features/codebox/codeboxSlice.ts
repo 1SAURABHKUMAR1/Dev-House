@@ -591,9 +591,7 @@ export const compileCode = async (
                     allFiles: rawCode,
                 }),
             ],
-            loader: { '.svg': 'text', '.png': 'binary' },
             target: 'esnext',
-            // // @ts-ignore
             jsx: 'automatic',
             jsxImportSource: 'react',
             tsconfig:

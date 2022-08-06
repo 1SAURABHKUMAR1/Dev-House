@@ -1,9 +1,12 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { memo } from 'react';
 
-import { Console } from 'console-feed';
+import Console from 'console-feed/lib/Component';
+
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { clearConsoleLogs } from 'features/codebox/codeboxSlice';
+import { clearConsoleLogs } from 'features';
 
 const ConsolePanel = () => {
     const { consoleLogs } = useAppSelector((state) => state.codebox);
@@ -44,20 +47,45 @@ const ConsolePanel = () => {
                 </Flex>
 
                 <Box overflow="auto" height="100%">
-                    <Console
-                        styles={{
-                            BASE_FONT_FAMILY: 'League Mono, sans-serif;',
-                            BASE_FONT_SIZE: 13,
-                            LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
-                            LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
-                        }}
-                        logs={consoleLogs}
-                        variant="light"
-                    />
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallback}
+                        onReset={() => dispatch(clearConsoleLogs())}
+                        resetKeys={[consoleLogs]}
+                    >
+                        <Console
+                            styles={{
+                                BASE_FONT_FAMILY: 'League Mono, sans-serif;',
+                                BASE_FONT_SIZE: 13,
+                                LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
+                                LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
+                            }}
+                            logs={consoleLogs}
+                            variant="light"
+                        />
+                    </ErrorBoundary>
                 </Box>
             </Box>
         </>
     );
 };
+
+const ErrorFallback = memo(
+    ({
+        error,
+        resetErrorBoundary,
+    }: {
+        error: Error;
+        resetErrorBoundary: () => void;
+    }) => {
+        return (
+            <Flex p="4" flexDir="column" textAlign="center" gap="2">
+                <Text as="span" color="red">
+                    Something went wrong
+                </Text>
+                <Button onClick={resetErrorBoundary}>Try again</Button>
+            </Flex>
+        );
+    },
+);
 
 export default ConsolePanel;

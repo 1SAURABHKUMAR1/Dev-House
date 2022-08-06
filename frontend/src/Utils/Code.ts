@@ -68,40 +68,34 @@ root.render(
 );`,
         },
         '/styles.css': {
-            code: `body {
-        font-family: sans-serif;
-        -webkit-font-smoothing: auto;
-        -moz-font-smoothing: auto;
-        -moz-osx-font-smoothing: grayscale;
-        font-smoothing: auto;
-        text-rendering: optimizeLegibility;
-        font-smooth: always;
-        -webkit-tap-highlight-color: transparent;
-        -webkit-touch-callout: none;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }`,
+            code: `
+body {
+font-family: sans-serif;
+-webkit-font-smoothing: auto;
+-moz-font-smoothing: auto;
+-moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility;
+font-smooth: always;
+-webkit-tap-highlight-color: transparent;
+-webkit-touch-callout: none;
+}
+
+
+h1 {
+font-size: 1.5rem;
+}`,
         },
         '/public/index.html': {
-            code: ` <!DOCTYPE html>
-            <html lang="en">
-              <head>
-                <meta charset="utf-8" />
-               <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="theme-color" content="#000000" />
-                <meta
-                  name="description"
-                  content="Web site created using create-react-app"
-                />
-                <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-                <title>Dev - House</title>
-                </head>
-                <body>
-                <div id='root'></div>
-              </body>
-            </html>
-            `,
+            code: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8" />
+      <title>Dev - House</title>
+  </head>
+  <body>
+      <div id="root"></div>
+  </body>
+</html>`,
         },
         '/buildConfig.json': {
             code: `{
@@ -130,40 +124,34 @@ root.render(
         );`,
         },
         '/styles.css': {
-            code: `body {
-          font-family: sans-serif;
-          -webkit-font-smoothing: auto;
-          -moz-font-smoothing: auto;
-          -moz-osx-font-smoothing: grayscale;
-          font-smoothing: auto;
-          text-rendering: optimizeLegibility;
-          font-smooth: always;
-          -webkit-tap-highlight-color: transparent;
-          -webkit-touch-callout: none;
-        }
-        h1 {
-          font-size: 1.5rem;
-        }`,
+            code: `
+body {
+  font-family: sans-serif;
+  -webkit-font-smoothing: auto;
+  -moz-font-smoothing: auto;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+
+h1 {
+  font-size: 1.5rem;
+}`,
         },
         '/public/index.html': {
-            code: ` <!DOCTYPE html>
-            <html lang="en">
-              <head>
-                <meta charset="utf-8" />
-               <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="theme-color" content="#000000" />
-                <meta
-                  name="description"
-                  content="Web site created using create-react-app"
-                />
-                <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-                <title>Dev - House</title>
-                </head>
-                <body>
-                <div id='root'></div>
-              </body>
-            </html>
-            `,
+            code: `<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Dev - House</title>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>`,
         },
         '/buildConfig.json': {
             code: `{

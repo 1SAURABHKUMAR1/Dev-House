@@ -438,7 +438,6 @@ export interface intialCodebox {
     creator: userMiniType;
 
     sidebarComponent: 'Files' | 'Users' | 'Chat' | 'Collaborate' | 'None';
-    compiling: boolean;
     consoleLogs: Message[];
     allFiles: templateFormat;
     selectedFile: string;

@@ -275,6 +275,10 @@ const PreviewIcon = memo(
         className?: string;
         onClick: () => void;
     }) => {
+        const { initializationCompilationState } = useAppSelector(
+            (state) => state.codebox,
+        );
+
         return (
             <>
                 <Tooltip label={tooltipLabel}>
@@ -289,7 +293,11 @@ const PreviewIcon = memo(
                             }}
                             opacity="0.8"
                             transition="transform 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s, opacity 200ms ease-in-out 100ms"
-                            animation="1s cubic-bezier(0.22, 0.29, 0.12, 2) 1s 1 normal backwards running icon"
+                            animation={`1s cubic-bezier(0.22, 0.29, 0.12, 2) 1s 1 normal backwards ${
+                                initializationCompilationState === 'COMPILING'
+                                    ? 'running'
+                                    : ''
+                            } icon`}
                         />
                     </button>
                 </Tooltip>

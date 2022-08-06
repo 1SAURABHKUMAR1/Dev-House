@@ -14,11 +14,12 @@ import {
 import { codes } from 'Utils/Code';
 
 import Prettier from 'prettier';
-import prettierParser from 'prettier/parser-babel';
+import parserJavascript from 'prettier/parser-babel';
+import parserTypeScript from 'prettier/parser-typescript';
+import parserHtml from 'prettier/parser-html';
+import parserCss from 'prettier/parser-postcss';
 
 import * as esbuild from 'esbuild-wasm';
-
-import ErrorToast from 'Utils/Toast/Error';
 
 import { socket } from 'Socket/socket';
 import {
@@ -58,7 +59,6 @@ const initialState: intialCodebox = {
     },
 
     sidebarComponent: 'None',
-    compiling: false,
     consoleLogs: [],
     allFiles: {
         'Loading....': {
@@ -145,7 +145,6 @@ const codeSlice = createSlice({
             };
 
             state.sidebarComponent = 'None';
-            state.compiling = false;
             state.consoleLogs = [];
 
             state.allFiles = {
@@ -426,56 +425,71 @@ export const resetCodeFn = (
 };
 
 export const formatCode: formatCodeType = (
-    dispatch,
-    selectedFilePath,
-    codebox_id,
-    allFiles,
+    dispatch: AppDispatch,
+    selectedFilePath: string,
+    codebox_id: string,
+    allFiles: templateFormat,
 ) => {
-    const language =
-        selectedFilePath.split('/').at(-1)?.split('.').at(-1) ?? 'JAVASCRIPT';
+    const language: 'js' | 'jsx' | 'ts' | 'tsx' | 'css' | 'html' | 'json' =
+        (selectedFilePath.split('/').at(-1)?.split('.').at(-1) as
+            | 'js'
+            | 'jsx'
+            | 'ts'
+            | 'tsx'
+            | 'css'
+            | 'html'
+            | 'json') ?? 'js';
 
-    if (
-        language === 'JAVASCRIPT' ||
-        language === 'js' ||
-        language === 'jsx' ||
-        language === 'ts' ||
-        language === 'tsx'
-    ) {
-        const prettifiedCode = Prettier.format(
-            allFiles[selectedFilePath].code ?? '',
-            {
-                parser: 'babel',
-                plugins: [prettierParser],
-                arrowParens: 'always',
-                bracketSameLine: true,
-                singleQuote: true,
-                semi: true,
-                jsxSingleQuote: false,
-                tabWidth: 4,
-                endOfLine: 'lf',
-                htmlWhitespaceSensitivity: 'css',
-                jsxBracketSameLine: false,
-                printWidth: 80,
-                proseWrap: 'preserve',
-                quoteProps: 'as-needed',
-                requirePragma: false,
-                trailingComma: 'all',
-                useTabs: false,
-            },
-        ).replace(/\n$/, '');
+    const prettifiedCode = Prettier.format(
+        allFiles[selectedFilePath].code ?? '',
+        {
+            parser:
+                language === 'js'
+                    ? 'babel'
+                    : language === 'jsx'
+                    ? 'babel'
+                    : language === 'ts'
+                    ? 'typescript'
+                    : language === 'tsx'
+                    ? 'babel-ts'
+                    : language === 'css'
+                    ? 'css'
+                    : language === 'html'
+                    ? 'html'
+                    : language === 'json'
+                    ? 'json'
+                    : 'babel',
+            plugins: [
+                parserJavascript,
+                parserTypeScript,
+                parserHtml,
+                parserCss,
+            ],
+            arrowParens: 'always',
+            bracketSameLine: true,
+            singleQuote: true,
+            semi: true,
+            jsxSingleQuote: false,
+            tabWidth: 4,
+            endOfLine: 'lf',
+            htmlWhitespaceSensitivity: 'css',
+            jsxBracketSameLine: false,
+            printWidth: 80,
+            proseWrap: 'preserve',
+            quoteProps: 'as-needed',
+            requirePragma: false,
+            trailingComma: 'all',
+            useTabs: false,
+        },
+    ).replace(/\n$/, '');
 
-        dispatch(
-            changeCode({ code: prettifiedCode, filePath: selectedFilePath }),
-        );
+    dispatch(changeCode({ code: prettifiedCode, filePath: selectedFilePath }));
 
-        socket.emit(ACTIONS_CODE_CLIENT_CODE, {
-            codebox_id,
-            code: prettifiedCode,
-            filePath: selectedFilePath,
-        });
-    } else {
-        ErrorToast('Failed');
-    }
+    socket.emit(ACTIONS_CODE_CLIENT_CODE, {
+        codebox_id,
+        code: prettifiedCode,
+        filePath: selectedFilePath,
+    });
 };
 
 export const selectFile = (

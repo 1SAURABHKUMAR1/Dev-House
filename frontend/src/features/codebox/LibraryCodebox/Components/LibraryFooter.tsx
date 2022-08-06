@@ -7,7 +7,9 @@ import { useAppSelector } from 'store/hooks';
 import { libraryFooterProps } from 'Types';
 
 const LibraryFooter = ({ handleConsoleVisiblity }: libraryFooterProps) => {
-    const { compiling } = useAppSelector((state) => state.codebox);
+    const { initializationCompilationState } = useAppSelector(
+        (state) => state.codebox,
+    );
 
     return (
         <>
@@ -19,7 +21,9 @@ const LibraryFooter = ({ handleConsoleVisiblity }: libraryFooterProps) => {
                 gap="2rem"
                 alignItems="center"
             >
-                {compiling && <Spinner size="sm" thickness="3px" />}
+                {initializationCompilationState === 'COMPILING' && (
+                    <Spinner size="sm" thickness="3px" />
+                )}
                 <Flex
                     alignItems="center"
                     gap="0.2rem"

@@ -123,7 +123,47 @@ const codeSlice = createSlice({
             state._id = action.payload._id;
         },
         resetState: (state: intialCodebox) => {
-            return initialState;
+            state.codeBoxType = 'LIBRARY';
+            state.language = 'REACT';
+
+            state.authenticated = 'IDLE';
+            state.qrcode = {
+                id: '',
+                secure_url: '',
+            };
+            state._id = '';
+            state.name = '';
+            state.codebox_id = '';
+            state.creator = {
+                name: '',
+                _id: '',
+                email: '',
+                profile_photo: {
+                    id: '',
+                    secure_url: '',
+                },
+                user_id: '',
+                username: '',
+            };
+
+            state.sidebarComponent = 'None';
+            state.consoleLogs = [];
+
+            state.allFiles = {
+                'Loading....': {
+                    code: '',
+                },
+            };
+            state.selectedFile = '';
+
+            state.users = [];
+            state.chats = [];
+
+            // state.esbuildReady = false; cannot uninitalize
+            state.initializationCompilationState = 'IDLE';
+            state.outputCode = '';
+            state.outputCss = '';
+            state.outputInitError = '';
         },
         setConsoleLogs: (
             state: intialCodebox,

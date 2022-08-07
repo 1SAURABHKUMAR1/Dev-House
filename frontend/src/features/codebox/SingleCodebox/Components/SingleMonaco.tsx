@@ -56,17 +56,20 @@ const SingleMonaco = ({
     const beforeMount = (
         monaco: typeof import('monaco-editor/esm/vs/editor/editor.api'),
     ) => {
-        language === 'js' &&
-            monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+        (language === 'js' ||
+            language === 'jsx' ||
+            language === 'ts' ||
+            language === 'tsx') &&
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
                 target: monaco.languages.typescript.ScriptTarget.Latest,
-                module: monaco.languages.typescript.ModuleKind.ES2015,
+                module: monaco.languages.typescript.ModuleKind.ESNext,
                 allowNonTsExtensions: true,
-                lib: ['es2018'],
-                noSyntaxValidation: true, // This line disables errors in jsx tags like <div>, etc.
+                lib: ['DOM', 'DOM.Iterable', 'ESNext'],
+                noSyntaxValidation: true,
                 jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-                jsxFactory: 'React.createElement',
-                reactNamespace: 'React',
                 allowJs: true,
+                esModuleInterop: true,
+                noEmit: true,
             });
     };
 

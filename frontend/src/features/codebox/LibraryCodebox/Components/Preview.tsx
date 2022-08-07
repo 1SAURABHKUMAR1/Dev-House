@@ -93,7 +93,6 @@ const Preview = () => {
         if (
             iframeRef.current?.contentWindow &&
             esbuildReady &&
-            (outputCode || outputCss) &&
             isJSON(allFiles?.['/buildConfig.json']?.code) &&
             allFiles?.[
                 JSON.parse(allFiles['/buildConfig.json'].code)?.entry_html_file

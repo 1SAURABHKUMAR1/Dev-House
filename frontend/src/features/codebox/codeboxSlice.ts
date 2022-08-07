@@ -637,6 +637,55 @@ export const compileCode = async (
     }
 };
 
+export const transformCode: (
+    rawCode: string,
+) => Promise<{ type: 'error' | 'code'; code: string }> = async (rawCode) => {
+    let finalCode: { type: 'error' | 'code'; code: string } = {
+        type: 'error',
+        code: '',
+    };
+
+    try {
+        const result = await esbuild.transform(rawCode, {
+            minify: true,
+            format: 'iife',
+            platform: 'browser',
+            tsconfigRaw: `{
+                "compilerOptions": {
+                    "allowJs": true,
+                    "esModuleInterop": true,
+                    "forceConsistentCasingInFileNames": true,
+                    "isolatedModules": true,
+                    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+                    "module": "ESNext",
+                    "noEmit": true,
+                    "resolveJsonModule": true,
+                    "skipLibCheck": true,
+                    "strict": true,
+                    "useUnknownInCatchVariables": false,
+                    "target": "ESNext",
+                },
+              }`,
+        });
+
+        finalCode = { type: 'code', code: result.code ?? '' };
+    } catch (error) {
+        let output = `Failed with ${error?.errors?.length} error(s):\n\n`;
+
+        let formatted = await esbuild.formatMessages(error?.errors, {
+            kind: 'error',
+        });
+
+        formatted.forEach((str) => {
+            output += str;
+        });
+
+        finalCode = { type: 'error', code: output ?? error.message };
+    }
+
+    return finalCode;
+};
+
 export const codeReducer = codeSlice.reducer;
 export const {
     setLanguage,

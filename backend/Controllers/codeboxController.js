@@ -21,14 +21,10 @@ exports.createBox = BigPromise(async (req, res, next) => {
     if (
         language !== 'JAVASCRIPT' &&
         language !== 'CPP' &&
-        language !== 'JAVA' &&
         language !== 'PYTHON' &&
+        // TODO: typescript
         language !== 'REACT' &&
-        language !== 'REACT TYPESCRIPT' &&
-        language !== 'NEXTJS' &&
-        language !== 'REMIX' &&
-        language !== 'NODEJS' &&
-        language !== 'ANGULAR'
+        language !== 'REACT TYPESCRIPT'
     )
         return next(CustomError(res, 'Language is not valid', 400));
 
@@ -101,26 +97,18 @@ exports.joinBox = BigPromise(async (req, res, next) => {
 });
 
 exports.runCode = BigPromise(async (req, res, next) => {
-    // const {} = req.user;
     const { language, code, input } = req.body;
 
     if (!language || !code)
         return next(CustomError(res, 'All fields are required', 400));
 
-    if (
-        language !== 'JAVA' &&
-        language !== 'CPP' &&
-        language !== 'JAVASCRIPT' &&
-        language !== 'PYTHON'
-    )
+    if (language !== 'CPP' && language !== 'PYTHON')
         return next(CustomError(res, 'Language not supported', 400));
 
     let message;
 
     if (language === 'PYTHON') {
         message = await executePythonCode(code, input);
-    } else if (language === 'JAVASCRIPT') {
-        message = await executeJSCode(code, input);
     } else {
         message = 'Language not supported';
     }

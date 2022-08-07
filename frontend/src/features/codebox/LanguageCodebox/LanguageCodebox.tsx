@@ -12,13 +12,18 @@ import {
     ChatSide,
     UserSide,
     ShareSide,
+    transformCode,
 } from 'features';
+
+import { Hook, Unhook } from 'console-feed';
 
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 
 import { AxiosResponse } from 'axios';
 import { runCodeResponse, sidebarIcons } from 'Types';
+
+import type { Message } from 'console-feed/lib/definitions/Component';
 
 import ErrorToast from 'Utils/Toast/Error';
 
@@ -41,9 +46,10 @@ const sideBarIcons: sidebarIcons = [
 ];
 
 const LanguageCodebox = () => {
-    const { language } = useAppSelector((state) => state.codebox);
+    const { language, allFiles } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
-    const outputContent = useRef<HTMLTextAreaElement | null>(null);
+    const [outputContent, setOuputContent] = useState<Message[]>([]);
+    const iframeRef = useRef<HTMLIFrameElement | null>(null);
     const { sidebarComponent } = useAppSelector((state) => state.codebox);
     const dispatch = useAppDispatch();
 
@@ -52,12 +58,21 @@ const LanguageCodebox = () => {
         Error
     >(
         async () =>
-            // @ts-ignore
-            await executeCodebox(language, monacoEditorCode, inputContent),
+            await executeCodebox(
+                // @ts-ignore
+                language,
+                allFiles?.[Object.keys(allFiles)?.pop() ?? ''].code,
+                inputContent,
+            ),
         {
             onSuccess(data: AxiosResponse<runCodeResponse>) {
-                outputContent.current &&
-                    (outputContent.current.value = data.data.message);
+                setOuputContent([
+                    {
+                        data: [data.data.message],
+                        id: Date.now().toString(),
+                        method: 'log',
+                    },
+                ]);
             },
             onError(error: Error) {
                 console.log(error);
@@ -67,14 +82,99 @@ const LanguageCodebox = () => {
     );
 
     const executeCode = async () => {
-        await mutateAsync();
+        if (Object.keys(allFiles).pop()?.split('.').at(-1) === ('js' || 'ts')) {
+            const result = await transformCode(
+                allFiles?.[Object.keys(allFiles)?.pop() ?? ''].code ?? '',
+            );
+
+            if (result.type === 'error') {
+                setOuputContent([
+                    {
+                        data: [result.code.toString()],
+                        id: Date.now().toString(),
+                        method: 'error',
+                    },
+                ]);
+            } else if (iframeRef.current && result.type === 'code') {
+                iframeRef.current.contentWindow?.document?.body
+                    .appendChild(document.createElement('script'))
+                    .appendChild(
+                        document.createTextNode(`
+                    window.onerror = function (err) {
+                        window.parent.postMessage(
+                          { source: "iframe", type: "iframe_error", message: err },
+                          "*"
+                        );
+                      };
+        
+                    window.onunhandledrejection = function (err) {
+                        window.parent.postMessage(
+                            { source: "iframe", type: "iframe_error", message: err.reason },
+                            "*"
+                        );
+                    };
+        
+                    window.onmessage = function (event) {
+                        try {
+                          eval(event.data);
+                        } catch (error) {
+                           throw error;
+                        }
+                    };`),
+                    );
+
+                setTimeout(() => {
+                    iframeRef.current?.contentWindow?.postMessage(
+                        result.code,
+                        '*',
+                    );
+                }, 50);
+            }
+        } else {
+            await mutateAsync();
+        }
     };
 
     useEffect(() => {
+        window.onmessage = (message: MessageEvent) => {
+            if (message.data && message.data.source === 'iframe') {
+                console.log('m', message);
+
+                setOuputContent([
+                    {
+                        data: [message.data.message.toString()],
+                        id: Date.now().toString(),
+                        method: 'error',
+                    },
+                ]);
+            }
+        };
+
+        iframeRef.current?.contentWindow &&
+            Hook(
+                // @ts-ignore
+                iframeRef.current.contentWindow?.console,
+                (log: any) => {
+                    setOuputContent([
+                        {
+                            data: [log.data?.[0]],
+                            id: Date.now().toString(),
+                            method: 'log',
+                        },
+                    ]);
+                },
+                false,
+            );
+
         dispatch(setSidebarComponent({ component: 'Users' }));
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        return () => {
+            iframeRef.current?.contentWindow &&
+                // @ts-ignore
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                Unhook(iframeRef.current.contentWindow?.console);
+        };
+    }, [dispatch]);
 
     return (
         <>
@@ -167,6 +267,7 @@ const LanguageCodebox = () => {
                         setInputContent={setInputContent}
                         outputContent={outputContent}
                         isExecutingCode={isLoading}
+                        iframeRef={iframeRef}
                     />
                 </Allotment.Pane>
             </Allotment>

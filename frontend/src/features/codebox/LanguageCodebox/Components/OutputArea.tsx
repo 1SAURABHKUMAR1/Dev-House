@@ -1,9 +1,10 @@
-import { Box, Button, Flex, Image, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text, Tooltip } from '@chakra-ui/react';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { InputField, formatCode, resetCodeFn } from 'features';
 
 import { outputMonacoArea } from 'Types';
+import { Console } from 'console-feed';
 
 const OutputArea = ({
     executeCode,
@@ -11,6 +12,7 @@ const OutputArea = ({
     outputContent,
     setInputContent,
     isExecutingCode,
+    iframeRef,
 }: outputMonacoArea) => {
     const { language, selectedFile, allFiles, codeBoxType, codebox_id } =
         useAppSelector((state) => state.codebox);
@@ -106,12 +108,28 @@ const OutputArea = ({
                     setValue={setInputContent}
                     readonly={false}
                 />
-
-                <InputField
-                    label="Output -"
-                    readonly={true}
-                    valueRef={outputContent}
-                />
+                <Flex height="50%" width="100%" flexDir="column" pt="2" pb="3">
+                    <Text as="p" paddingInline="2" mb="2" fontWeight="semibold">
+                        Output:-
+                    </Text>
+                    <Console
+                        styles={{
+                            BASE_FONT_FAMILY: 'League Mono, sans-serif;',
+                            BASE_FONT_SIZE: 13,
+                            LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
+                            LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
+                        }}
+                        logs={outputContent}
+                        variant="light"
+                    />
+                </Flex>
+                <iframe
+                    height="0"
+                    width="0"
+                    ref={iframeRef}
+                    title="code-runner"
+                    style={{ display: 'none' }}
+                ></iframe>
             </Flex>
         </Box>
     );

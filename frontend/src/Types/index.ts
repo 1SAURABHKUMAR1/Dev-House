@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { IconType } from 'react-icons';
-import { Message } from 'console-feed/lib/definitions/Component';
+import type { IconType } from 'react-icons';
+import type { Message } from 'console-feed/lib/definitions/Component';
 import { AppDispatch } from 'store/store';
 
 export interface Children {
@@ -487,8 +487,9 @@ export interface outputMonacoArea {
     executeCode: () => void;
     inputContent: string;
     setInputContent: React.Dispatch<React.SetStateAction<string>>;
-    outputContent: React.RefObject<HTMLTextAreaElement>;
+    outputContent: Message[];
     isExecutingCode: boolean;
+    iframeRef: React.MutableRefObject<HTMLIFrameElement | null>;
 }
 
 export interface runCodeResponse {

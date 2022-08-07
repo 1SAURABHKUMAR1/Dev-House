@@ -25,20 +25,10 @@ export const codes: {
         'index.js': {
             code: `console.log("Hello World")`,
         },
-        '/buildConfig.json': {
-            code: `{
-  "entry_file":"index.js"
-}`,
-        },
     },
     TYPESCRIPT: {
         'index.ts': {
             code: `console.log('hello')`,
-        },
-        '/buildConfig.json': {
-            code: `{
-  "entry_file":"index.ts"
-}`,
         },
     },
     PYTHON: {

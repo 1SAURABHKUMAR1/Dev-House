@@ -21,6 +21,7 @@ import { codeBoxType, CreateCodeboxProps } from 'Types';
 
 const languageList: Array<codeBoxType> = [
     'JAVASCRIPT',
+    'TYPESCRIPT',
     'CPP',
     'PYTHON',
     'REACT',

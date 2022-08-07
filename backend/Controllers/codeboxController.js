@@ -20,9 +20,9 @@ exports.createBox = BigPromise(async (req, res, next) => {
 
     if (
         language !== 'JAVASCRIPT' &&
+        language !== 'TYPESCRIPT' &&
         language !== 'CPP' &&
         language !== 'PYTHON' &&
-        // TODO: typescript
         language !== 'REACT' &&
         language !== 'REACT TYPESCRIPT'
     )

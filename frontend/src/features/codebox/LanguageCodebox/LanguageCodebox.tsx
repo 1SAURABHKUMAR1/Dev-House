@@ -1,5 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
+
 import { useMutation } from 'react-query';
 import { executeCodebox } from 'Services';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -48,7 +49,7 @@ const sideBarIcons: sidebarIcons = [
 const LanguageCodebox = () => {
     const { language, allFiles } = useAppSelector((state) => state.codebox);
     const [inputContent, setInputContent] = useState('');
-    const [outputContent, setOuputContent] = useState<Message[]>([]);
+    const [outputContent, setOutputContent] = useState<Message[]>([]);
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     const { sidebarComponent } = useAppSelector((state) => state.codebox);
     const dispatch = useAppDispatch();
@@ -66,13 +67,25 @@ const LanguageCodebox = () => {
             ),
         {
             onSuccess(data: AxiosResponse<runCodeResponse>) {
-                setOuputContent([
-                    {
-                        data: [data.data.message],
-                        id: Date.now().toString(),
-                        method: 'log',
-                    },
-                ]);
+                Array.isArray(data.data.message)
+                    ? data.data.message.forEach((message) =>
+                          setOutputContent((prev) => [
+                              ...prev,
+                              {
+                                  data: [message],
+                                  id: Date.now().toString(),
+                                  method: 'log',
+                              },
+                          ]),
+                      )
+                    : setOutputContent((prev) => [
+                          ...prev,
+                          {
+                              data: [data.data.message],
+                              id: Date.now().toString(),
+                              method: 'log',
+                          },
+                      ]);
             },
             onError(error: Error) {
                 console.log(error);
@@ -82,13 +95,18 @@ const LanguageCodebox = () => {
     );
 
     const executeCode = async () => {
-        if (Object.keys(allFiles).pop()?.split('.').at(-1) === ('js' || 'ts')) {
+        const ext = Object.keys(allFiles).pop()?.split('.').at(-1);
+
+        if (ext === 'js' || ext === 'ts') {
+            setOutputContent([]);
+
             const result = await transformCode(
                 allFiles?.[Object.keys(allFiles)?.pop() ?? ''].code ?? '',
+                ext,
             );
 
             if (result.type === 'error') {
-                setOuputContent([
+                setOutputContent(() => [
                     {
                         data: [result.code.toString()],
                         id: Date.now().toString(),
@@ -138,9 +156,8 @@ const LanguageCodebox = () => {
     useEffect(() => {
         window.onmessage = (message: MessageEvent) => {
             if (message.data && message.data.source === 'iframe') {
-                console.log('m', message);
-
-                setOuputContent([
+                setOutputContent((prev) => [
+                    ...prev,
                     {
                         data: [message.data.message.toString()],
                         id: Date.now().toString(),
@@ -155,10 +172,13 @@ const LanguageCodebox = () => {
                 // @ts-ignore
                 iframeRef.current.contentWindow?.console,
                 (log: any) => {
-                    setOuputContent([
+                    setOutputContent((prev) => [
+                        ...prev,
                         {
-                            data: [log.data?.[0]],
-                            id: Date.now().toString(),
+                            data: [...log.data],
+                            id: String(
+                                Date.now() + Math.floor(Math.random() * 100000),
+                            ),
                             method: 'log',
                         },
                     ]);

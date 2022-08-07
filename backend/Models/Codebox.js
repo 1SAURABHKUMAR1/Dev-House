@@ -31,15 +31,11 @@ const codeboxSchema = new mongoose.Schema({
         enum: {
             values: [
                 'JAVASCRIPT',
+                'TYPESCRIPT',
                 'CPP',
-                'JAVA',
                 'PYTHON',
                 'REACT',
                 'REACT TYPESCRIPT',
-                'NEXTJS',
-                'REMIX',
-                'NODEJS',
-                'ANGULAR',
             ],
         },
     },
@@ -65,8 +61,8 @@ codeboxSchema.pre('remove', async function () {
 codeboxSchema.pre('save', async function (next) {
     if (
         this.language === 'JAVASCRIPT' ||
+        this.language === 'TYPESCRIPT' ||
         this.language === 'CPP' ||
-        this.language === 'JAVA' ||
         this.language === 'PYTHON'
     ) {
         this.codebox_type = 'LANGUAGE';

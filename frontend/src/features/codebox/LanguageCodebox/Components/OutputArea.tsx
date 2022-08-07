@@ -1,10 +1,12 @@
 import { Box, Button, Flex, Image, Text, Tooltip } from '@chakra-ui/react';
+import { memo } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { InputField, formatCode, resetCodeFn } from 'features';
 
 import { outputMonacoArea } from 'Types';
 import { Console } from 'console-feed';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const OutputArea = ({
     executeCode,
@@ -64,7 +66,6 @@ const OutputArea = ({
                                 allFiles,
                             )
                         }
-                        disabled={language !== 'JAVASCRIPT'}
                     >
                         <Image
                             src={`/images/prettier.svg`}
@@ -112,16 +113,25 @@ const OutputArea = ({
                     <Text as="p" paddingInline="2" mb="2" fontWeight="semibold">
                         Output:-
                     </Text>
-                    <Console
-                        styles={{
-                            BASE_FONT_FAMILY: 'League Mono, sans-serif;',
-                            BASE_FONT_SIZE: 13,
-                            LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
-                            LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
-                        }}
-                        logs={outputContent}
-                        variant="light"
-                    />
+
+                    <Box overflow="auto" height="100%">
+                        <ErrorBoundary
+                            FallbackComponent={ErrorFallback}
+                            resetKeys={[outputContent]}
+                        >
+                            <Console
+                                styles={{
+                                    BASE_FONT_FAMILY:
+                                        'League Mono, sans-serif;',
+                                    BASE_FONT_SIZE: 13,
+                                    LOG_ERROR_COLOR: 'hsl(0deg 99% 57% / 90%)',
+                                    LOG_WARN_COLOR: 'hsl(60deg 91% 57% / 90%)',
+                                }}
+                                logs={outputContent}
+                                variant="light"
+                            />
+                        </ErrorBoundary>
+                    </Box>
                 </Flex>
                 <iframe
                     height="0"
@@ -134,5 +144,15 @@ const OutputArea = ({
         </Box>
     );
 };
+
+const ErrorFallback = memo(({ error }: { error: Error }) => {
+    return (
+        <Flex p="4" flexDir="column" textAlign="center" gap="2">
+            <Text as="span" color="red">
+                Something went wrong
+            </Text>
+        </Flex>
+    );
+});
 
 export default OutputArea;

@@ -411,6 +411,7 @@ export interface CreateCodeboxProps {
 
 export type codeBoxType =
     | 'JAVASCRIPT'
+    | 'TYPESCRIPT'
     | 'CPP'
     | 'PYTHON'
     | 'REACT'
@@ -494,7 +495,7 @@ export interface outputMonacoArea {
 
 export interface runCodeResponse {
     success: boolean;
-    message: string;
+    message: string[];
 }
 
 export interface reactResizableProps {

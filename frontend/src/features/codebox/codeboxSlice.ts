@@ -87,6 +87,7 @@ const codeSlice = createSlice({
         ) => {
             if (
                 action.payload.language === 'JAVASCRIPT' ||
+                action.payload.language === 'TYPESCRIPT' ||
                 action.payload.language === 'CPP' ||
                 action.payload.language === 'PYTHON'
             ) {
@@ -103,6 +104,7 @@ const codeSlice = createSlice({
         ) => {
             if (
                 action.payload.language === 'JAVASCRIPT' ||
+                action.payload.language === 'TYPESCRIPT' ||
                 action.payload.language === 'CPP' ||
                 action.payload.language === 'PYTHON'
             ) {
@@ -121,41 +123,7 @@ const codeSlice = createSlice({
             state._id = action.payload._id;
         },
         resetState: (state: intialCodebox) => {
-            state.codeBoxType = 'LIBRARY';
-            state.language = 'REACT';
-
-            state.authenticated = 'IDLE';
-            state.qrcode = {
-                id: '',
-                secure_url: '',
-            };
-            state._id = '';
-            state.name = '';
-            state.codebox_id = '';
-            state.creator = {
-                name: '',
-                _id: '',
-                email: '',
-                profile_photo: {
-                    id: '',
-                    secure_url: '',
-                },
-                user_id: '',
-                username: '',
-            };
-
-            state.sidebarComponent = 'None';
-            state.consoleLogs = [];
-
-            state.allFiles = {
-                'Loading....': {
-                    code: '',
-                },
-            };
-            state.selectedFile = '';
-
-            state.users = [];
-            state.chats = [];
+            return initialState;
         },
         setConsoleLogs: (
             state: intialCodebox,
@@ -639,7 +607,11 @@ export const compileCode = async (
 
 export const transformCode: (
     rawCode: string,
-) => Promise<{ type: 'error' | 'code'; code: string }> = async (rawCode) => {
+    fileExtension: 'js' | 'ts',
+) => Promise<{ type: 'error' | 'code'; code: string }> = async (
+    rawCode,
+    fileExtension,
+) => {
     let finalCode: { type: 'error' | 'code'; code: string } = {
         type: 'error',
         code: '',
@@ -666,6 +638,12 @@ export const transformCode: (
                     "target": "ESNext",
                 },
               }`,
+            loader:
+                fileExtension === 'js'
+                    ? 'js'
+                    : fileExtension === 'ts'
+                    ? 'ts'
+                    : 'js',
         });
 
         finalCode = { type: 'code', code: result.code ?? '' };

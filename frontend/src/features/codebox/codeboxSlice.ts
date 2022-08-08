@@ -6,6 +6,7 @@ import {
     codeBoxType,
     fileFormat,
     formatCodeType,
+    initialChatType,
     intialCodebox,
     setLanguageAction,
     socketCodeboxUser,
@@ -213,7 +214,11 @@ const codeSlice = createSlice({
             if (Array.isArray(action.payload.user)) {
                 state.users = action.payload.user;
             } else {
-                const isPresent = state.users.find(
+                const existingUsers: socketCodeboxUser[] = JSON.parse(
+                    JSON.stringify(state.users),
+                );
+
+                const isPresent = existingUsers.find(
                     (singleUser) =>
                         // @ts-ignore
                         singleUser.userId === action.payload.user?.userId &&
@@ -230,7 +235,11 @@ const codeSlice = createSlice({
             state: intialCodebox,
             action: PayloadAction<{ userId: string }>,
         ) => {
-            state.users = state.users.filter(
+            const existingUsers: socketCodeboxUser[] = JSON.parse(
+                JSON.stringify(state.users),
+            );
+
+            state.users = existingUsers.filter(
                 (user) => user.userId !== action.payload.userId,
             );
         },
@@ -241,7 +250,11 @@ const codeSlice = createSlice({
             if (Array.isArray(action.payload.chat)) {
                 state.chats = action.payload.chat;
             } else {
-                const isPresent = state.chats.find(
+                const existingChats: initialChatType = JSON.parse(
+                    JSON.stringify(state.chats),
+                );
+
+                const isPresent = existingChats.find(
                     // @ts-ignore
                     (chat) => chat.messageId === action.payload.chat.messageId,
                 );

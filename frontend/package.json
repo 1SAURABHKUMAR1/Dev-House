@@ -19,7 +19,7 @@
     "@types/react-resizable": "^3.0.1",
     "allotment": "^1.14.2",
     "axios": "^0.27.2",
-    "console-feed": "^3.4.0",
+    "console-feed": "3.3.0",
     "esbuild-wasm": "^0.14.51",
     "framer-motion": "^6.3.10",
     "freeice": "^2.2.2",

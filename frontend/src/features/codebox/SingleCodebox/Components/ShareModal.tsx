@@ -9,11 +9,12 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { CopyField } from 'Components';
-import { useAppSelector } from 'store/hooks';
+import { useParams } from 'react-router-dom';
 
 const ShareModal = () => {
     const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
-    const { codebox_id } = useAppSelector((state) => state.codebox);
+
+    const { codeboxId } = useParams();
 
     return (
         <>
@@ -40,7 +41,7 @@ const ShareModal = () => {
 
                     <ModalBody pb={4}>
                         <CopyField
-                            inputCopyValue={codebox_id}
+                            inputCopyValue={codeboxId ?? ''}
                             labelText="Room Link"
                             marginTop="0rem"
                             fieldType="ROOM_URL"
@@ -49,7 +50,7 @@ const ShareModal = () => {
                         />
 
                         <CopyField
-                            inputCopyValue={codebox_id}
+                            inputCopyValue={codeboxId ?? ''}
                             labelText="Room Id"
                             marginTop="0.7rem"
                             fieldType="ROOM_PASSWORD"

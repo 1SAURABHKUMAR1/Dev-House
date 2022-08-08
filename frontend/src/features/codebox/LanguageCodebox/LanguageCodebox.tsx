@@ -97,9 +97,9 @@ const LanguageCodebox = () => {
     const executeCode = async () => {
         const ext = Object.keys(allFiles).pop()?.split('.').at(-1);
 
-        if (ext === 'js' || ext === 'ts') {
-            setOutputContent([]);
+        setOutputContent([]);
 
+        if (ext === 'js' || ext === 'ts') {
             const result = await transformCode(
                 allFiles?.[Object.keys(allFiles)?.pop() ?? ''].code ?? '',
                 ext,

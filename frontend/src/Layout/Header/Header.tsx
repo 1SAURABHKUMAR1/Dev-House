@@ -1,7 +1,6 @@
 import {
     Box,
     Flex,
-    Text,
     IconButton,
     Button,
     Stack,
@@ -85,7 +84,10 @@ const Header = () => {
                     flex={{ base: 1 }}
                     justify={{ base: 'center', md: 'start' }}
                 >
-                    <Text
+                    <Flex
+                        alignItems="center"
+                        height="2rem"
+                        width="2rem"
                         textAlign={useBreakpointValue({
                             base: 'center',
                             md: 'left',
@@ -93,8 +95,15 @@ const Header = () => {
                         fontFamily="heading"
                         color={useColorModeValue('gray.800', 'white')}
                     >
-                        <Link to="/"> Logo</Link>
-                    </Text>
+                        <Link to="/">
+                            <img
+                                src="/logo-dark.png"
+                                height="100%"
+                                width="100%"
+                                alt="logo"
+                            ></img>
+                        </Link>
+                    </Flex>
                 </Flex>
 
                 <Stack

@@ -6,7 +6,7 @@
 
 > A code editor and podcast studio for developers build with Chakra UI , ReactJS , NodeJS , MongoDB , Express, Redux Toolkit , Webrtc , Monaco , Esbuild , React Query , Socket.io and Typescript
 
-<!-- mp4 / -->
+https://user-images.githubusercontent.com/68764149/183444186-d99bff6e-a3fa-4bbf-8665-fbc28fcfbb9d.mp4
 
 ## [Live Site](https://dev-house-code.vercel.app)
 
@@ -126,61 +126,66 @@ CLIENT_URL =
 
 ## Screenshots :-
 
+### Home
+
+![Screenshot (240)](https://user-images.githubusercontent.com/68764149/183444629-d8a7a0b0-674b-4de4-952c-146cf9d0841b.png)
+
 ### Login / Signup
 
-<!-- photo -->
+![Screenshot (248)](https://user-images.githubusercontent.com/68764149/183444870-d6091fec-2d25-4cc7-a740-44bd8d62c130.png)
 
 ### Voice Room
 
-<!-- photo -->
+![Screenshot (241)](https://user-images.githubusercontent.com/68764149/183444940-90141d17-71cf-49d4-93fd-a4a0c0863be1.png)
+![Screenshot (242)](https://user-images.githubusercontent.com/68764149/183445073-5a964829-cb95-448a-9325-020a6fe3f29b.png)
 
 ### Voice Room Chat Box
 
-<!-- photo -->
+![Screenshot (243)](https://user-images.githubusercontent.com/68764149/183445135-643c1b55-24c0-4c10-b0b4-baca78baee1b.png)
 
 ### Code Room
 
-<!-- photo -->
+![Screenshot (247)](https://user-images.githubusercontent.com/68764149/183445204-9c7893d3-73ce-4f82-8ef5-b717db7e8cd6.png)
 
 ### Code Room Join
 
-<!-- photo -->
+![Screenshot (249)](https://user-images.githubusercontent.com/68764149/183445754-e043d7a0-cf27-46f7-96e6-711671c65920.png)
 
 ### Code Room Create
 
-<!-- photo -->
-
+![Screenshot (250)](https://user-images.githubusercontent.com/68764149/183445837-7aa5c677-8857-4110-984a-51b6d34b22eb.png)
+  
 ### Code Room Chat Box
 
-<!-- photo -->
+![Screenshot (254)](https://user-images.githubusercontent.com/68764149/183446258-a33e9f8f-d3d4-4013-aacb-62c23ba96bb3.png)
 
 ### Code Room Create File / Folder
 
-<!-- photo -->
-
-### Code Room Remove File / Folder
-
-<!-- photo -->
+![Screenshot (251)](https://user-images.githubusercontent.com/68764149/183445993-b6bada5e-d7f2-4e4b-9d03-36ca6506c1a1.png)
 
 ### Code Room Rename File / Folder
 
-<!-- photo -->
+![Screenshot (252)](https://user-images.githubusercontent.com/68764149/183446082-d7dfcd55-5d7a-4e47-8787-4d5a4ee46652.png)
+
+### Code Room Remove File / Folder
+
+![Screenshot (253)](https://user-images.githubusercontent.com/68764149/183446176-e45b69c8-0987-4a2c-b12d-0747af78b90a.png)
 
 ### Code Room Python Support
 
-<!-- photo -->
+![Screenshot (244)](https://user-images.githubusercontent.com/68764149/183445393-d857876c-55d8-4b09-b048-de24353dc309.png)
 
 ### Code Room Javascript Support
 
-<!-- photo -->
+![Screenshot (245)](https://user-images.githubusercontent.com/68764149/183445467-d77d269c-ffb9-4128-8575-e33daf29eafc.png)
 
 ### Code Room Typescript Support
 
-<!-- photo -->
+![Screenshot (246)](https://user-images.githubusercontent.com/68764149/183445537-8e614847-416f-4a5e-8a1e-a6db8750492a.png)
 
 ### Code Room React Support
 
-<!-- photo -->
+![Screenshot (247)](https://user-images.githubusercontent.com/68764149/183445583-7c752b11-a438-4194-b6b5-8fcb7bb3f5da.png)
 
 <br>
 

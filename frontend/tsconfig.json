@@ -6,11 +6,16 @@
         //     "@components/*": ["Components/*"],
         //     "@features/*": ["features/*"]
         // },
-        "types": ["react/next", "react-dom/next", "node"],
+        "types": [
+            "react/next",
+            "react-dom/next",
+            "node",
+            "@testing-library/cypress"
+        ],
         "allowJs": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "isolatedModules": true,
+        "isolatedModules": false,
         "jsx": "preserve",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "module": "ESNext",

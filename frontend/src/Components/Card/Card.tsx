@@ -3,7 +3,7 @@ import React from 'react';
 
 import { CardProps } from 'Types';
 
-const Card = ({ title, icon, children }: CardProps) => {
+const Card = ({ title, icon, children, dataTestId }: CardProps) => {
     return (
         <Box
             width={{ ssm: '100%', sm: '90%' }}
@@ -17,6 +17,7 @@ const Card = ({ title, icon, children }: CardProps) => {
             position="relative"
             alignItems="center"
             margin="auto"
+            data-testid={dataTestId}
         >
             <Box
                 display="flex"

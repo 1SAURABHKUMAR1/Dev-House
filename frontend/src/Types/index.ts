@@ -13,6 +13,7 @@ export interface CardProps {
     title: string;
     icon: React.ReactNode;
     children: React.ReactNode;
+    dataTestId: string;
 }
 
 export interface AuthButtonProps {

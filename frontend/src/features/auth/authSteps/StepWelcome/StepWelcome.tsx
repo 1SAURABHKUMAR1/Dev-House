@@ -10,6 +10,7 @@ const StepWelcome = ({ onClick }: AuthStepProps) => {
                 icon="waving-hand"
                 title="Welcome to Devhouse!"
                 key={'headercard'}
+                dataTestId="welcome-card"
             >
                 <Text
                     textAlign="center"

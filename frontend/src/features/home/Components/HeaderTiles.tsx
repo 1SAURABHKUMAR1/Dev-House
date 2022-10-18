@@ -40,24 +40,30 @@ const HeaderTiles = () => {
                         alignItems="center"
                         flexDirection={{ ssm: 'column', mdlg: 'row' }}
                     >
-                        <Tile
-                            iconName="people"
-                            headingTitle="Knowledge sharing"
-                            comment="Use code, apps, and templates collectively. Learn from each other and bake-in best practices"
-                            key="people card"
-                        />
-                        <Tile
-                            iconName="npm"
-                            headingTitle="Supercharged with npm"
-                            comment="Use private packages, or any of the 1M+ public ones, to build powerful apps quickly."
-                            key="npm card"
-                        />
-                        <Tile
-                            iconName="flash"
-                            headingTitle="Optimized for React"
-                            comment="Custom environments built specifically for React, HTML/CSS, Javascript, CPP, TSX and many more."
-                            key="flash card"
-                        />
+                        <span data-testid="header-cards-one">
+                            <Tile
+                                iconName="people"
+                                headingTitle="Knowledge sharing"
+                                comment="Use code, apps, and templates collectively. Learn from each other and bake-in best practices"
+                                key="people card"
+                            />
+                        </span>
+                        <span data-testid="header-cards-two">
+                            <Tile
+                                iconName="npm"
+                                headingTitle="Supercharged with npm"
+                                comment="Use private packages, or any of the 1M+ public ones, to build powerful apps quickly."
+                                key="npm card"
+                            />
+                        </span>
+                        <span data-testid="header-cards-three">
+                            <Tile
+                                iconName="flash"
+                                headingTitle="Optimized for React"
+                                comment="Custom environments built specifically for React, HTML/CSS, Javascript, CPP, TSX and many more."
+                                key="flash card"
+                            />
+                        </span>
                     </Flex>
                 </Box>
             </Box>

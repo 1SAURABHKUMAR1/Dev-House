@@ -10,7 +10,8 @@
             "react/next",
             "react-dom/next",
             "node",
-            "@testing-library/cypress"
+            "@testing-library/cypress",
+            "cypress-file-upload"
         ],
         "allowJs": true,
         "esModuleInterop": true,

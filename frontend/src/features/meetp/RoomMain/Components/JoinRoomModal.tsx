@@ -83,7 +83,7 @@ const JoinRoomModal = ({
             >
                 <ModalOverlay backdropFilter="blur(3px)" />
 
-                <ModalContent>
+                <ModalContent data-testid="join-room-modal">
                     <ModalHeader
                         justifyContent="space-between"
                         alignItems="center"
@@ -92,7 +92,10 @@ const JoinRoomModal = ({
                         <Text fontSize="1.1rem" fontWeight="700">
                             Join Room
                         </Text>
-                        <ModalCloseButton position="unset" />
+                        <ModalCloseButton
+                            position="unset"
+                            data-testid="join-room-modal-close"
+                        />
                     </ModalHeader>
 
                     <ModalBody pb="1.5rem">
@@ -139,7 +142,7 @@ const JoinRoomModal = ({
                                             ? 'text'
                                             : 'password'
                                     }
-                                    placeholder="Enter room passsword..."
+                                    placeholder="Enter room password..."
                                     bg="main.input-bg"
                                     color="main.text.white"
                                     required={true}

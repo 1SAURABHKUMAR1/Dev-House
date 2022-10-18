@@ -1,7 +1,6 @@
 import {
     ModalBody,
     ModalCloseButton,
-    ModalContent,
     ModalFooter,
     ModalHeader,
     Text,
@@ -27,7 +26,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
     };
 
     return (
-        <ModalContent>
+        <>
             <ModalHeader
                 justifyContent="space-between"
                 alignItems="center"
@@ -72,7 +71,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                 <ShareModalFooter qrModalOnOpen={onOpen} />
             </ModalFooter>
             <QrModal isOpen={isOpen} onClose={onClose} />
-        </ModalContent>
+        </>
     );
 };
 

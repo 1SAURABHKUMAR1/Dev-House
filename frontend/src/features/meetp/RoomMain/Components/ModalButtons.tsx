@@ -24,6 +24,7 @@ const ModalButtons = ({ roomType, setRoomType }: ModalButtonProps) => {
                     }`}
                     onClick={() => handleRoomType('OPEN')}
                     cursor="pointer"
+                    data-testid="create-room-open"
                 >
                     <Image src="/images/open.svg" boxSize="14" />
                     <Text fontWeight="600">Open</Text>
@@ -43,6 +44,7 @@ const ModalButtons = ({ roomType, setRoomType }: ModalButtonProps) => {
                     }`}
                     onClick={() => handleRoomType('SOCIAL')}
                     cursor="pointer"
+                    data-testid="create-room-social"
                 >
                     <Image src="/images/social.svg" boxSize="14" />
                     <Text fontWeight="600">Social</Text>
@@ -62,6 +64,7 @@ const ModalButtons = ({ roomType, setRoomType }: ModalButtonProps) => {
                     }`}
                     onClick={() => handleRoomType('PRIVATE')}
                     cursor="pointer"
+                    data-testid="create-room-private"
                 >
                     <Image src="/images/private.svg" boxSize="14" />
                     <Text fontWeight="600">Private</Text>

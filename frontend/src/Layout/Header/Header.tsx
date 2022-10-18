@@ -31,7 +31,7 @@ import { useState } from 'react';
 const Header = () => {
     const { isOpen, onToggle } = useDisclosure();
     const greyColor = useColorModeValue('gray.600', 'gray.200');
-    const { login, photo } = useAppSelector((state) => state.auth);
+    const { login, photo, name } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const [openedMenu, setOpendMenu] = useState(false);
 
@@ -65,6 +65,7 @@ const Header = () => {
                     flex={{ base: 1, md: 'auto' }}
                     ml={{ base: -2 }}
                     display={{ base: 'flex', md: 'none' }}
+                    data-testid="hamburgur-menu"
                 >
                     <IconButton
                         onClick={onToggle}
@@ -83,6 +84,7 @@ const Header = () => {
                 <Flex
                     flex={{ base: 1 }}
                     justify={{ base: 'center', md: 'start' }}
+                    data-testid="header-logo"
                 >
                     <Flex
                         alignItems="center"
@@ -112,7 +114,7 @@ const Header = () => {
                     direction="row"
                     spacing={5}
                 >
-                    <Link to="/code-box">
+                    <Link to="/code-box" data-testid="codebox-button">
                         <Button
                             fontSize="sm"
                             fontWeight={500}
@@ -125,7 +127,7 @@ const Header = () => {
                         </Button>
                     </Link>
 
-                    <Link to="/meetp">
+                    <Link to="/meetp" data-testid="meetp-button">
                         <Button
                             fontSize="sm"
                             fontWeight={500}
@@ -139,7 +141,7 @@ const Header = () => {
                     </Link>
 
                     {!login && (
-                        <Link to="/login">
+                        <Link to="/login" data-testid="login-button">
                             <Button
                                 fontSize="sm"
                                 fontWeight={500}
@@ -154,7 +156,7 @@ const Header = () => {
                     )}
 
                     {!login && (
-                        <Link to="/authenticate">
+                        <Link to="/authenticate" data-testid="signup-button">
                             <Button
                                 display="inline-flex"
                                 fontSize="sm"
@@ -171,7 +173,7 @@ const Header = () => {
                     )}
 
                     {login && (
-                        <Link to="/">
+                        <Link to="/" data-testid="logout-button">
                             <Button
                                 fontSize="sm"
                                 fontWeight={500}
@@ -204,17 +206,23 @@ const Header = () => {
                                         }`,
                                         margin: '0px',
                                     }}
+                                    data-testid="black-area-header"
                                 ></span>
-                                <MenuButton>
+
+                                <MenuButton data-testid="avatar-button">
                                     <Avatar
                                         marginRight="0.5rem"
                                         size={'sm'}
-                                        name="User Profile"
+                                        name={name}
                                         src={photo}
+                                        data-testid="user-avatar-header"
                                     />
                                 </MenuButton>
 
-                                <MenuList zIndex={'9999'}>
+                                <MenuList
+                                    zIndex={'9999'}
+                                    data-testid="logout-menu-button"
+                                >
                                     <Link to="/" onClick={handleLogout}>
                                         <MenuItem>Logout</MenuItem>
                                     </Link>

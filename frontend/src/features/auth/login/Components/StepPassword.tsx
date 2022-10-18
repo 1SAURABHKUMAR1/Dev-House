@@ -64,7 +64,8 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
             <Card
                 icon="password"
                 title="Enter your password"
-                key={'phone number'}
+                key={'password'}
+                dataTestId="login-password-card"
             >
                 <Box marginTop="1.6rem" width="18rem">
                     <Text

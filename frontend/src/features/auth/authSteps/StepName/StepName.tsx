@@ -39,6 +39,7 @@ const StepName = ({ onClick }: AuthStepProps) => {
                 icon="handshake"
                 title="What's your full name?"
                 key={'namecard'}
+                dataTestId="activate-full-name-card"
             >
                 <Input
                     placeholder="Your fullname"

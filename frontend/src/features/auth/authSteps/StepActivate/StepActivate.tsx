@@ -51,6 +51,7 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
                 position="relative"
                 alignItems="center"
                 margin="auto"
+                data-testid="activate-card"
             >
                 <Spinner
                     thickness="0.27rem"
@@ -58,6 +59,7 @@ const StepActivate = ({ onClick }: AuthStepProps) => {
                     emptyColor="main.input-bg"
                     color="main.indigo"
                     size="xl"
+                    data-testid="activate-spinner"
                 />
                 <Text
                     textAlign="center"

@@ -53,7 +53,12 @@ const StepUsername = ({ onClick }: AuthStepProps) => {
 
     return (
         <>
-            <Card icon="username" title="Pick a username" key={'namecard'}>
+            <Card
+                icon="username"
+                title="Pick a username"
+                key={'namecard'}
+                dataTestId="activate-username-card"
+            >
                 <Input
                     placeholder="@"
                     px="2rem"

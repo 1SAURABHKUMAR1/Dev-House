@@ -1,4 +1,4 @@
-import { Modal, ModalOverlay } from '@chakra-ui/react';
+import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
 
 import React, { useState } from 'react';
 
@@ -15,7 +15,7 @@ const CreateRoomModal = ({
         1: OpenRoomModal,
         2: StepShare,
     });
-    const [modalNumber, setModalNumber] = useState(1);
+    const [modalNumber, setModalNumber] = useState<number>(1);
     const CurrentStep =
         roomModalSteps[modalNumber as keyof typeof roomModalSteps];
 
@@ -31,11 +31,13 @@ const CreateRoomModal = ({
             >
                 <ModalOverlay backdropFilter="blur(3px)" />
 
-                <CurrentStep
-                    inputInitalRef={inputInitalRef}
-                    onClose={onClose}
-                    nextModal={setModalNumber}
-                />
+                <ModalContent data-testid="create-room-modal">
+                    <CurrentStep
+                        inputInitalRef={inputInitalRef}
+                        onClose={onClose}
+                        nextModal={setModalNumber}
+                    />
+                </ModalContent>
             </Modal>
         </>
     );

@@ -26,6 +26,7 @@ const StepMobileEmail = ({ onClick }: AuthStepProps) => {
                     type === 'email' ? 'email id' : 'phone number'
                 }`}
                 key={'phone number and email'}
+                dataTestId="authenticate-card"
             >
                 <CurrentComponent onClick={onClick} />
                 <Flex

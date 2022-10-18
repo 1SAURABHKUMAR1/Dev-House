@@ -43,6 +43,7 @@ const Header = () => {
                         fontFamily="'Work Sans', 'sans-serif'"
                         letterSpacing="-0.025em"
                         color="#334155"
+                        data-testid="header-title"
                     >
                         Where teams build faster , together
                     </Text>
@@ -78,13 +79,25 @@ const Header = () => {
                         }}
                         flexWrap="wrap"
                     >
-                        <SingleIcon iconName="cpp" />
-                        <SingleIcon iconName="javascript" />
-                        <SingleIcon iconName="react" />
-                        <SingleIcon iconName="python" />
+                        <span data-testid="header-logo-cpp">
+                            <SingleIcon iconName="cpp" />
+                        </span>
+                        <span data-testid="header-logo-javascript">
+                            <SingleIcon iconName="javascript" />
+                        </span>
+                        <span data-testid="header-logo-react">
+                            <SingleIcon iconName="react" />
+                        </span>
+                        <span data-testid="header-logo-python">
+                            <SingleIcon iconName="python" />
+                        </span>
                     </Flex>
 
-                    <Box width="100%" marginTop="2rem">
+                    <Box
+                        width="100%"
+                        marginTop="2rem"
+                        data-testid="header-button"
+                    >
                         <AuthButton
                             buttonText="</> Start coding now"
                             marginTop="0rem"

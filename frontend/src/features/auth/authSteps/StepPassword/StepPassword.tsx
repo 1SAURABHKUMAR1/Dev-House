@@ -78,6 +78,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                 icon="password"
                 title="Create new password"
                 key={'phone number'}
+                dataTestId="authenticate-password-card"
             >
                 <Box marginTop="1.6rem" width={{ ssm: '19rem', sm: '20rem' }}>
                     <Text
@@ -99,6 +100,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>,
                             ) => handlePasswordChange(event, 'password')}
+                            data-testid="password-input"
                         />
                         <InputRightElement
                             width="3rem"
@@ -138,6 +140,7 @@ const StepPassword = ({ onClick }: AuthStepProps) => {
                             ) =>
                                 handlePasswordChange(event, 'confirm-password')
                             }
+                            data-testid="confirm-password-input"
                         />
                         <InputRightElement
                             width="3rem"

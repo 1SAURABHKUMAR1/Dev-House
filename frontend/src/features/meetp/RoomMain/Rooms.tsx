@@ -52,6 +52,7 @@ const Rooms = () => {
                                 _hover={{ bg: 'main.blue.hover' }}
                                 onClick={onOpen}
                                 marginRight="0.5rem"
+                                data-testid="start-room-button"
                             >
                                 Start room
                             </Button>
@@ -64,6 +65,7 @@ const Rooms = () => {
                                 _active={{}}
                                 _hover={{ bg: 'main.blue.hover' }}
                                 onClick={onOpenJoinRoom}
+                                data-testid="join-room-button"
                             >
                                 Join room
                             </Button>

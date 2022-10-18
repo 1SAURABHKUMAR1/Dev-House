@@ -22,6 +22,7 @@ const RoomSection = () => {
                         ssm: '0rem',
                         sm: '1rem 2rem',
                     }}
+                    data-testid="room-title"
                 >
                     <Text
                         textAlign="center"
@@ -64,7 +65,11 @@ const RoomSection = () => {
                         Listen , speak , chat and share memories with anyone in
                         just one click
                     </Text>
-                    <Box width="100%" marginTop="2rem">
+                    <Box
+                        width="100%"
+                        marginTop="2rem"
+                        data-testid="room-section-button"
+                    >
                         <AuthButton
                             buttonText="Create your room now"
                             marginTop="0rem"

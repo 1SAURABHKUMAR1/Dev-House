@@ -64,7 +64,12 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
 
     return (
         <>
-            <Card icon="avatar" title={`Okay, ${name}!`} key={'avatarcard'}>
+            <Card
+                icon="avatar"
+                title={`Okay, ${name}!`}
+                key={'avatarcard'}
+                dataTestId="activate-avatar-card"
+            >
                 <Text
                     marginTop="0.4rem"
                     fontSize={{ ssm: '0.95rem', sm: '0.86rem' }}
@@ -84,6 +89,7 @@ const StepAvatar = ({ onClick }: AuthStepProps) => {
                         borderWidth="0.22rem"
                         overflow="hidden"
                         src={image}
+                        data-testid="activate-user-avatar"
                     />
                 </WrapItem>
                 <Flex

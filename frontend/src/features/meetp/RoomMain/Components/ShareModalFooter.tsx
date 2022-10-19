@@ -28,6 +28,7 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                     _hover={{ opacity: '0.8' }}
                     cursor="pointer"
                     onClick={qrModalOnOpen}
+                    data-testid="qr-code-box"
                 >
                     <HiQrcode />
                 </Box>
@@ -43,6 +44,7 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 shareType={'WHATSAPP'}
                 toolTipAlign="bottom"
                 type="meetp"
+                dataTestId="whatsapp-box"
             />
 
             <ShareButton
@@ -55,6 +57,7 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 shareType={'TWITTER'}
                 toolTipAlign="bottom"
                 type="meetp"
+                dataTestId="twitter-box"
             />
 
             <ShareButton
@@ -67,6 +70,7 @@ const ShareModalFooter = ({ qrModalOnOpen }: shareModalProps) => {
                 shareType={'TELEGRAM'}
                 toolTipAlign="bottom"
                 type="meetp"
+                dataTestId="telegram-box"
             />
         </>
     );

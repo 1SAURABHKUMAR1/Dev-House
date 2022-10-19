@@ -1,3 +1,5 @@
+import { createRoomName } from '../support/generateRandom';
+
 describe('Meetp', () => {
     it('Check UI Home Page', () => {
         cy.login().then((user) => {
@@ -16,7 +18,6 @@ describe('Meetp', () => {
             cy.findByTestId('join-room-button').should('contain', 'Join room');
 
             cy.rooms().then((body) => {
-                cy.log(`${JSON.stringify(body.rooms)}`);
                 if (body.rooms.length > 0) {
                     cy.findAllByTestId('single-room').should(
                         'have.length',
@@ -58,6 +59,9 @@ describe('Meetp', () => {
         cy.findByTestId('create-room-modal').find('input').should('exist');
         cy.findByTestId('create-room-modal')
             .findByPlaceholderText(`Enter room name`)
+            .should('exist');
+        cy.findByTestId('create-room-modal')
+            .findByTestId('create-roomname-input')
             .should('exist');
         cy.findByTestId('create-room-modal').should('contain', `Room Type`);
         cy.findByTestId('create-room-modal')
@@ -185,6 +189,12 @@ describe('Meetp', () => {
         cy.findByTestId('join-room-modal')
             .findByPlaceholderText('Enter room password...')
             .should('exist');
+        cy.findByTestId('join-room-modal')
+            .findByTestId('create-roomid-input')
+            .should('exist');
+        cy.findByTestId('join-room-modal')
+            .findByTestId('create-roompassword-input')
+            .should('exist');
 
         cy.findByTestId('join-room-modal')
             .find('button')
@@ -199,5 +209,109 @@ describe('Meetp', () => {
             .contains('Cancel')
             .click();
         cy.findByTestId('join-room-modal').should('not.exist');
+    });
+
+    it('Create Room Invalid Form', () => {
+        cy.login();
+        cy.visit(Cypress.env('meetpUrl'));
+        cy.url().should(
+            'eq',
+            `${Cypress.config().baseUrl}${Cypress.env('meetpUrl')}`,
+        );
+
+        cy.findByTestId('start-room-button').click();
+        cy.findByTestId('create-room-modal')
+            .find('button')
+            .contains('Lets Go')
+            .click();
+        cy.contains('Enter a valid name').should('exist');
+        cy.findByTestId('create-room-modal')
+            .find('button')
+            .contains('Cancel')
+            .click();
+    });
+
+    it('Join Room Invalid Form', () => {
+        cy.login();
+        cy.visit(Cypress.env('meetpUrl'));
+        cy.url().should(
+            'eq',
+            `${Cypress.config().baseUrl}${Cypress.env('meetpUrl')}`,
+        );
+        cy.findByTestId('join-room-button').click();
+        cy.findByTestId('join-room-modal')
+            .find('button')
+            .contains('Join Room')
+            .click();
+        cy.contains('Fill all details').should('exist');
+    });
+
+    it.skip('Create Room Form', () => {
+        const roomName = createRoomName();
+
+        cy.login();
+        cy.visit(Cypress.env('meetpUrl'));
+        cy.url().should(
+            'eq',
+            `${Cypress.config().baseUrl}${Cypress.env('meetpUrl')}`,
+        );
+
+        cy.findByTestId('start-room-button').click();
+
+        cy.findByTestId('create-room-modal')
+            .findByTestId('create-roomname-input')
+            .type(roomName.roomName);
+
+        cy.intercept({ method: 'POST', url: '**/room/create' }).as(
+            'createRoomRequest',
+        );
+
+        cy.findByTestId('create-room-modal')
+            .find('button')
+            .contains('Lets Go')
+            .click();
+
+        cy.wait('@createRoomRequest').then(({ request, response }) => {
+            cy.findByTestId('create-room-modal')
+                .contains('Room link and password')
+                .should('exist');
+            cy.contains('Room Links').should('exist');
+
+            // cy.findByTestId('create-room-modal').contains(
+            //     `${Cypress.config().baseUrl}${Cypress.env('meetpUrl')}/${
+            //         response.body.room.room_id
+            //     }`,
+            // );
+
+            cy.findByTestId('create-room-modal')
+                .findByTestId('qr-code-box')
+                .should('exist');
+            cy.findByTestId('create-room-modal')
+                .findByTestId('whatsapp-box')
+                .should('exist');
+            cy.findByTestId('create-room-modal')
+                .findByTestId('twitter-box')
+                .should('exist');
+            cy.findByTestId('create-room-modal')
+                .findByTestId('telegram-box')
+                .should('exist');
+
+            cy.findByTestId('create-room-modal')
+                .findByTestId('qr-code-box')
+                .click();
+            cy.findByTestId('qr-code-image').should(
+                'have.attr',
+                'src',
+                // @ts-ignore
+                `${response.body.room.qrcode.secure_url}`,
+            );
+
+            cy.findByTestId('close-qr-modal').click();
+            cy.findByTestId('create-room-modal')
+                .findByTestId('close-share-modal')
+                .click();
+
+            cy.findByTestId('create-room-modal').should('exist');
+        });
     });
 });

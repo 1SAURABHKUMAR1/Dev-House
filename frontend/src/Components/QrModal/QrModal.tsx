@@ -37,7 +37,11 @@ const QrModal = ({ isOpen, onClose }: qrModalProps) => {
                         <Text fontSize="1.1rem" fontWeight="700">
                             Room Qr Code
                         </Text>
-                        <ModalCloseButton position="unset" onClick={onClose} />
+                        <ModalCloseButton
+                            position="unset"
+                            onClick={onClose}
+                            data-testid="close-qr-modal"
+                        />
                     </ModalHeader>
 
                     <ModalBody pb="1.5rem">
@@ -45,6 +49,7 @@ const QrModal = ({ isOpen, onClose }: qrModalProps) => {
                             <Image
                                 boxSize="12.5rem"
                                 src={qrcode}
+                                data-testid="qr-code-image"
                                 alt="Room Qr Code"
                             />
                         </Box>

@@ -14,6 +14,7 @@ const ShareButton = ({
     shareType,
     type,
     toolTipAlign,
+    dataTestId,
 }: shareButtonProps) => {
     const [shareLink] = useState(() =>
         createShareLink(roomId, roomPassword, shareType, type),
@@ -40,6 +41,7 @@ const ShareButton = ({
                         _hover={{ opacity: '0.8' }}
                         cursor="pointer"
                         width="max-content"
+                        data-testid={dataTestId}
                     >
                         <Icon />
                     </Box>

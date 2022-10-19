@@ -92,6 +92,7 @@ const OpenRoomModal = ({
                     value={roomName}
                     onChange={handleRoomName}
                     ref={inputInitalRef}
+                    data-testid="create-roomname-input"
                 />
 
                 <Text pt="5" fontWeight="700" fontSize="1.05rem">

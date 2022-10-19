@@ -35,7 +35,11 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                 <Text fontSize="1.1rem" fontWeight="700">
                     Room link and password
                 </Text>
-                <ModalCloseButton position="unset" onClick={closeModel} />
+                <ModalCloseButton
+                    position="unset"
+                    onClick={closeModel}
+                    data-testid="close-share-modal"
+                />
             </ModalHeader>
 
             <ModalBody pb={4}>
@@ -46,6 +50,7 @@ const StepShare = ({ nextModal }: stepShareProps) => {
                     fieldType="ROOM_URL"
                     key={'room link'}
                     type="meetp"
+                    data-testid="room-url-field"
                 />
 
                 {roomPassword && (

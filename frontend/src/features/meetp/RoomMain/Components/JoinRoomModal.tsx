@@ -68,6 +68,11 @@ const JoinRoomModal = ({
     );
 
     const handleJoinRoom = async () => {
+        if (roomPassword === '' || roomPassword === '') {
+            ErrorToast('Fill all details');
+            return;
+        }
+
         await mutateAsync();
     };
 
@@ -123,6 +128,7 @@ const JoinRoomModal = ({
                                     handleChange('roomId', event);
                                 }}
                                 ref={inputInitalRef}
+                                data-testid="create-roomid-input"
                             />
                         </Box>
 
@@ -153,6 +159,7 @@ const JoinRoomModal = ({
                                     ) => {
                                         handleChange('roomPassword', event);
                                     }}
+                                    data-testid="create-roompassword-input"
                                 />
                                 <InputRightElement
                                     width="3rem"

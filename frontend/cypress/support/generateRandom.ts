@@ -5,11 +5,15 @@ export const createRandomUser = (): {
     email: string;
     password: string;
     username: string;
-} => {
-    return {
-        name: faker.name.fullName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        username: faker.lorem.word(),
-    };
-};
+} => ({
+    name: faker.name.fullName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    username: faker.lorem.word(),
+});
+
+export const createRoomName = (): {
+    roomName: string;
+} => ({
+    roomName: faker.lorem.word(),
+});

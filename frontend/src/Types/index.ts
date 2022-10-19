@@ -219,6 +219,7 @@ export interface shareButtonProps {
     roomPassword: string;
     shareType: 'WHATSAPP' | 'TWITTER' | 'TELEGRAM';
     type: 'meetp' | 'code-box';
+    dataTestId?: string;
 }
 
 export interface qrModalProps {

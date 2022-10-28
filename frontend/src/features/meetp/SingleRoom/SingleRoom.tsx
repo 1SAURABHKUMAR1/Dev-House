@@ -139,6 +139,7 @@ const SingleRoom = () => {
                                 maxW="100%"
                                 fontSize="1.2rem"
                                 fontWeight="700"
+                                data-testid="room-name"
                             >
                                 {name}
                             </Text>

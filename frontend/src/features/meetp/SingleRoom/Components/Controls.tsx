@@ -30,12 +30,14 @@ const Controls = ({ btnRef, onOpen, handleMuted, userId }: ControlsProps) => {
                     buttonText="Mute"
                     tooltipLabel="Mute"
                     onClick={() => handleMuted(userId)}
+                    dataTestId="mute-button"
                 />
 
                 <SingleRoomButton
                     buttonText="Leave quietly"
                     tooltipLabel="Leave"
                     onClick={handleBackButton}
+                    dataTestId="leave-button"
                 />
 
                 <SingleRoomButton
@@ -43,6 +45,7 @@ const Controls = ({ btnRef, onOpen, handleMuted, userId }: ControlsProps) => {
                     tooltipLabel="Chat Box"
                     btnRef={btnRef}
                     onClick={onOpen}
+                    dataTestId="chat-box-button"
                 />
             </Box>
         </Container>

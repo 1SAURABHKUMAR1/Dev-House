@@ -6,7 +6,6 @@ const {
     createRoom,
     getRooms,
     singleRoom,
-    checkRoom,
     verifyRoomPassword,
 } = require('../Controllers/roomsController');
 

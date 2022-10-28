@@ -6,6 +6,7 @@ const SingleRoomButton = ({
     tooltipLabel,
     btnRef,
     onClick,
+    dataTestId,
 }: SingleRoomButtonProps) => {
     return (
         <>
@@ -23,6 +24,7 @@ const SingleRoomButton = ({
                     fontSize="0.9rem"
                     onClick={onClick}
                     ref={btnRef}
+                    data-testid={dataTestId}
                 >
                     {buttonText}
                 </Button>

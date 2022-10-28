@@ -18,5 +18,6 @@ export default defineConfig({
         activateUrl: '/activate',
         loginUrlBackend: '/user/login',
         allRoomsUrlBackend: '/room/rooms',
+        singleRoomUrlBackend: '/room/single',
     },
 });

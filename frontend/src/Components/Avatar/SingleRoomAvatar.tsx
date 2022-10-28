@@ -12,7 +12,12 @@ const SingleRoomAvatar = ({
 }: SingleRoomAvatarProps) => {
     return (
         <>
-            <Box width="max-content" textAlign="center" margin="auto">
+            <Box
+                width="max-content"
+                textAlign="center"
+                margin="auto"
+                data-testid="user-avatar"
+            >
                 <Box position="relative">
                     <Avatar
                         height="5rem"

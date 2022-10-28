@@ -201,8 +201,14 @@ describe('Meetp', () => {
             .contains('Join Room')
             .should('exist');
         cy.findByTestId('join-room-modal')
+            .findByTestId('join-room-submit-button')
+            .should('exist');
+        cy.findByTestId('join-room-modal')
             .find('button')
             .contains('Cancel')
+            .should('exist');
+        cy.findByTestId('join-room-modal')
+            .findByTestId('cancel-join-room-button')
             .should('exist');
         cy.findByTestId('join-room-modal')
             .find('button')
@@ -310,8 +316,6 @@ describe('Meetp', () => {
             cy.findByTestId('create-room-modal')
                 .findByTestId('close-share-modal')
                 .click();
-
-            cy.findByTestId('create-room-modal').should('exist');
         });
     });
 });

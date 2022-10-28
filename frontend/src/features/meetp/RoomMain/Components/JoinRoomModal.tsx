@@ -68,7 +68,7 @@ const JoinRoomModal = ({
     );
 
     const handleJoinRoom = async () => {
-        if (roomPassword === '' || roomPassword === '') {
+        if (roomId === '') {
             ErrorToast('Fill all details');
             return;
         }
@@ -200,6 +200,7 @@ const JoinRoomModal = ({
                             onClick={handleJoinRoom}
                             fontWeight={600}
                             isLoading={isLoading}
+                            data-testid="join-room-submit-button"
                         >
                             Join Room
                         </Button>
@@ -209,6 +210,7 @@ const JoinRoomModal = ({
                             fontWeight={600}
                             onClick={onClose}
                             borderRadius="1.4rem"
+                            data-testid="cancel-join-room-button"
                         >
                             Cancel
                         </Button>

@@ -350,6 +350,7 @@ export interface SingleRoomButton {
     buttonText: string;
     onClick?: () => void;
     btnRef?: React.RefObject<HTMLButtonElement>;
+    dataTestId?: string;
 }
 
 export type mutedFunction = (userId: string) => void;
